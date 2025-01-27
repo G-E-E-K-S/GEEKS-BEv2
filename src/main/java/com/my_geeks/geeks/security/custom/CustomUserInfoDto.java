@@ -1,6 +1,6 @@
 package com.my_geeks.geeks.security.custom;
 
-import head4.notify.domain.user.entity.RoleType;
+import com.my_geeks.geeks.domain.user.entity.enumeration.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

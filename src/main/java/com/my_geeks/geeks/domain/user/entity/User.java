@@ -1,9 +1,7 @@
 package com.my_geeks.geeks.domain.user.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.my_geeks.geeks.domain.user.entity.enumeration.RoleType;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +18,6 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
 }

@@ -1,9 +1,10 @@
 package com.my_geeks.geeks.security;
 
-import head4.notify.security.custom.CustomUserDetailsService;
-import head4.notify.security.jwt.JwtAuthFilter;
-import head4.notify.security.jwt.JwtExceptionFilter;
-import head4.notify.security.jwt.JwtUtil;
+
+import com.my_geeks.geeks.security.custom.CustomUserDetailsService;
+import com.my_geeks.geeks.security.jwt.JwtAuthFilter;
+import com.my_geeks.geeks.security.jwt.JwtExceptionFilter;
+import com.my_geeks.geeks.security.jwt.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

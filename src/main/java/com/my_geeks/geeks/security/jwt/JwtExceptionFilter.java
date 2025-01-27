@@ -1,9 +1,9 @@
 package com.my_geeks.geeks.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import head4.notify.customResponse.BaseResponse;
-import head4.notify.discord.DiscordSender;
-import head4.notify.exceoption.CustomException;
+import com.my_geeks.geeks.customResponse.BaseResponse;
+import com.my_geeks.geeks.discord.DiscordSender;
+import com.my_geeks.geeks.exception.CustomException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
