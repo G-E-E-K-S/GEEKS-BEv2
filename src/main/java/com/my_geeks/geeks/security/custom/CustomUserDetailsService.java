@@ -1,8 +1,8 @@
 package com.my_geeks.geeks.security.custom;
 
 
-import com.my_geeks.geeks.domain.user.UserRepository;
 import com.my_geeks.geeks.domain.user.entity.User;
+import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;

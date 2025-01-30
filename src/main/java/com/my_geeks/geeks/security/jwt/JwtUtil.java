@@ -1,6 +1,6 @@
 package com.my_geeks.geeks.security.jwt;
 
-import head4.notify.security.custom.CustomUserInfoDto;
+import com.my_geeks.geeks.security.custom.CustomUserInfoDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

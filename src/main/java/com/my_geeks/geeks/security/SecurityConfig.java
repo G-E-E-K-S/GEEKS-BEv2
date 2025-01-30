@@ -74,8 +74,8 @@ public class SecurityConfig {
     UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000", "https://localhost:3000", "http://localhost:8080", "http://localhost:9050",
-                "https://univ-on.com", "https://server.univ-on.com"));
+                "http://localhost:3000", "https://localhost:3000", "http://localhost:8080",
+                "https://my-geeks.com", "https://server.my-geeks.com"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Set-Cookie"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
