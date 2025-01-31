@@ -1,6 +1,7 @@
 package com.my_geeks.geeks.domain.user.controller;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
+import com.my_geeks.geeks.domain.user.controller.docs.UserControllerDocs;
 import com.my_geeks.geeks.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
-public class UserController implements UserControllerDocs{
+public class UserController implements UserControllerDocs {
 
     private final UserService userService;
 
