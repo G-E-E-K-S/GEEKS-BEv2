@@ -18,18 +18,32 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "User API", description = "사용자 관련 API")
 public interface UserControllerDocs {
     @Operation(summary = "[온보딩] 이메일 중복 확인",
-            description = "true가 반환되면 사용 가능한 이메일, false가 반환되면 이미 가입된 이메일")
+            description = "false가 반환되면 사용 가능한 이메일, true가 반환되면 이미 가입된 이메일")
     @Parameter(name = "email", description = "사용자가 입력한 이메일", in = ParameterIn.PATH)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "이메일 중복 X",
+            @ApiResponse(responseCode = "200", description = "이메일 중복 여부",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Boolean.class),
                             examples = {
-                                    @ExampleObject(value = "true", name = "이메일 중복 X"),
-                                    @ExampleObject(value = "false", name = "이메일 중복 O")
+                                    @ExampleObject(name = "이메일 중복 O", value = "true"),
+                                    @ExampleObject(name = "이메일 중복 X", value = "false")
                             })),
     })
-    @ApiErrorResponses({ErrorCode.DUPLICATE_DATA_ERROR, ErrorCode.DISCORD_CONVERT_JSON_ERROR})
     public BaseResponse<Boolean> emailCheck(String email);
+
+    @Operation(summary = "[온보딩] 닉네임 중복 확인",
+            description = "false가 반환되면 사용 가능한 닉네임, true가 반환되면 이미 가입된 닉네임")
+    @Parameter(name = "email", description = "사용자가 입력한 이메일", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "닉네임 중복 여부",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Boolean.class),
+                            examples = {
+                                    @ExampleObject(name = "닉네임 중복 O", value = "true"),
+                                    @ExampleObject(name = "닉네임 중복 X", value = "false")
+                            })),
+    })
+    public BaseResponse<Boolean> nicknameCheck(String email);
 }

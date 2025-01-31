@@ -23,6 +23,10 @@ public class UserController implements UserControllerDocs {
     }
 
     // TODO: 닉네임 중복 확인
+    @GetMapping("/check/nickname/{nickname}")
+    public BaseResponse<Boolean> nicknameCheck(@PathVariable("nickname") String nickname) {
+        return BaseResponse.ok(userService.nicknameCheck(nickname));
+    }
 
     // TODO: 인증코드 전송
 

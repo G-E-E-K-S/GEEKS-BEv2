@@ -14,4 +14,8 @@ public class UserService {
     public Boolean emailCheck(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    public Boolean nicknameCheck(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
 }
