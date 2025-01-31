@@ -7,6 +7,7 @@ import com.my_geeks.geeks.swagger.annotation.ApiErrorResponse;
 import com.my_geeks.geeks.swagger.annotation.ApiErrorResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -30,6 +31,7 @@ public interface UserControllerDocs {
                                     @ExampleObject(name = "이메일 중복 X", value = "false")
                             })),
     })
+    @ApiErrorResponses({ErrorCode.DUPLICATE_EMAIL_ERROR})
     public BaseResponse<Boolean> emailCheck(String email);
 
     @Operation(summary = "[온보딩] 닉네임 중복 확인",
@@ -46,4 +48,36 @@ public interface UserControllerDocs {
                             })),
     })
     public BaseResponse<Boolean> nicknameCheck(String email);
+
+    @Operation(summary = "[온보딩] 인증코드 전송",
+            description = "해당 이메일로 인증코드를 전송")
+    @Parameter(name = "email", description = "사용자가 입력한 이메일", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "4자리 인증코드",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "인증코드", value = "1234")
+                            })),
+    })
+    public BaseResponse<String> emailCode(String email);
+
+    @Operation(summary = "[온보딩] 인증코드 검증",
+            description = "해당 이메일로 전송된 인증코드 검증 실패시 오류 코드 반환")
+    @Parameters(value = {
+            @Parameter(name = "email", description = "사용자가 입력한 이메일", in = ParameterIn.PATH),
+            @Parameter(name = "code", description = "사용자가 입력한 인증코드", in = ParameterIn.PATH)
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "인증 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "인증 성공", value = "success")
+                            })),
+    })
+    @ApiErrorResponses({ErrorCode.INVALID_CODE_ERROR})
+    public BaseResponse<String> codeCheck(String email, String code);
 }

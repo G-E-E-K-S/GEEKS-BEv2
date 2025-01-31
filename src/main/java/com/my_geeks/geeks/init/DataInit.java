@@ -17,7 +17,7 @@ public class DataInit {
     @PostConstruct
     public void init() {
         User user = User.builder()
-                .email("test@sangmyung.kr")
+                .email("bak3839@naver.com")
                 .password("1234")
                 .nickname("TEST_1")
                 .major("소프트웨어학과")

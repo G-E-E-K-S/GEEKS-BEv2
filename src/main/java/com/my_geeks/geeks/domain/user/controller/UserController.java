@@ -16,7 +16,7 @@ public class UserController implements UserControllerDocs {
 
     private final UserService userService;
 
-    // TODO: 이메일 중복 확인
+    // TODO: 이메일 중복 확인 중복 아니면 인증코드 전송
     @GetMapping("/check/email/{email}")
     public BaseResponse<Boolean> emailCheck(@PathVariable("email") String email) {
         return BaseResponse.ok(userService.emailCheck(email));
@@ -29,8 +29,17 @@ public class UserController implements UserControllerDocs {
     }
 
     // TODO: 인증코드 전송
+    @GetMapping("/email/code/{email}")
+    public BaseResponse<String> emailCode(@PathVariable("email") String email) {
+        return BaseResponse.ok(userService.emailCode(email));
+    }
 
     // TODO: 인증코드 확인
+    @GetMapping("/auth/code/{email}/{code}")
+    public BaseResponse<String> codeCheck(@PathVariable("email") String email,
+                                          @PathVariable("code") String code) {
+        return BaseResponse.ok(userService.checkCode(email, code));
+    }
 
     // TODO: 회원가입
 }
