@@ -38,4 +38,9 @@ public class UserController implements UserControllerDocs {
     public BaseResponse<String> signup(@RequestBody SignUpReq req) {
         return BaseResponse.ok(userService.signup(req));
     }
+
+    @GetMapping("/healthy")
+    public String healthy() {
+        return "success";
+    }
 }
