@@ -16,12 +16,7 @@ public class RedisUtil {
 
     public String getCode(String key) {
         String code = null;
-
-        try {
-            code = redisTemplate.opsForValue().get(key);
-        } catch (Exception e) {
-            throw new CustomException(ErrorCode.INVALID_CODE_ERROR);
-        }
+        code = redisTemplate.opsForValue().get(key);
         return code;
     }
 

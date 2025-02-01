@@ -1,6 +1,7 @@
 package com.my_geeks.geeks.domain.user.controller.docs;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
+import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.security.custom.CustomUserDetails;
 import com.my_geeks.geeks.swagger.annotation.ApiErrorResponse;
@@ -18,50 +19,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "User API", description = "사용자 관련 API")
 public interface UserControllerDocs {
-    @Operation(summary = "[온보딩] 이메일 중복 확인",
-            description = "false가 반환되면 사용 가능한 이메일, true가 반환되면 이미 가입된 이메일")
+    @Operation(summary = "[온보딩] 이메일 중복 확인 & 인증코드 발송",
+            description = "사용가능한 이메일이면 available 반환과 함께 해당 이메일로 인증코드 발송, 중복시 오류 코드 반환")
     @Parameter(name = "email", description = "사용자가 입력한 이메일", in = ParameterIn.PATH)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "이메일 중복 여부",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = Boolean.class),
-                            examples = {
-                                    @ExampleObject(name = "이메일 중복 O", value = "true"),
-                                    @ExampleObject(name = "이메일 중복 X", value = "false")
-                            })),
-    })
-    @ApiErrorResponses({ErrorCode.DUPLICATE_EMAIL_ERROR})
-    public BaseResponse<Boolean> emailCheck(String email);
-
-    @Operation(summary = "[온보딩] 닉네임 중복 확인",
-            description = "false가 반환되면 사용 가능한 닉네임, true가 반환되면 이미 가입된 닉네임")
-    @Parameter(name = "email", description = "사용자가 입력한 이메일", in = ParameterIn.PATH)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "닉네임 중복 여부",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = Boolean.class),
-                            examples = {
-                                    @ExampleObject(name = "닉네임 중복 O", value = "true"),
-                                    @ExampleObject(name = "닉네임 중복 X", value = "false")
-                            })),
-    })
-    public BaseResponse<Boolean> nicknameCheck(String email);
-
-    @Operation(summary = "[온보딩] 인증코드 전송",
-            description = "해당 이메일로 인증코드를 전송")
-    @Parameter(name = "email", description = "사용자가 입력한 이메일", in = ParameterIn.PATH)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "4자리 인증코드",
+            @ApiResponse(responseCode = "200", description = "이메일 사용가능",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = String.class),
                             examples = {
-                                    @ExampleObject(name = "인증코드", value = "1234")
+                                    @ExampleObject(name = "이메일 사용 가능", value = "available")
                             })),
     })
-    public BaseResponse<String> emailCode(String email);
+    @ApiErrorResponses({ErrorCode.DUPLICATE_EMAIL_ERROR})
+    public BaseResponse<String> emailCheck(String email);
 
     @Operation(summary = "[온보딩] 인증코드 검증",
             description = "해당 이메일로 전송된 인증코드 검증 실패시 오류 코드 반환")
@@ -80,4 +51,32 @@ public interface UserControllerDocs {
     })
     @ApiErrorResponses({ErrorCode.INVALID_CODE_ERROR})
     public BaseResponse<String> codeCheck(String email, String code);
+
+    @Operation(summary = "[온보딩] 닉네임 중복 확인",
+            description = "사용가능한 닉네임이면 available 반환, 중복시 오류 코드 반환")
+    @Parameter(name = "email", description = "사용자가 입력한 이메일", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "닉네임 사용가능",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "닉네임 사용 가능", value = "true")
+                            })),
+    })
+    @ApiErrorResponses({ErrorCode.DUPLICATE_NICKNAME_ERROR})
+    public BaseResponse<String> nicknameCheck(String email);
+
+    @Operation(summary = "[온보딩] 회원가입",
+            description = "회원가입")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원가입 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "회원가입 성공", value = "success")
+                            })),
+    })
+    public BaseResponse<String> signup(SignUpReq req);
 }

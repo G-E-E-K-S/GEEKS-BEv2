@@ -14,7 +14,8 @@ public enum ErrorCode {
     USER_NOT_FOUND(40401, HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
     // Duplicate Data Error
     DUPLICATE_DATA_ERROR(40900, HttpStatus.CONFLICT, "중복 데이터 오류입니다."),
-    DUPLICATE_EMAIL_ERROR(40901, HttpStatus.CONFLICT, "이미 가입된 이메일 입니다."),
+    DUPLICATE_EMAIL_ERROR(40901, HttpStatus.CONFLICT, "이미 가입된 이메일입니다."),
+    DUPLICATE_NICKNAME_ERROR(40902, HttpStatus.CONFLICT, "이미 가입된 닉네임입니다."),
     // JWT Filter Error
     JWT_FILTER_ERROR(40301, HttpStatus.FORBIDDEN, "JWT filter 인증 오류 접근 권한이 없거나 토큰이 존재 하지 않습니다."),
     JWT_INVALID_TOKEN_ERROR(40110, HttpStatus.UNAUTHORIZED, "유효하지 않은 JWT 입니다."),

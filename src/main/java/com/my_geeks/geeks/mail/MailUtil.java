@@ -7,14 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class MailUtil {
-    private static AwsSesConfig awsSesConfig = null;
+    private final AwsSesConfig awsSesConfig;
 
-    public MailUtil(AwsSesConfig awsSesConfig) {
-        MailUtil.awsSesConfig = awsSesConfig;
-    }
-
-    public static void send(String email) {
+    public void send(String email, String code) {
         String html =
                 "<div style=\"width: 100vw;max-width: 100%;box-sizing: border-box; height:180px; right:0; left:0; top:0; background-color: #FFD540; margin: 0; padding: 0;display: flex;justify-content: center;align-items: center;\">\n" +
                         "    <img style=\"margin: 69px 0;\" src=\"https://bucket-geeks.s3.ap-northeast-2.amazonaws.com/logo.svg\"/>\n" +
@@ -24,7 +21,7 @@ public class MailUtil {
                         "      <div style=\"color: #525252;font-size: 1.2rem;font-weight: 500;margin-top: 9.19vh;\">\n" +
                         "        안녕하세요, 긱스에서 요청하신 인증번호를 보내드려요.\n" +
                         "      </div>\n" +
-                        "      <div style=\"color: #333;font-size: 3.3rem;font-weight: 500;line-height: normal;margin-top: 4rem;margin-bottom: 2rem;\">"+1234+"</div>\n" +
+                        "      <div style=\"color: #333;font-size: 3.3rem;font-weight: 500;line-height: normal;margin-top: 4rem;margin-bottom: 2rem;\">"+code+"</div>\n" +
                         "      <div style=\"color: #525252;font-size: 1.25rem;font-style: normal;font-weight: 500;\">위 인증번호 4자리를 인증번호 입력창에 정확히 입력해주세요.</div>\n" +
                         "      <div style=\"color: #525252;font-size: 1rem;font-style: normal;font-weight: 500;margin-top: 1rem;margin-bottom:3rem;\">인증번호를 요청하지 않았을 경우 본 이메일을 무시해 주세요.</div>\n" +
                         "    </div>\n" +

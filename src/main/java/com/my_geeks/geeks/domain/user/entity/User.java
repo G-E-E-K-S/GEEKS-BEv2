@@ -1,6 +1,7 @@
 package com.my_geeks.geeks.domain.user.entity;
 
 import com.my_geeks.geeks.domain.user.entity.enumeration.Dormitory;
+import com.my_geeks.geeks.domain.user.entity.enumeration.Gender;
 import com.my_geeks.geeks.domain.user.entity.enumeration.RoleType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -45,8 +46,11 @@ public class User {
     @Enumerated(STRING)
     private Dormitory dormitory;
 
+    @Enumerated(STRING)
+    private Gender gender;
+
     @Builder
-    public User(String email, String password, String nickname, String major, int studentNum, boolean isOpen, RoleType roleType, Dormitory dormitory) {
+    public User(String email, String password, String nickname, String major, int studentNum, boolean isOpen, RoleType roleType, Dormitory dormitory, Gender gender) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -55,5 +59,6 @@ public class User {
         this.isOpen = isOpen;
         this.roleType = roleType;
         this.dormitory = dormitory;
+        this.gender = gender;
     }
 }
