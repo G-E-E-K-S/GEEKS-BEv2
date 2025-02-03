@@ -2,6 +2,7 @@ package com.my_geeks.geeks.domain.matching.service;
 
 import com.my_geeks.geeks.domain.matching.entity.MatchingPoint;
 import com.my_geeks.geeks.domain.matching.repository.MatchingPointRepository;
+import com.my_geeks.geeks.domain.matching.responseDto.GetPointRes;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Outing;
@@ -9,6 +10,7 @@ import com.my_geeks.geeks.domain.user.repository.UserDetailRepository;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
+import jakarta.persistence.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,18 @@ public class MatchingService {
     private final UserDetailRepository userDetailRepository;
 
     private final MatchingPointRepository matchingPointRepository;
+
+    @Transactional
+    public GetPointRes get(Long userId) {
+        boolean exists = userDetailRepository.existsById(userId);
+        List<GetPointRes.OpponentInfo> opponentInfos = new ArrayList<>();
+
+        if(exists) {
+            opponentInfos.addAll(matchingPointRepository.getPointList(userId));
+        }
+
+        return new GetPointRes(exists, opponentInfos);
+    }
 
     @Transactional
     public void calculate(Long userId, UserDetail myDetail) {

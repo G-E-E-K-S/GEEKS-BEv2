@@ -21,7 +21,7 @@ public class SignUpReq {
     @Schema(description = "비밀번호", defaultValue = "1234")
     private String password;
 
-    @Schema(description = "닉네임", defaultValue = "TEST_2")
+    @Schema(description = "닉네임", defaultValue = "TEST_5")
     private String nickname;
 
     @Schema(description = "전공", defaultValue = "소프트웨어학과")

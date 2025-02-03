@@ -61,6 +61,12 @@ public class UserController implements UserControllerDocs {
     }
 
     @Deprecated
+    @PostMapping("/total/create")
+    public BaseResponse<String> totalCreate(@RequestBody CreateUserDetailReq req) {
+        return BaseResponse.created(userService.createTotalDetail(req));
+    }
+
+    @Deprecated
     @GetMapping("/healthy")
     public String healthy() {
         return "success";

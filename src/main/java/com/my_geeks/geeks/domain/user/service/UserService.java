@@ -53,6 +53,16 @@ public class UserService {
         return "success";
     }
 
+    @Transactional
+    public String createTotalDetail(CreateUserDetailReq req) {
+        for(Long i = 2L; i <= 4L; i++) {
+            UserDetail userDetail = req.toEntity(i);
+            userDetailRepository.save(userDetail);
+            matchingService.calculate(i, userDetail);
+        }
+        return "success";
+    }
+
     public GetUserDetailRes getUserDetail(Long userId) {
         UserDetail userDetail = userDetailRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
