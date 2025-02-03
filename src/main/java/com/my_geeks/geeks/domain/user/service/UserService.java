@@ -1,5 +1,6 @@
 package com.my_geeks.geeks.domain.user.service;
 
+import com.my_geeks.geeks.domain.matching.service.MatchingService;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
 import com.my_geeks.geeks.domain.user.repository.UserDetailRepository;
@@ -28,6 +29,8 @@ public class UserService {
 
     private final UserDetailRepository userDetailRepository;
 
+    private final MatchingService matchingService;
+
     private final MailUtil mailUtil;
 
     private final RedisUtil redisUtil;
@@ -46,6 +49,7 @@ public class UserService {
     public String createDetail(Long userId, CreateUserDetailReq req) {
         UserDetail userDetail = req.toEntity(userId);
         userDetailRepository.save(userDetail);
+        matchingService.calculate(userId, userDetail);
         return "success";
     }
 

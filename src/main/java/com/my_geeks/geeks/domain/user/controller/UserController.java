@@ -53,6 +53,13 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.getUserDetail(1L));
     }
 
+    // TODO: 생활 습관 등록 TEST
+    @Deprecated
+    @PostMapping("/test/create/{userId}")
+    public BaseResponse<String> testCreate(@PathVariable("userId") Long userId, @RequestBody CreateUserDetailReq req) {
+        return BaseResponse.created(userService.createDetail(userId, req));
+    }
+
     @Deprecated
     @GetMapping("/healthy")
     public String healthy() {

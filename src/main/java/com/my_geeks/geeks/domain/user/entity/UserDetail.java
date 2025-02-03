@@ -4,6 +4,7 @@ import com.my_geeks.geeks.customResponse.BaseTime;
 import com.my_geeks.geeks.domain.user.entity.enumeration.*;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.domain.Persistable;
 
 import static jakarta.persistence.EnumType.*;
 
@@ -12,7 +13,7 @@ import static jakarta.persistence.EnumType.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserDetail extends BaseTime {
+public class UserDetail extends BaseTime implements Persistable<Long> {
     @Id
     @Column(name = "user_detail_id")
     private Long id;
@@ -44,4 +45,9 @@ public class UserDetail extends BaseTime {
     @Column(length = 50)
     @Enumerated(STRING)
     private Tendency tendency;
+
+    @Override
+    public boolean isNew() {
+        return getCreatedDate() == null;
+    }
 }
