@@ -5,10 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SleepTime {
-    EARLY("일찍 자요"),
-    LATE("늦게 자요"),
-    SOMETIMES("때마다 달라요");
-
+public enum ActivityTime {
+    MORNING("아침형"),
+    DAWN("새벽형");
     private final String description;
 }

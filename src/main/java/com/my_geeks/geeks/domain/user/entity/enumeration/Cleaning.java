@@ -7,7 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Cleaning {
     CLEAN("주기적으로 청소해요"),
-    DIRTY("더러워지면 청소해요"),
-    OPPONENT("상대에게 맞춰요");
+    DIRTY("더러워지면 청소해요");
     private final String description;
 }
