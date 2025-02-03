@@ -1,8 +1,11 @@
 package com.my_geeks.geeks.domain.user.service;
 
 import com.my_geeks.geeks.domain.user.entity.User;
+import com.my_geeks.geeks.domain.user.entity.UserDetail;
 import com.my_geeks.geeks.domain.user.entity.enumeration.RoleType;
+import com.my_geeks.geeks.domain.user.repository.UserDetailRepository;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
+import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
@@ -23,26 +26,26 @@ import static com.my_geeks.geeks.exception.ErrorCode.*;
 public class UserService {
     private final UserRepository userRepository;
 
+    private final UserDetailRepository userDetailRepository;
+
     private final MailUtil mailUtil;
 
     private final RedisUtil redisUtil;
 
     private final BCryptPasswordEncoder encoder;
 
+    @Transactional
     public String signup(SignUpReq req) {
-        User user = User.builder()
-                .email(req.getEmail())
-                .password(encoder.encode(req.getPassword()))
-                .nickname(req.getNickname())
-                .major(req.getMajor())
-                .studentNum(req.getStudentNum())
-                .dormitory(req.getDormitory())
-                .isOpen(true)
-                .roleType(RoleType.ROLE_USER)
-                .gender(req.getGender())
-                .build();
+        User user = req.toEntity(encoder);
 
         userRepository.save(user);
+        return "success";
+    }
+
+    @Transactional
+    public String createDetail(Long userId, CreateUserDetailReq req) {
+        UserDetail userDetail = req.toEntity(userId);
+        userDetailRepository.save(userDetail);
         return "success";
     }
 

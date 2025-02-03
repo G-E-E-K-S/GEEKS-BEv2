@@ -1,6 +1,7 @@
 package com.my_geeks.geeks.domain.user.controller.docs;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
+import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.security.custom.CustomUserDetails;
@@ -79,4 +80,17 @@ public interface UserControllerDocs {
                             })),
     })
     public BaseResponse<String> signup(SignUpReq req);
+
+    @Operation(summary = "[마이페이지] 생활 습관 등록",
+            description = "사용자의 생활 습관 등록하는 기능")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "생활 습관 등록 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "생활 습관 등록 성공", value = "success")
+                            })),
+    })
+    public BaseResponse<String> detailCreate(CreateUserDetailReq req);
 }

@@ -2,6 +2,7 @@ package com.my_geeks.geeks.domain.user.controller;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.user.controller.docs.UserControllerDocs;
+import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,12 @@ public class UserController implements UserControllerDocs {
     @PostMapping("/signup")
     public BaseResponse<String> signup(@RequestBody SignUpReq req) {
         return BaseResponse.ok(userService.signup(req));
+    }
+
+    // TODO: 생활 습관 등록
+    @PostMapping("/detail/create")
+    public BaseResponse<String> detailCreate(@RequestBody CreateUserDetailReq req) {
+        return BaseResponse.created(userService.createDetail(1L, req));
     }
 
     @GetMapping("/healthy")

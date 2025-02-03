@@ -1,5 +1,6 @@
 package com.my_geeks.geeks.domain.user.requestDto;
 
+import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Dormitory;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Gender;
 import com.my_geeks.geeks.domain.user.entity.enumeration.RoleType;
@@ -7,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static jakarta.persistence.EnumType.STRING;
 
@@ -33,4 +35,18 @@ public class SignUpReq {
 
     @Schema(description = "성별", defaultValue = "MALE")
     private Gender gender;
+
+    public User toEntity(BCryptPasswordEncoder encoder) {
+        return User.builder()
+                .email(email)
+                .password(encoder.encode(password))
+                .nickname(nickname)
+                .major(major)
+                .studentNum(studentNum)
+                .dormitory(dormitory)
+                .isOpen(true)
+                .roleType(RoleType.ROLE_USER)
+                .gender(gender)
+                .build();
+    }
 }
