@@ -4,6 +4,7 @@ import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.user.controller.docs.UserControllerDocs;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
+import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,13 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.created(userService.createDetail(1L, req));
     }
 
+    // TODO: 생활 습관 조회
+    @GetMapping("/detail/get")
+    public BaseResponse<GetUserDetailRes> detailGet() {
+        return BaseResponse.ok(userService.getUserDetail(1L));
+    }
+
+    @Deprecated
     @GetMapping("/healthy")
     public String healthy() {
         return "success";

@@ -3,6 +3,7 @@ package com.my_geeks.geeks.domain.user.controller.docs;
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
+import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.security.custom.CustomUserDetails;
 import com.my_geeks.geeks.swagger.annotation.ApiErrorResponse;
@@ -18,6 +19,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import static com.my_geeks.geeks.exception.ErrorCode.*;
+
 @Tag(name = "User API", description = "사용자 관련 API")
 public interface UserControllerDocs {
     @Operation(summary = "[온보딩] 이메일 중복 확인 & 인증코드 발송",
@@ -32,7 +35,7 @@ public interface UserControllerDocs {
                                     @ExampleObject(name = "이메일 사용 가능", value = "available")
                             })),
     })
-    @ApiErrorResponses({ErrorCode.DUPLICATE_EMAIL_ERROR})
+    @ApiErrorResponses({DUPLICATE_EMAIL_ERROR})
     public BaseResponse<String> emailCheck(String email);
 
     @Operation(summary = "[온보딩] 인증코드 검증",
@@ -50,7 +53,7 @@ public interface UserControllerDocs {
                                     @ExampleObject(name = "인증 성공", value = "success")
                             })),
     })
-    @ApiErrorResponses({ErrorCode.INVALID_CODE_ERROR})
+    @ApiErrorResponses({INVALID_CODE_ERROR})
     public BaseResponse<String> codeCheck(String email, String code);
 
     @Operation(summary = "[온보딩] 닉네임 중복 확인",
@@ -65,7 +68,7 @@ public interface UserControllerDocs {
                                     @ExampleObject(name = "닉네임 사용 가능", value = "true")
                             })),
     })
-    @ApiErrorResponses({ErrorCode.DUPLICATE_NICKNAME_ERROR})
+    @ApiErrorResponses({DUPLICATE_NICKNAME_ERROR})
     public BaseResponse<String> nicknameCheck(String email);
 
     @Operation(summary = "[온보딩] 회원가입",
@@ -81,7 +84,7 @@ public interface UserControllerDocs {
     })
     public BaseResponse<String> signup(SignUpReq req);
 
-    @Operation(summary = "[마이페이지] 생활 습관 등록",
+    @Operation(summary = "[생활 습관] 생활 습관 등록",
             description = "사용자의 생활 습관 등록하는 기능")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "생활 습관 등록 성공",
@@ -93,4 +96,15 @@ public interface UserControllerDocs {
                             })),
     })
     public BaseResponse<String> detailCreate(CreateUserDetailReq req);
+
+    @Operation(summary = "[생활 습관] 생활 습관 조회",
+            description = "사용자의 생활 습관 조회하는 기능")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용자의 생활 습관",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = GetUserDetailRes.class)))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<GetUserDetailRes> detailGet();
 }

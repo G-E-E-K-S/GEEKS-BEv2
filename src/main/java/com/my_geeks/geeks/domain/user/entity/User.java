@@ -1,5 +1,6 @@
 package com.my_geeks.geeks.domain.user.entity;
 
+import com.my_geeks.geeks.customResponse.CreatedTime;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Dormitory;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Gender;
 import com.my_geeks.geeks.domain.user.entity.enumeration.RoleType;
@@ -16,7 +17,7 @@ import static lombok.AccessLevel.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class User {
+public class User extends CreatedTime {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = IDENTITY)

@@ -2,11 +2,11 @@ package com.my_geeks.geeks.domain.user.service;
 
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
-import com.my_geeks.geeks.domain.user.entity.enumeration.RoleType;
 import com.my_geeks.geeks.domain.user.repository.UserDetailRepository;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
+import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.mail.MailUtil;
@@ -47,6 +47,12 @@ public class UserService {
         UserDetail userDetail = req.toEntity(userId);
         userDetailRepository.save(userDetail);
         return "success";
+    }
+
+    public GetUserDetailRes getUserDetail(Long userId) {
+        UserDetail userDetail = userDetailRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+        return GetUserDetailRes.from(userDetail);
     }
 
     public String emailCheck(String email) {

@@ -1,19 +1,18 @@
 package com.my_geeks.geeks.domain.user.entity;
 
+import com.my_geeks.geeks.customResponse.BaseTime;
 import com.my_geeks.geeks.domain.user.entity.enumeration.*;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import static jakarta.persistence.EnumType.*;
 
 @Entity
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserDetail {
+public class UserDetail extends BaseTime {
     @Id
     @Column(name = "user_detail_id")
     private Long id;
