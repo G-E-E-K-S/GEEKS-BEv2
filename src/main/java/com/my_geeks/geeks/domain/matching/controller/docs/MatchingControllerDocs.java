@@ -20,7 +20,7 @@ public interface MatchingControllerDocs {
     @Operation(summary = "[룸메 찾기] 룸메 찾기 메인 탭 - 상대방의 정보와 점수 조회하는 기능",
             description = "상대방의 정보와 점수 조회하는 기능")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "조회 성공",
+            @ApiResponse(responseCode = "200", description = "조회 성공 | DTO: GetPointRes",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = GetPointRes.class)))

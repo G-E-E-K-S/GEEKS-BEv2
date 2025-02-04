@@ -17,15 +17,15 @@ public interface MatchingPointRepository extends JpaRepository<MatchingPoint, Lo
                     from (
                         select u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point 
                         from matching_point as mp
-                        left join user as u on u.user_id = mp.small_user_id
-                        left join user_detail as ud on ud.user_detail_id = mp.small_user_id
-                        where mp.small_user_id != :userId
+                        left join user as u on u.user_id = mp.large_user_id
+                        left join user_detail as ud on ud.user_detail_id = mp.large_user_id
+                        where mp.small_user_id = :userId
                         union
                         select u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point
                         from matching_point as mp
-                        left join user as u on u.user_id = mp.large_user_id
-                        left join user_detail as ud on ud.user_detail_id = mp.large_user_id
-                        where mp.large_user_id != :userId                                   
+                        left join user as u on u.user_id = mp.small_user_id 
+                        left join user_detail as ud on ud.user_detail_id = mp.small_user_id 
+                        where mp.large_user_id = :userId                                   
                     ) as a
                     order by a.point desc
                     """

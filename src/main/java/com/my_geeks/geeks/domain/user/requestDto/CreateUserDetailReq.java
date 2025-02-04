@@ -4,11 +4,15 @@ import com.my_geeks.geeks.domain.user.entity.UserDetail;
 import com.my_geeks.geeks.domain.user.entity.enumeration.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "사용자 생활 습관 등록 DTO")
 public class CreateUserDetailReq {
     @Schema(description = "흡연", defaultValue = "NONSMOKER")

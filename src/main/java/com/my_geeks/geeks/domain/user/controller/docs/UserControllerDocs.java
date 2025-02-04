@@ -72,7 +72,7 @@ public interface UserControllerDocs {
     public BaseResponse<String> nicknameCheck(String email);
 
     @Operation(summary = "[온보딩] 회원가입",
-            description = "회원가입")
+            description = "회원가입 | 요청: SignUpReq")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "회원가입 성공",
                     content = @Content(
@@ -85,9 +85,9 @@ public interface UserControllerDocs {
     public BaseResponse<String> signup(SignUpReq req);
 
     @Operation(summary = "[생활 습관] 생활 습관 등록",
-            description = "사용자의 생활 습관 등록하는 기능")
+            description = "사용자의 생활 습관 등록하는 기능 | 요청: CreateUserDetailReq")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "생활 습관 등록 성공",
+            @ApiResponse(responseCode = "200", description = "생활 습관 등록 성공 | 응답: CreateUserDetailReq",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = String.class),
@@ -100,7 +100,7 @@ public interface UserControllerDocs {
     @Operation(summary = "[생활 습관] 생활 습관 조회",
             description = "사용자의 생활 습관 조회하는 기능")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "사용자의 생활 습관",
+            @ApiResponse(responseCode = "200", description = "사용자의 생활 습관 | 응답: GetUserDetailRes",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = GetUserDetailRes.class)))
