@@ -3,6 +3,7 @@ package com.my_geeks.geeks.domain.matching.service;
 import com.my_geeks.geeks.domain.matching.entity.MatchingPoint;
 import com.my_geeks.geeks.domain.matching.repository.MatchingPointRepository;
 import com.my_geeks.geeks.domain.matching.responseDto.GetPointRes;
+import com.my_geeks.geeks.domain.matching.responseDto.UserDetailAndPoint;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Outing;
@@ -86,6 +87,39 @@ public class MatchingService {
                     points.add(matchingPoint);
                 }
         );
+
+        matchingPointRepository.saveAll(points);
+    }
+
+    @Transactional
+    public void recalculate(Long userId, UserDetail myDetail) {
+        List<MatchingPoint> points = new ArrayList<>();
+        List<UserDetailAndPoint> detailAndPoint = matchingPointRepository.findByUserDetailAndPoint(userId);
+
+        for (UserDetailAndPoint userDetailAndPoint : detailAndPoint) {
+            System.out.println(userDetailAndPoint.toString());
+
+            int count = 0;
+            Long otherId = userDetailAndPoint.getOtherId();
+
+            if(myDetail.getSmoke().toString().equals(userDetailAndPoint.getSmoke())) count++;
+            if(myDetail.getHabit().toString().equals(userDetailAndPoint.getHabit())) count++;
+            if(myDetail.getEar().toString().equals(userDetailAndPoint.getEar())) count++;
+            if(myDetail.getActivityTime().toString().equals(userDetailAndPoint.getActivityTime())) count++;
+            if(myDetail.getCleaning().toString().equals(userDetailAndPoint.getCleaning())) count++;
+            if(myDetail.getTendency().toString().equals(userDetailAndPoint.getTendency())) count++;
+            if(myDetail.getOuting().equals(Outing.INSIDE) ||
+                    userDetailAndPoint.getOuting().toString().equals(Outing.INSIDE)) count++;
+
+            MatchingPoint matchingPoint = MatchingPoint.builder()
+                    .smallUserId(userId < otherId ? userId : otherId)
+                    .largeUserId(userId < otherId ? otherId : userId)
+                    .point(point(count))
+                    .build();
+            matchingPoint.setId(userDetailAndPoint.getMatchingPointId());
+
+            points.add(matchingPoint);
+        }
 
         matchingPointRepository.saveAll(points);
     }

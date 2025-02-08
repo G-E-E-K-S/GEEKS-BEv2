@@ -72,6 +72,9 @@ public class UserService {
     public GetUserDetailRes updateUserDetail(Long userId, CreateUserDetailReq req) {
         UserDetail userDetail = findUserDetail(userId);
         userDetail.updateDetail(req);
+
+        // 바뀐 생활 습관으로 다시 점수 계산
+        matchingService.recalculate(userId, userDetail);
         return GetUserDetailRes.from(userDetail);
     }
 

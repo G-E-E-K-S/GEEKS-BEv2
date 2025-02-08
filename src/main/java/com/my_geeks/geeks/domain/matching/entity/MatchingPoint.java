@@ -24,4 +24,11 @@ public class MatchingPoint {
         this.largeUserId = largeUserId;
         this.point = point;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public void changePoint(int point) {
+        this.point = point;
+    }
 }
