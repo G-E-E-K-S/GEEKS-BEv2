@@ -2,6 +2,7 @@ package com.my_geeks.geeks.domain.user.entity;
 
 import com.my_geeks.geeks.customResponse.BaseTime;
 import com.my_geeks.geeks.domain.user.entity.enumeration.*;
+import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
@@ -49,5 +50,15 @@ public class UserDetail extends BaseTime implements Persistable<Long> {
     @Override
     public boolean isNew() {
         return getCreatedDate() == null;
+    }
+
+    public void updateDetail(CreateUserDetailReq req) {
+        this.ear = req.getEar();
+        this.smoke = req.getSmoke();
+        this.habit = req.getHabit();
+        this.activityTime = req.getActivityTime();
+        this.outing = req.getOuting();
+        this.cleaning = req.getCleaning();
+        this.tendency = req.getTendency();
     }
 }

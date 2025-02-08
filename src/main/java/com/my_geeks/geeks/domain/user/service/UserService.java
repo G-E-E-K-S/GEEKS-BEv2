@@ -64,9 +64,20 @@ public class UserService {
     }
 
     public GetUserDetailRes getUserDetail(Long userId) {
-        UserDetail userDetail = userDetailRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+        UserDetail userDetail = findUserDetail(userId);
         return GetUserDetailRes.from(userDetail);
+    }
+
+    @Transactional
+    public GetUserDetailRes updateUserDetail(Long userId, CreateUserDetailReq req) {
+        UserDetail userDetail = findUserDetail(userId);
+        userDetail.updateDetail(req);
+        return GetUserDetailRes.from(userDetail);
+    }
+
+    public UserDetail findUserDetail(Long userId) {
+        return userDetailRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
     }
 
     public String emailCheck(String email) {

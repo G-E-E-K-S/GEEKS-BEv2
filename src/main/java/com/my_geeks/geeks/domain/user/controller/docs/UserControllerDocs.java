@@ -87,7 +87,7 @@ public interface UserControllerDocs {
     @Operation(summary = "[생활 습관] 생활 습관 등록",
             description = "사용자의 생활 습관 등록하는 기능 | 요청: CreateUserDetailReq")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "생활 습관 등록 성공 | 응답: CreateUserDetailReq",
+            @ApiResponse(responseCode = "200", description = "생활 습관 등록 성공",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = String.class),
@@ -107,4 +107,14 @@ public interface UserControllerDocs {
     })
     @ApiErrorResponses({USER_NOT_FOUND})
     public BaseResponse<GetUserDetailRes> detailGet();
+
+    @Operation(summary = "[생활 습관] 생활 습관 수정",
+            description = "사용자의 생활 습관 등록하는 기능 | 요청: CreateUserDetailReq")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "생활 습관 수정 성공 | 응답: GetUserDetailRes",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = GetUserDetailRes.class)))
+    })
+    public BaseResponse<GetUserDetailRes> detailUpdate(CreateUserDetailReq req);
 }

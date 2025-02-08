@@ -53,6 +53,12 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.getUserDetail(1L));
     }
 
+    // TODO: 생활 습관 수정
+    @PutMapping("/detail/update")
+    public BaseResponse<GetUserDetailRes> detailUpdate(@RequestBody CreateUserDetailReq req) {
+        return BaseResponse.ok(userService.updateUserDetail(1L, req));
+    }
+
     // TODO: 생활 습관 등록 TEST
     @Deprecated
     @PostMapping("/test/create/{userId}")
