@@ -75,6 +75,18 @@ public class DataInit {
                 .dormitory(Dormitory.NEW)
                 .build());
 
+        users.add(User.builder()
+                .email("bak38395@naver.com")
+                .password("1234")
+                .nickname("TEST_5")
+                .major("소프트웨어학과")
+                .studentNum(20)
+                .isOpen(true)
+                .gender(Gender.MALE)
+                .roleType(RoleType.ROLE_USER)
+                .dormitory(Dormitory.NEW)
+                .build());
+
         users = userRepository.saveAll(users);
 
         CreateUserDetailReq req1 = CreateUserDetailReq.builder()
@@ -117,9 +129,20 @@ public class DataInit {
                 .cleaning(Cleaning.DIRTY)
                 .build();
 
+        CreateUserDetailReq req5 = CreateUserDetailReq.builder()
+                .activityTime(ActivityTime.MORNING)
+                .ear(Ear.BRIGHT)
+                .habit(Habit.HABIT)
+                .smoke(Smoke.NONSMOKER)
+                .outing(Outing.OUTSIDE)
+                .tendency(Tendency.ALONE)
+                .cleaning(Cleaning.DIRTY)
+                .build();
+
         userService.createDetail(1L, req1);
         userService.createDetail(2L, req2);
         userService.createDetail(3L, req3);
         userService.createDetail(4L, req4);
+        userService.createDetail(5L, req5);
     }
 }

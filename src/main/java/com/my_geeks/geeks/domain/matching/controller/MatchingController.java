@@ -17,6 +17,11 @@ public class MatchingController implements MatchingControllerDocs {
 
     @GetMapping("/points")
     public BaseResponse<GetPointRes> points() {
-        return BaseResponse.ok(matchingService.get(1L));
+        return BaseResponse.ok(matchingService.getPoints(1L));
+    }
+
+    @GetMapping("/points/top3")
+    public BaseResponse<GetPointRes> pointsTop3() {
+        return BaseResponse.ok(matchingService.getPointsTop3(1L));
     }
 }

@@ -32,12 +32,24 @@ public class MatchingService {
     private final MatchingPointRepository matchingPointRepository;
 
     @Transactional
-    public GetPointRes get(Long userId) {
+    public GetPointRes getPoints(Long userId) {
         boolean exists = userDetailRepository.existsById(userId);
         List<GetPointRes.OpponentInfo> opponentInfos = new ArrayList<>();
 
         if(exists) {
             opponentInfos.addAll(matchingPointRepository.getPointList(userId));
+        }
+
+        return new GetPointRes(exists, opponentInfos);
+    }
+
+    @Transactional
+    public GetPointRes getPointsTop3(Long userId) {
+        boolean exists = userDetailRepository.existsById(userId);
+        List<GetPointRes.OpponentInfo> opponentInfos = new ArrayList<>();
+
+        if(exists) {
+            opponentInfos.addAll(matchingPointRepository.getHomePointList(userId));
         }
 
         return new GetPointRes(exists, opponentInfos);
