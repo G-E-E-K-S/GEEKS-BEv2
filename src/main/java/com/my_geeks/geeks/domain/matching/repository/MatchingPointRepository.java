@@ -21,13 +21,13 @@ public interface MatchingPointRepository extends JpaRepository<MatchingPoint, Lo
                         from matching_point as mp
                         join user as u on u.user_id = mp.large_user_id
                         join user_detail as ud on ud.user_detail_id = mp.large_user_id
-                        where mp.small_user_id = :userId
+                        where mp.small_user_id = :userId and u.is_open = true
                         union
                         select u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point
                         from matching_point as mp
                         join user as u on u.user_id = mp.small_user_id 
                         join user_detail as ud on ud.user_detail_id = mp.small_user_id 
-                        where mp.large_user_id = :userId                                   
+                        where mp.large_user_id = :userId and u.is_open = true                                   
                     ) as a
                     order by a.point desc
                     """
@@ -42,13 +42,13 @@ public interface MatchingPointRepository extends JpaRepository<MatchingPoint, Lo
                         from matching_point as mp
                         join user as u on u.user_id = mp.large_user_id
                         join user_detail as ud on ud.user_detail_id = mp.large_user_id
-                        where mp.small_user_id = :userId
+                        where mp.small_user_id = :userId and u.is_open = true
                         union
                         select u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point
                         from matching_point as mp
                         join user as u on u.user_id = mp.small_user_id 
                         join user_detail as ud on ud.user_detail_id = mp.small_user_id 
-                        where mp.large_user_id = :userId                                   
+                        where mp.large_user_id = :userId and u.is_open = true                                   
                     ) as a
                     order by a.point desc
                     limit 3

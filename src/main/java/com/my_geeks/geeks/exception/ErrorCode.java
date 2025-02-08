@@ -34,7 +34,9 @@ public enum ErrorCode {
     // Discord Message JSON 오류
     DISCORD_CONVERT_JSON_ERROR(50092, HttpStatus.INTERNAL_SERVER_ERROR, "Discord Convert JSON 오류입니다."),
     // Discord Webhook 전송 오류
-    DISCORD_WEBHOOK_ERROR(50093, HttpStatus.INTERNAL_SERVER_ERROR, "Discord Webhook 전송 오류입니다.");
+    DISCORD_WEBHOOK_ERROR(50093, HttpStatus.INTERNAL_SERVER_ERROR, "Discord Webhook 전송 오류입니다."),
+    //S3 이미지 업로드 오류
+    AWS_S3_UPLOAD_ERROR(50030, HttpStatus.INTERNAL_SERVER_ERROR, "AWS S3 이미지 업로드 실패 오류입니다.");
     private final Integer code;
     private final HttpStatus httpStatus;
     private final String message;

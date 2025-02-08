@@ -7,7 +7,11 @@ import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,6 +61,12 @@ public class UserController implements UserControllerDocs {
     @PutMapping("/detail/update")
     public BaseResponse<GetUserDetailRes> detailUpdate(@RequestBody CreateUserDetailReq req) {
         return BaseResponse.ok(userService.updateUserDetail(1L, req));
+    }
+
+    // TODO: 사용자 프로필 이미지
+    @PatchMapping("/image")
+    public BaseResponse<String> image(@RequestPart(value = "files", required=false) List<MultipartFile> files) {
+        return BaseResponse.ok(userService.changeImage(1L, files));
     }
 
     // TODO: 생활 습관 등록 TEST

@@ -37,6 +37,9 @@ public class User extends CreatedTime {
     @Column(length = 100)
     private String introduction;
 
+    @Column(length = 100)
+    private String image;
+
     private int studentNum;
 
     private boolean isOpen;
@@ -61,5 +64,9 @@ public class User extends CreatedTime {
         this.roleType = roleType;
         this.dormitory = dormitory;
         this.gender = gender;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

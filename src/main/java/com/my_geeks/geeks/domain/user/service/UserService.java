@@ -1,5 +1,7 @@
 package com.my_geeks.geeks.domain.user.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.my_geeks.geeks.domain.matching.service.MatchingService;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
@@ -13,10 +15,13 @@ import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.mail.MailUtil;
 import com.my_geeks.geeks.mail.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Random;
 
 import static com.my_geeks.geeks.exception.ErrorCode.*;
@@ -34,6 +39,10 @@ public class UserService {
     private final MailUtil mailUtil;
 
     private final RedisUtil redisUtil;
+
+    private final AmazonS3 amazonS3;
+    @Value("${aws.s3.bucket}")
+    private String bucket;
 
     private final BCryptPasswordEncoder encoder;
 
@@ -134,5 +143,32 @@ public class UserService {
         }
 
         return stringBuilder.toString();
+    }
+
+    @Transactional
+    public String changeImage(Long userId, List<MultipartFile> files) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+
+        MultipartFile file = files.get(0);
+        String fileName = "profile/GEEKS_" + userId;
+
+        try {
+            if(user.getImage() != null) {
+                amazonS3.deleteObject(bucket, fileName);
+            }
+
+            ObjectMetadata metadata = new ObjectMetadata();
+
+            metadata.setContentLength(file.getSize());
+            metadata.setContentType(file.getContentType());
+
+            user.setImage(fileName);
+            amazonS3.putObject(bucket, fileName, file.getInputStream(), metadata);
+        } catch (Exception e) {
+            throw new CustomException(AWS_S3_UPLOAD_ERROR);
+        }
+
+        return "success";
     }
 }
