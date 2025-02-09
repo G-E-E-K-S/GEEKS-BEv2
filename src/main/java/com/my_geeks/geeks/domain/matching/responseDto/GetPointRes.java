@@ -46,6 +46,9 @@ public class GetPointRes {
         @Schema(description = "상대방 흡연 여부")
         private String smoke;
 
+        @Schema(description = "상대방 프로필 이미지 - 설정 하지 않았으면 null")
+        private String image;
+
         @Schema(description = "점수")
         private int point;
     }
