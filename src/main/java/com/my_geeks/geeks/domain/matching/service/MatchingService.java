@@ -2,16 +2,17 @@ package com.my_geeks.geeks.domain.matching.service;
 
 import com.my_geeks.geeks.domain.matching.entity.MatchingPoint;
 import com.my_geeks.geeks.domain.matching.repository.MatchingPointRepository;
+import com.my_geeks.geeks.domain.matching.responseDto.GetMatchingDetailRes;
 import com.my_geeks.geeks.domain.matching.responseDto.GetPointRes;
+import com.my_geeks.geeks.domain.matching.responseDto.GetOpponentRes;
 import com.my_geeks.geeks.domain.matching.responseDto.UserDetailAndPoint;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Outing;
 import com.my_geeks.geeks.domain.user.repository.UserDetailRepository;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
+import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.exception.CustomException;
-import com.my_geeks.geeks.exception.ErrorCode;
-import jakarta.persistence.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -122,6 +123,25 @@ public class MatchingService {
         }
 
         matchingPointRepository.saveAll(points);
+    }
+
+    public GetMatchingDetailRes getMatchingDetail(Long myId, Long opponentId, Long matchingId) {
+        GetUserDetailRes myDetail = getUserDetail(myId);
+        GetUserDetailRes opponentDetail = getUserDetail(opponentId);
+
+        GetOpponentRes opponentRes = matchingPointRepository.findMatchingDetail(myId, opponentId, matchingId);
+
+        return GetMatchingDetailRes.builder()
+                .opponent(opponentRes)
+                .myDetail(myDetail)
+                .opponentDetail(opponentDetail)
+                .build();
+    }
+
+    private GetUserDetailRes getUserDetail(Long userId) {
+        UserDetail userDetail = userDetailRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+        return GetUserDetailRes.from(userDetail);
     }
 
     private int point(int count) {

@@ -25,8 +25,11 @@ public class GetPointRes {
     @AllArgsConstructor
     @Schema(description = "상대방 정보")
     public static class OpponentInfo {
+        @Schema(description = "매칭 PK")
+        private Long matchingId;
+
         @Schema(description = "상대방 PK")
-        private Long id;
+        private Long opponentId;
 
         @Schema(description = "상대방 닉네임")
         private String nickname;

@@ -1,10 +1,9 @@
 package com.my_geeks.geeks.domain.matching.repository;
 
-import com.amazonaws.services.s3.model.lifecycle.LifecycleObjectSizeGreaterThanPredicate;
 import com.my_geeks.geeks.domain.matching.entity.MatchingPoint;
 import com.my_geeks.geeks.domain.matching.responseDto.GetPointRes;
+import com.my_geeks.geeks.domain.matching.responseDto.GetOpponentRes;
 import com.my_geeks.geeks.domain.matching.responseDto.UserDetailAndPoint;
-import jakarta.persistence.Tuple;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,15 +14,15 @@ public interface MatchingPointRepository extends JpaRepository<MatchingPoint, Lo
 
     @Query(nativeQuery = true,
             value = """
-                    select a.user_id, a.nickname, a.major, a.student_num, a.introduction, a.smoke, a.point
+                    select a.matching_point_id, a.user_id, a.nickname, a.major, a.student_num, a.introduction, a.smoke, a.point
                     from (
-                        select u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point 
+                        select mp.matching_point_id, u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point 
                         from matching_point as mp
                         join user as u on u.user_id = mp.large_user_id
                         join user_detail as ud on ud.user_detail_id = mp.large_user_id
                         where mp.small_user_id = :userId and u.is_open = true
                         union
-                        select u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point
+                        select mp.matching_point_id, u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point
                         from matching_point as mp
                         join user as u on u.user_id = mp.small_user_id 
                         join user_detail as ud on ud.user_detail_id = mp.small_user_id 
@@ -36,15 +35,15 @@ public interface MatchingPointRepository extends JpaRepository<MatchingPoint, Lo
 
     @Query(nativeQuery = true,
             value = """
-                    select a.user_id, a.nickname, a.major, a.student_num, a.introduction, a.smoke, a.point
+                    select a.matching_point_id, a.user_id, a.nickname, a.major, a.student_num, a.introduction, a.smoke, a.point
                     from (
-                        select u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point 
+                        select mp.matching_point_id, u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point 
                         from matching_point as mp
                         join user as u on u.user_id = mp.large_user_id
                         join user_detail as ud on ud.user_detail_id = mp.large_user_id
                         where mp.small_user_id = :userId and u.is_open = true
                         union
-                        select u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point
+                        select mp.matching_point_id, u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, mp.point
                         from matching_point as mp
                         join user as u on u.user_id = mp.small_user_id 
                         join user_detail as ud on ud.user_detail_id = mp.small_user_id 
@@ -73,4 +72,11 @@ public interface MatchingPointRepository extends JpaRepository<MatchingPoint, Lo
                     """
     )
     List<UserDetailAndPoint> findByUserDetailAndPoint(@Param("userId") Long userId);
+
+    @Query("select new com.my_geeks.geeks.domain.matching.responseDto.GetOpponentRes(" +
+            "u.nickname, u.major, u.studentNum, u.introduction, u.image, mp.point) from MatchingPoint mp " +
+            "join User u on u.id = :opponentId " +
+            "where mp.id = :matchingId")
+    GetOpponentRes findMatchingDetail(@Param("myId") Long myId, @Param("opponentId") Long opponentId,
+                                      @Param("matchingId") Long matchingId);
 }
