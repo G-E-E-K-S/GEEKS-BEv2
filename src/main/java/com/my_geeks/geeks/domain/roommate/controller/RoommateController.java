@@ -35,10 +35,17 @@ public class RoommateController implements RoommateControllerDocs {
         return BaseResponse.ok(roommateService.getReceiveList(1L));
     }
 
-    // TODO: 룸메 신청 보내기
+    // TODO: 보낸 룸메 신청 취소
+    @DeleteMapping("/send/cancel/{roommateId}")
+    public BaseResponse<String> sendCancel(@PathVariable("roommateId") Long roommateId) {
+        return BaseResponse.ok(roommateService.deleteSendApply(roommateId));
+    }
+
+
+    // TODO: TEST 룸메 신청 보내기
     @Deprecated
     @PostMapping("/send/{matchingPointId}/{senderId}/{receiverId}")
-    public BaseResponse<String> send(@PathVariable("matchingPointId") Long matchingPointId,
+    public BaseResponse<String> send2(@PathVariable("matchingPointId") Long matchingPointId,
                                      @PathVariable("senderId") Long senderId,
                                      @PathVariable("receiverId") Long receiverId) {
         return BaseResponse.ok(roommateService.send(senderId, receiverId, matchingPointId));

@@ -32,7 +32,7 @@ public interface RoommateControllerDocs {
     })
     public BaseResponse<String> send(Long matchingPointId, Long opponentId);
 
-    @Operation(summary = "[마이페이지] 룸메 신청 목록 - 내가 보낸 룸메이트 신청 목록",
+    @Operation(summary = "[마이페이지] 보낸 신청 - 내가 보낸 룸메이트 신청 목록",
             description = "내가 보낸 룸메이트 신청자들의 정보와 점수")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 성공 | DTO: GetApplyList",
@@ -42,7 +42,7 @@ public interface RoommateControllerDocs {
     })
     public BaseResponse<List<GetApplyList>> sendList();
 
-    @Operation(summary = "[마이페이지] 룸메 신청 목록 - 내가 받은 룸메이트 신청 목록",
+    @Operation(summary = "[마이페이지] 받은 신청 - 내가 받은 룸메이트 신청 목록",
             description = "내가 받은 룸메이트 신청자들의 정보와 점수")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 성공 | DTO: GetApplyList",
@@ -51,4 +51,18 @@ public interface RoommateControllerDocs {
                             array = @ArraySchema(schema = @Schema(implementation = GetApplyList.class))))
     })
     public BaseResponse<List<GetApplyList>> receiveList();
+
+    @Operation(summary = "[마이페이지] 보낸 신청 - 내가 보낸 룸메이트 신청 취소하기",
+            description = "GetApplyList에 있는 roommateId를 보내서 신청 취소하기")
+    @Parameter(name = "roommateId", description = "룸메이트 신청 PK", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "보낸 신청 취소 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "보낸 신청 취소 성공", value = "success")
+                            }))
+    })
+    public BaseResponse<String> sendCancel(Long roommateId);
 }

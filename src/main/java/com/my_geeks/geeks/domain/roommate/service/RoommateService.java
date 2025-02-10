@@ -3,6 +3,8 @@ package com.my_geeks.geeks.domain.roommate.service;
 import com.my_geeks.geeks.domain.roommate.entity.Roommate;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
+import com.my_geeks.geeks.exception.CustomException;
+import com.my_geeks.geeks.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,5 +31,17 @@ public class RoommateService {
 
     public List<GetApplyList> getReceiveList(Long receiverId) {
         return roommateRepository.getReceiveList(receiverId);
+    }
+
+    @Transactional
+    public String deleteSendApply(Long roommateId) {
+        Roommate roommate = getRoommate(roommateId);
+        roommateRepository.delete(roommate);
+        return "success";
+    }
+
+    private Roommate getRoommate(Long roommateId) {
+        return roommateRepository.findById(roommateId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ROOMMATE_NOT_FOUND));
     }
 }

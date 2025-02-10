@@ -12,6 +12,7 @@ public enum ErrorCode {
     // 404 Not Found
     NOT_FOUND_END_POINT(40400, HttpStatus.NOT_FOUND, "존재하지 않는 API입니다."),
     USER_NOT_FOUND(40401, HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
+    ROOMMATE_NOT_FOUND(40402, HttpStatus.NOT_FOUND, "존재하지 않는 룸메이트 신청입니다."),
     // Duplicate Data Error
     DUPLICATE_DATA_ERROR(40900, HttpStatus.CONFLICT, "중복 데이터 오류입니다."),
     DUPLICATE_EMAIL_ERROR(40901, HttpStatus.CONFLICT, "이미 가입된 이메일입니다."),
