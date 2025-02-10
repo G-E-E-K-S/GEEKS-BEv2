@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 @Component
 @RequiredArgsConstructor
@@ -25,6 +26,8 @@ public class DataInit {
 
     @PostConstruct
     public void init() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+
         List<User> users = new ArrayList<>();
 
         users.add(User.builder()

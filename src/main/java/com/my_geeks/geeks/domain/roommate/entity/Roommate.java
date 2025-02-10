@@ -1,5 +1,6 @@
 package com.my_geeks.geeks.domain.roommate.entity;
 
+import com.my_geeks.geeks.customResponse.CreatedTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +14,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Roommate {
+public class Roommate extends CreatedTime {
     @Id
     @Column(name = "roommate_id")
     @GeneratedValue(strategy = IDENTITY)

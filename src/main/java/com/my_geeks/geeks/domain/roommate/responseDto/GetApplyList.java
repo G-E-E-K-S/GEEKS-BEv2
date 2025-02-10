@@ -5,10 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
-@Schema(description = "보낸 룸메이트 신청 목록")
-public class GetSendList {
+@Schema(description = "룸메이트 신청 목록")
+public class GetApplyList {
     @Schema(description = "룸메이트 신청 PK")
     private Long roommateId;
 
@@ -32,4 +34,7 @@ public class GetSendList {
 
     @Schema(description = "점수")
     private int point;
+
+    @Schema(description = "신청 보낸 날짜")
+    private LocalDateTime createdDate;
 }

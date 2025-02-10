@@ -2,7 +2,7 @@ package com.my_geeks.geeks.domain.roommate.controller;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.controller.docs.RoommateControllerDocs;
-import com.my_geeks.geeks.domain.roommate.responseDto.GetSendList;
+import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import com.my_geeks.geeks.domain.roommate.service.RoommateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +25,23 @@ public class RoommateController implements RoommateControllerDocs {
 
     // TODO: 보낸 룸메 신청 목록
     @GetMapping("/send/list")
-    public BaseResponse<List<GetSendList>> sendList() {
+    public BaseResponse<List<GetApplyList>> sendList() {
         return BaseResponse.ok(roommateService.getSendList(1L));
     }
 
     // TODO: 받은 룸메 신청 목록
+    @GetMapping("/receive/list")
+    public BaseResponse<List<GetApplyList>> receiveList() {
+        return BaseResponse.ok(roommateService.getReceiveList(1L));
+    }
+
+    // TODO: 룸메 신청 보내기
+    @Deprecated
+    @PostMapping("/send/{matchingPointId}/{senderId}/{receiverId}")
+    public BaseResponse<String> send(@PathVariable("matchingPointId") Long matchingPointId,
+                                     @PathVariable("senderId") Long senderId,
+                                     @PathVariable("receiverId") Long receiverId) {
+        return BaseResponse.ok(roommateService.send(senderId, receiverId, matchingPointId));
+    }
+
 }

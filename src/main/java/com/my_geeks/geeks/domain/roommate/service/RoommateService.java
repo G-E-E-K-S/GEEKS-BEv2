@@ -2,7 +2,7 @@ package com.my_geeks.geeks.domain.roommate.service;
 
 import com.my_geeks.geeks.domain.roommate.entity.Roommate;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
-import com.my_geeks.geeks.domain.roommate.responseDto.GetSendList;
+import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +23,11 @@ public class RoommateService {
         return "success";
     }
 
-    public List<GetSendList> getSendList(Long senderId) {
+    public List<GetApplyList> getSendList(Long senderId) {
         return roommateRepository.getSendList(senderId);
+    }
+
+    public List<GetApplyList> getReceiveList(Long receiverId) {
+        return roommateRepository.getReceiveList(receiverId);
     }
 }

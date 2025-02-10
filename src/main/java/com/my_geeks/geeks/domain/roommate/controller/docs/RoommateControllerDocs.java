@@ -1,8 +1,7 @@
 package com.my_geeks.geeks.domain.roommate.controller.docs;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
-import com.my_geeks.geeks.domain.matching.responseDto.GetPointRes;
-import com.my_geeks.geeks.domain.roommate.responseDto.GetSendList;
+import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -36,10 +35,20 @@ public interface RoommateControllerDocs {
     @Operation(summary = "[마이페이지] 룸메 신청 목록 - 내가 보낸 룸메이트 신청 목록",
             description = "내가 보낸 룸메이트 신청자들의 정보와 점수")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "조회 성공 | DTO: GetSendList",
+            @ApiResponse(responseCode = "200", description = "조회 성공 | DTO: GetApplyList",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = GetSendList.class))))
+                            array = @ArraySchema(schema = @Schema(implementation = GetApplyList.class))))
     })
-    public BaseResponse<List<GetSendList>> sendList();
+    public BaseResponse<List<GetApplyList>> sendList();
+
+    @Operation(summary = "[마이페이지] 룸메 신청 목록 - 내가 받은 룸메이트 신청 목록",
+            description = "내가 받은 룸메이트 신청자들의 정보와 점수")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공 | DTO: GetApplyList",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GetApplyList.class))))
+    })
+    public BaseResponse<List<GetApplyList>> receiveList();
 }
