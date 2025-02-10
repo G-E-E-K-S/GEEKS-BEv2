@@ -26,7 +26,7 @@ public class GetPointRes {
     @Schema(description = "상대방 정보")
     public static class OpponentInfo {
         @Schema(description = "매칭 PK")
-        private Long matchingId;
+        private Long matchingPointId;
 
         @Schema(description = "상대방 PK")
         private Long opponentId;

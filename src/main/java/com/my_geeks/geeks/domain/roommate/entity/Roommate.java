@@ -23,8 +23,11 @@ public class Roommate {
 
     private Long receiverId;
 
-    public Roommate(Long senderId, Long receiverId) {
+    private Long matchingPointId;
+
+    public Roommate(Long senderId, Long receiverId, Long matchingPointId) {
         this.senderId = senderId;
         this.receiverId = receiverId;
+        this.matchingPointId = matchingPointId;
     }
 }
