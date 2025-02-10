@@ -41,6 +41,12 @@ public class RoommateController implements RoommateControllerDocs {
         return BaseResponse.ok(roommateService.deleteSendApply(roommateId));
     }
 
+    // TODO: 받은 룸메 신청 거절
+    @DeleteMapping("/receive/refuse/{roommateId}")
+    public BaseResponse<String> receiveRefuse(@PathVariable("roommateId") Long roommateId) {
+        return BaseResponse.ok(roommateService.deleteSendApply(roommateId));
+    }
+
 
     // TODO: TEST 룸메 신청 보내기
     @Deprecated

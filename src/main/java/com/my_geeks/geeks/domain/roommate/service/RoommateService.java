@@ -40,6 +40,13 @@ public class RoommateService {
         return "success";
     }
 
+    @Transactional
+    public String deleteReceiveApply(Long roommateId) {
+        Roommate roommate = getRoommate(roommateId);
+        roommateRepository.delete(roommate);
+        return "success";
+    }
+
     private Roommate getRoommate(Long roommateId) {
         return roommateRepository.findById(roommateId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ROOMMATE_NOT_FOUND));

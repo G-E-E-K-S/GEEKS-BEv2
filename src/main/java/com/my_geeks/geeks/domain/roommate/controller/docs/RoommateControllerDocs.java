@@ -65,4 +65,18 @@ public interface RoommateControllerDocs {
                             }))
     })
     public BaseResponse<String> sendCancel(Long roommateId);
+
+    @Operation(summary = "[마이페이지] 받은 신청 - 내가 받은 룸메이트 신청 거절하기",
+            description = "GetApplyList에 있는 roommateId를 받은 신청 거절하기")
+    @Parameter(name = "roommateId", description = "룸메이트 신청 PK", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "보낸 신청 취소 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "보낸 신청 취소 성공", value = "success")
+                            }))
+    })
+    public BaseResponse<String> receiveRefuse(Long roommateId);
 }
