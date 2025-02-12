@@ -44,6 +44,7 @@ public class RoommateService {
     public String deleteReceiveApply(Long roommateId) {
         Roommate roommate = getRoommate(roommateId);
         roommateRepository.delete(roommate);
+        // TODO: 거절 알림
         return "success";
     }
 

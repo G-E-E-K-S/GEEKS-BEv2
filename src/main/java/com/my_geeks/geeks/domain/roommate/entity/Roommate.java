@@ -1,14 +1,13 @@
 package com.my_geeks.geeks.domain.roommate.entity;
 
 import com.my_geeks.geeks.customResponse.CreatedTime;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.my_geeks.geeks.domain.roommate.entity.enumeration.RoommateStatus;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -26,9 +25,13 @@ public class Roommate extends CreatedTime {
 
     private Long matchingPointId;
 
+    @Enumerated(STRING)
+    private RoommateStatus status;
+
     public Roommate(Long senderId, Long receiverId, Long matchingPointId) {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.matchingPointId = matchingPointId;
+        this.status = RoommateStatus.PENDING;
     }
 }
