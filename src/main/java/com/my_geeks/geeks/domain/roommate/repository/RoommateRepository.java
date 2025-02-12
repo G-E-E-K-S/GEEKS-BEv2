@@ -1,8 +1,10 @@
 package com.my_geeks.geeks.domain.roommate.repository;
 
 import com.my_geeks.geeks.domain.roommate.entity.Roommate;
+import com.my_geeks.geeks.domain.roommate.entity.enumeration.RoommateStatus;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -27,4 +29,20 @@ public interface RoommateRepository extends JpaRepository<Roommate, Long> {
             "join MatchingPoint mp on mp.id = rm.matchingPointId " +
             "where rm.receiverId = :receiverId")
     List<GetApplyList> getReceiveList(@Param("receiverId") Long receiverId);
+
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("delete from Roommate rm " +
+            "where (rm.senderId = :senderId or rm.receiverId = :receiverId " +
+            "or rm.senderId = :receiverId or rm.receiverId = :senderId) " +
+            "and rm.id != :roommateId")
+    void deleteOtherApply(@Param("roommateId") Long roommateId,
+                          @Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
+
+    @Query("select rm.id from Roommate rm " +
+            "where rm.status = :status and (" +
+            "rm.senderId = :senderId or rm.receiverId = :receiverId or " +
+            "rm.senderId = :receiverId or rm.receiverId = :senderId) ")
+    List<Long> existsAcceptRoommate(@Param("status") RoommateStatus status,
+                                 @Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
+
 }

@@ -47,6 +47,12 @@ public class RoommateController implements RoommateControllerDocs {
         return BaseResponse.ok(roommateService.deleteReceiveApply(roommateId));
     }
 
+    // TODO: 받은 룸메 신청 수락하기
+    @PatchMapping("/receive/accept/{roommateId}")
+    public BaseResponse<String> receiveAccept(@PathVariable("roommateId") Long roommateId) {
+        return BaseResponse.ok(roommateService.acceptReceiveApply(roommateId));
+    }
+
 
     // TODO: TEST 룸메 신청 보내기
     @Deprecated

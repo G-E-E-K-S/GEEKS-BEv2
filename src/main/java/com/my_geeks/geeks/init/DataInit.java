@@ -1,5 +1,6 @@
 package com.my_geeks.geeks.init;
 
+import com.my_geeks.geeks.domain.roommate.service.RoommateService;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
 import com.my_geeks.geeks.domain.user.entity.enumeration.*;
@@ -19,6 +20,8 @@ import java.util.TimeZone;
 @RequiredArgsConstructor
 public class DataInit {
     private final UserService userService;
+
+    private final RoommateService roommateService;
 
     private final UserRepository userRepository;
 
@@ -147,5 +150,8 @@ public class DataInit {
         userService.createDetail(3L, req3);
         userService.createDetail(4L, req4);
         userService.createDetail(5L, req5);
+
+        roommateService.send(4L, 1L, 4L);
+        roommateService.send(5L, 1L, 7L);
     }
 }

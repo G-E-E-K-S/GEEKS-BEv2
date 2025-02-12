@@ -34,4 +34,8 @@ public class Roommate extends CreatedTime {
         this.matchingPointId = matchingPointId;
         this.status = RoommateStatus.PENDING;
     }
+
+    public void setStatusToAccept() {
+        this.status = RoommateStatus.ACCEPT;
+    }
 }

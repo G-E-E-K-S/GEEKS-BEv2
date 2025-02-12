@@ -26,6 +26,7 @@ public enum ErrorCode {
     INVALID_CODE_ERROR(50030, HttpStatus.INTERNAL_SERVER_ERROR, "시간이 만료되었거나, 유효하지 않은 인증코드입니다."),
     // 500 Internal Server Error
     INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
+    ALREADY_ACCEPT_ROOMMATE_ERROR(50020, HttpStatus.INTERNAL_SERVER_ERROR, "이미 매칭이 성사된 사용자가 있습니다."),
     // JSON 파싱 오류
     JSON_PARSING_ERROR(50010, HttpStatus.INTERNAL_SERVER_ERROR, "JSON 파싱 오류입니다."),
     // firebase 초기화 오류
