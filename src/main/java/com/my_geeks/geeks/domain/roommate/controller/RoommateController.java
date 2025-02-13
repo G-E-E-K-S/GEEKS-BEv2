@@ -2,6 +2,7 @@ package com.my_geeks.geeks.domain.roommate.controller;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.controller.docs.RoommateControllerDocs;
+import com.my_geeks.geeks.domain.roommate.requestDto.DeleteBookmarkReq;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
 import com.my_geeks.geeks.domain.roommate.service.RoommateService;
@@ -65,6 +66,12 @@ public class RoommateController implements RoommateControllerDocs {
     @GetMapping("/bookmark/list")
     public BaseResponse<List<GetBookmarkListRes>> bookmarkList() {
         return BaseResponse.ok(roommateService.getBookmarkList(1L));
+    }
+
+    // TODO: 룸메 저장 삭제
+    @DeleteMapping("/bookmark/cancel")
+    public BaseResponse<String> bookmarkCancel(@RequestBody DeleteBookmarkReq req) {
+        return BaseResponse.ok(roommateService.deleteBookmark(req));
     }
 
     // TODO: TEST 룸메 신청 보내기

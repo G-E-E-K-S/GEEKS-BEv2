@@ -1,6 +1,7 @@
 package com.my_geeks.geeks.domain.roommate.controller.docs;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
+import com.my_geeks.geeks.domain.roommate.requestDto.DeleteBookmarkReq;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
 import com.my_geeks.geeks.exception.ErrorCode;
@@ -128,4 +129,17 @@ public interface RoommateControllerDocs {
                             array = @ArraySchema(schema = @Schema(implementation = GetBookmarkListRes.class))))
     })
     public BaseResponse<List<GetBookmarkListRes>> bookmarkList();
+
+    @Operation(summary = "[마이페이지] 룸메이트 저장 목록 - 내가 저장한 룸메이트 저장 취소",
+            description = "GetBookmarkListRes에 있는 bookmarkId를 배열에 담아 보내서 신청 취소하기")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "저장 취소 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "저장 취소 성공", value = "success")
+                            }))
+    })
+    public BaseResponse<String> bookmarkCancel(DeleteBookmarkReq req);
 }

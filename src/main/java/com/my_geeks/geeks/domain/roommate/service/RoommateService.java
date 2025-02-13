@@ -5,6 +5,7 @@ import com.my_geeks.geeks.domain.roommate.entity.RoommateBookmark;
 import com.my_geeks.geeks.domain.roommate.entity.enumeration.RoommateStatus;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateBookmarkRepository;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
+import com.my_geeks.geeks.domain.roommate.requestDto.DeleteBookmarkReq;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
@@ -94,6 +95,13 @@ public class RoommateService {
 
     public List<GetBookmarkListRes> getBookmarkList(Long myId) {
         return roommateBookmarkRepository.getBookmarkList(myId);
+    }
+
+    @Transactional
+    public String deleteBookmark(DeleteBookmarkReq req) {
+        List<Long> bookmarkIds = req.getBookmarkIds();
+        roommateBookmarkRepository.deleteAllByBookmarkId(bookmarkIds);
+        return "success";
     }
 
     private Roommate getRoommate(Long roommateId) {
