@@ -6,6 +6,7 @@ import com.my_geeks.geeks.domain.roommate.entity.enumeration.RoommateStatus;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateBookmarkRepository;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
+import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
@@ -89,6 +90,10 @@ public class RoommateService {
         RoommateBookmark bookmark = new RoommateBookmark(myId, opponentId, matchingPointId);
         roommateBookmarkRepository.save(bookmark);
         return "success";
+    }
+
+    public List<GetBookmarkListRes> getBookmarkList(Long myId) {
+        return roommateBookmarkRepository.getBookmarkList(myId);
     }
 
     private Roommate getRoommate(Long roommateId) {

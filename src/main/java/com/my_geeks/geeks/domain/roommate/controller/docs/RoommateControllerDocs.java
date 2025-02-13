@@ -2,6 +2,7 @@ package com.my_geeks.geeks.domain.roommate.controller.docs;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
+import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.swagger.annotation.ApiErrorResponse;
 import com.my_geeks.geeks.swagger.annotation.ApiErrorResponses;
@@ -117,4 +118,14 @@ public interface RoommateControllerDocs {
     })
     @ApiErrorResponses({ALREADY_BOOKMARK_ROOMMATE_ERROR})
     public BaseResponse<String> bookmark(Long matchingPointId, Long opponentId);
+
+    @Operation(summary = "[마이페이지] 룸메이트 저장 목록 - 내가 저장한 룸메이트 저장 목록",
+            description = "내가 저장한 룸메이트 저장 목록 정보와 점수")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공 | DTO: GetBookmarkListRes",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GetBookmarkListRes.class))))
+    })
+    public BaseResponse<List<GetBookmarkListRes>> bookmarkList();
 }

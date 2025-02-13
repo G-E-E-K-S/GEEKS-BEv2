@@ -18,7 +18,7 @@ public interface RoommateRepository extends JpaRepository<Roommate, Long> {
             "join User u on u.id = rm.receiverId " +
             "join UserDetail ud on ud.id = rm.receiverId " +
             "join MatchingPoint mp on mp.id = rm.matchingPointId " +
-            "where rm.senderId = :senderId")
+            "where rm.senderId = :senderId and u.isOpen = true")
     List<GetApplyList> getSendList(@Param("senderId") Long senderId);
 
     @Query("select new com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList(" +
@@ -27,7 +27,7 @@ public interface RoommateRepository extends JpaRepository<Roommate, Long> {
             "join User u on u.id = rm.senderId " +
             "join UserDetail ud on ud.id = rm.senderId " +
             "join MatchingPoint mp on mp.id = rm.matchingPointId " +
-            "where rm.receiverId = :receiverId")
+            "where rm.receiverId = :receiverId and u.isOpen = true")
     List<GetApplyList> getReceiveList(@Param("receiverId") Long receiverId);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)

@@ -3,6 +3,7 @@ package com.my_geeks.geeks.domain.roommate.controller;
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.controller.docs.RoommateControllerDocs;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
+import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
 import com.my_geeks.geeks.domain.roommate.service.RoommateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +59,12 @@ public class RoommateController implements RoommateControllerDocs {
     public BaseResponse<String> bookmark(@PathVariable("matchingPointId") Long matchingPointId,
                                      @PathVariable("opponentId") Long opponentId) {
         return BaseResponse.ok(roommateService.bookmarkRoommate(1L, opponentId, matchingPointId));
+    }
+
+    // TODO: 룸메 저장 목록
+    @GetMapping("/bookmark/list")
+    public BaseResponse<List<GetBookmarkListRes>> bookmarkList() {
+        return BaseResponse.ok(roommateService.getBookmarkList(1L));
     }
 
     // TODO: TEST 룸메 신청 보내기
