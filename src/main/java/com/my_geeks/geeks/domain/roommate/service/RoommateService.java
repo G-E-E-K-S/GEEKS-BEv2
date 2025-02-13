@@ -1,7 +1,9 @@
 package com.my_geeks.geeks.domain.roommate.service;
 
 import com.my_geeks.geeks.domain.roommate.entity.Roommate;
+import com.my_geeks.geeks.domain.roommate.entity.RoommateBookmark;
 import com.my_geeks.geeks.domain.roommate.entity.enumeration.RoommateStatus;
+import com.my_geeks.geeks.domain.roommate.repository.RoommateBookmarkRepository;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
@@ -21,6 +23,8 @@ import static com.my_geeks.geeks.exception.ErrorCode.*;
 public class RoommateService {
     private final UserRepository userRepository;
     private final RoommateRepository roommateRepository;
+
+    private final RoommateBookmarkRepository roommateBookmarkRepository;
 
     @Transactional
     public String send(Long senderId, Long receiverId, Long matchingPointId) {
@@ -73,6 +77,17 @@ public class RoommateService {
 
         // 나머지 요청 삭제
         roommateRepository.deleteOtherApply(roommateId, senderId, receiverId);
+        return "success";
+    }
+
+    @Transactional
+    public String bookmarkRoommate(Long myId, Long opponentId, Long matchingPointId) {
+        if(roommateBookmarkRepository.existsByMyIdAndOpponentId(myId, opponentId)) {
+            throw new CustomException(ALREADY_BOOKMARK_ROOMMATE_ERROR);
+        }
+
+        RoommateBookmark bookmark = new RoommateBookmark(myId, opponentId, matchingPointId);
+        roommateBookmarkRepository.save(bookmark);
         return "success";
     }
 

@@ -3,6 +3,7 @@ package com.my_geeks.geeks.domain.roommate.controller.docs;
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import com.my_geeks.geeks.exception.ErrorCode;
+import com.my_geeks.geeks.swagger.annotation.ApiErrorResponse;
 import com.my_geeks.geeks.swagger.annotation.ApiErrorResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -100,4 +101,20 @@ public interface RoommateControllerDocs {
     })
     @ApiErrorResponses({ALREADY_ACCEPT_ROOMMATE_ERROR, ROOMMATE_NOT_FOUND})
     public BaseResponse<String> receiveAccept(Long roommateId);
+
+    @Operation(summary = "[룸메 찾기] 룸메 저장 - 룸메이트 저장하기",
+            description = "matchingPointId와 opponentId는 룸메 찾기 상세 조회 api에서 넘겨줌")
+    @Parameter(name = "opponentId", description = "저장할 사용자 PK", in = ParameterIn.PATH)
+    @Parameter(name = "matchingPointId", description = "두 사용자의 매칭 PK", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "저장 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "저장 성공", value = "success")
+                            }))
+    })
+    @ApiErrorResponses({ALREADY_BOOKMARK_ROOMMATE_ERROR})
+    public BaseResponse<String> bookmark(Long matchingPointId, Long opponentId);
 }

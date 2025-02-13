@@ -53,6 +53,12 @@ public class RoommateController implements RoommateControllerDocs {
         return BaseResponse.ok(roommateService.acceptReceiveApply(roommateId));
     }
 
+    // TODO: 룸메 저장하기
+    @PostMapping("/bookmark/{matchingPointId}/{opponentId}")
+    public BaseResponse<String> bookmark(@PathVariable("matchingPointId") Long matchingPointId,
+                                     @PathVariable("opponentId") Long opponentId) {
+        return BaseResponse.ok(roommateService.bookmarkRoommate(1L, opponentId, matchingPointId));
+    }
 
     // TODO: TEST 룸메 신청 보내기
     @Deprecated
