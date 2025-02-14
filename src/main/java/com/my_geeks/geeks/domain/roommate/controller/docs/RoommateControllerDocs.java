@@ -131,7 +131,21 @@ public interface RoommateControllerDocs {
     })
     public BaseResponse<List<GetBookmarkListRes>> bookmarkList();
 
-    @Operation(summary = "[마이페이지] 룸메이트 저장 목록 - 내가 저장한 룸메이트 저장 취소",
+    @Operation(summary = "[마이페이지] 룸메이트 저장 목록 - 내가 저장한 룸메이트 저장 단일 취소",
+            description = "opponentId 보내서 신청 취소하기")
+    @Parameter(name = "opponentId", description = "저장 취소할 상대방 PK", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "저장 취소 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "저장 취소 성공", value = "success")
+                            }))
+    })
+    public BaseResponse<String> bookmarkSingleCancel(Long opponentId);
+
+    @Operation(summary = "[마이페이지] 룸메이트 저장 목록 - 내가 저장한 룸메이트 저장 단체 취소",
             description = "GetBookmarkListRes에 있는 bookmarkId를 배열에 담아 보내서 신청 취소하기")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "저장 취소 성공",
@@ -142,7 +156,7 @@ public interface RoommateControllerDocs {
                                     @ExampleObject(name = "저장 취소 성공", value = "success")
                             }))
     })
-    public BaseResponse<String> bookmarkCancel(DeleteBookmarkReq req);
+    public BaseResponse<String> bookmarkBulkCancel(DeleteBookmarkReq req);
 
     @Operation(summary = "[룸메 찾기] 룸메 신청 - 룸메이트 신청 보내기(테스트 데이터 만들기 용도)",
             description = "matchingPointId: 1 <br/>" +

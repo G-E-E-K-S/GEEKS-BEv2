@@ -98,7 +98,13 @@ public class RoommateService {
     }
 
     @Transactional
-    public String deleteBookmark(DeleteBookmarkReq req) {
+    public String deleteSingleBookmark(Long myId, Long opponentId) {
+        roommateBookmarkRepository.deleteByMyIdAndOpponentId(myId, opponentId);
+        return "success";
+    }
+
+    @Transactional
+    public String deleteBulkBookmark(DeleteBookmarkReq req) {
         List<Long> bookmarkIds = req.getBookmarkIds();
         roommateBookmarkRepository.deleteAllByBookmarkId(bookmarkIds);
         return "success";

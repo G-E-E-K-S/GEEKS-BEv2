@@ -69,15 +69,15 @@ public class RoommateController implements RoommateControllerDocs {
     }
 
     // TODO: 룸메 저장 단일 삭제
-//    @DeleteMapping("/bookmark/cancel}")
-//    public BaseResponse<String> bookmarkSingleCancel() {
-//        return BaseResponse.ok(roommateService.deleteBookmark(req));
-//    }
+    @DeleteMapping("/bookmark/cancel/{opponentId}")
+    public BaseResponse<String> bookmarkSingleCancel(@PathVariable("opponentId") Long opponentId) {
+        return BaseResponse.ok(roommateService.deleteSingleBookmark(1L, opponentId));
+    }
 
     // TODO: 룸메 저장 벌크 삭제
     @DeleteMapping("/bookmark/cancel")
-    public BaseResponse<String> bookmarkCancel(@RequestBody DeleteBookmarkReq req) {
-        return BaseResponse.ok(roommateService.deleteBookmark(req));
+    public BaseResponse<String> bookmarkBulkCancel(@RequestBody DeleteBookmarkReq req) {
+        return BaseResponse.ok(roommateService.deleteBulkBookmark(req));
     }
 
     // TODO: TEST 룸메 신청 보내기

@@ -26,5 +26,8 @@ public interface RoommateBookmarkRepository extends JpaRepository<RoommateBookma
     @Query("delete from RoommateBookmark rm where rm.id in :ids")
     void deleteAllByBookmarkId(@Param("ids") List<Long> ids);
 
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    void deleteByMyIdAndOpponentId(Long myId, Long opponentId);
+
     Optional<RoommateBookmark> findByMyIdAndOpponentId(Long myId, Long opponentId);
 }
