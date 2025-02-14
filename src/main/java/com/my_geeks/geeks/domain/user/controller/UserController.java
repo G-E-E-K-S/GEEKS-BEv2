@@ -6,6 +6,7 @@ import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
+import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
 import com.my_geeks.geeks.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -70,7 +71,13 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.changeImage(1L, files));
     }
 
-    // TODO: 사용자 정보 수정
+    // TODO: 사용자 프로필 정보 조회
+    @GetMapping("/profile")
+    public BaseResponse<GetUserProfileRes> profile() {
+        return BaseResponse.ok(userService.getProfile(1L));
+    }
+
+    // TODO: 사용자 프로필 정보 수정
     @PutMapping("/profile/update")
     public BaseResponse<String> profileUpdate(
             @RequestPart(value = "files", required = false) List<MultipartFile> files,

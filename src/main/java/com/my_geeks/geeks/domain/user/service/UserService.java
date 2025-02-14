@@ -11,6 +11,7 @@ import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
+import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.mail.MailUtil;
@@ -170,6 +171,11 @@ public class UserService {
         }
 
         return "success";
+    }
+
+    public GetUserProfileRes getProfile(Long userId) {
+        User user = getUser(userId);
+        return GetUserProfileRes.from(user);
     }
 
     @Transactional
