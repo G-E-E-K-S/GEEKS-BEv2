@@ -4,6 +4,7 @@ import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.user.controller.docs.UserControllerDocs;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
+import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +68,15 @@ public class UserController implements UserControllerDocs {
     @PatchMapping("/image")
     public BaseResponse<String> image(@RequestPart(value = "files", required=false) List<MultipartFile> files) {
         return BaseResponse.ok(userService.changeImage(1L, files));
+    }
+
+    // TODO: 사용자 정보 수정
+    @PutMapping("/profile/update")
+    public BaseResponse<String> profileUpdate(
+            @RequestPart(value = "files", required = false) List<MultipartFile> files,
+            @RequestPart(value = "dto") UpdateProfileReq req
+    ) {
+        return BaseResponse.ok(userService.updateProfile(1L, req, files));
     }
 
     // TODO: 생활 습관 등록 TEST

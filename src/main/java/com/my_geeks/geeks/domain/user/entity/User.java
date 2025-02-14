@@ -4,6 +4,7 @@ import com.my_geeks.geeks.customResponse.CreatedTime;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Dormitory;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Gender;
 import com.my_geeks.geeks.domain.user.entity.enumeration.RoleType;
+import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -68,5 +69,13 @@ public class User extends CreatedTime {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void updateProfile(UpdateProfileReq req) {
+        this.nickname = req.getNickname();
+        this.major = req.getMajor();
+        this.studentNum = req.getStudentNum();
+        this.dormitory = req.getDormitory();
+        this.introduction = req.getIntroduction();
     }
 }

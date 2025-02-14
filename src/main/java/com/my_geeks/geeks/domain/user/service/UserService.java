@@ -9,6 +9,7 @@ import com.my_geeks.geeks.domain.user.repository.UserDetailRepository;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
+import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
@@ -147,8 +148,7 @@ public class UserService {
 
     @Transactional
     public String changeImage(Long userId, List<MultipartFile> files) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+        User user = getUser(userId);
 
         MultipartFile file = files.get(0);
         String fileName = "profile/GEEKS_" + userId;
@@ -170,5 +170,23 @@ public class UserService {
         }
 
         return "success";
+    }
+
+    @Transactional
+    public String updateProfile(Long userId, UpdateProfileReq req, List<MultipartFile> files) {
+        User user = getUser(userId);
+
+        // 이미지 변경
+        if(!files.isEmpty()) {
+            changeImage(userId, files);
+        }
+
+        user.updateProfile(req);
+        return "success";
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
     }
 }
