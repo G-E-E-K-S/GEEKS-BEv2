@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RoommateRepository extends JpaRepository<Roommate, Long> {
 
@@ -45,4 +46,5 @@ public interface RoommateRepository extends JpaRepository<Roommate, Long> {
     List<Long> existsAcceptRoommate(@Param("status") RoommateStatus status,
                                  @Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 
+    Optional<Roommate> findBySenderIdAndReceiverId(Long senderId, Long receiverId);
 }

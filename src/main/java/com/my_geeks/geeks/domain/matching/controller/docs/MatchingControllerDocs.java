@@ -42,7 +42,8 @@ public interface MatchingControllerDocs {
     public BaseResponse<GetPointRes> pointsTop3();
 
     @Operation(summary = "[룸메 찾기] 상대방 정보와 점수 + 상세 생활 습관 조회 기능",
-            description = "상대방의 정보와 점수 조회하는 기능")
+            description = "roommateStatus -> NONE(보낸 신청 없음), PENDING(내가 신청 보내고 대기중), ACCEPT(현재 룸메이트)<br/>" +
+                    "bookmarkStatus -> true(저장함), false(저장 안함)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 성공 | DTO: GetMatchingDetailRes",
                     content = @Content(

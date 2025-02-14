@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -142,4 +143,22 @@ public interface RoommateControllerDocs {
                             }))
     })
     public BaseResponse<String> bookmarkCancel(DeleteBookmarkReq req);
+
+    @Operation(summary = "[룸메 찾기] 룸메 신청 - 룸메이트 신청 보내기(테스트 데이터 만들기 용도)",
+            description = "matchingPointId: 1 <br/>" +
+                    "senderId:2<br/>" +
+                    "receiverId: 1")
+    @Parameter(name = "matchingPointId", description = "두 사용자의 매칭 PK", in = ParameterIn.PATH)
+    @Parameter(name = "senderId", description = "신청을 보낼 사용자 PK", in = ParameterIn.PATH)
+    @Parameter(name = "receiverId", description = "신청을 받는 사용자 PK", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "신청 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "신청 성공", value = "success")
+                            }))
+    })
+    public BaseResponse<String> send2(Long matchingPointId, Long senderId, Long receiverId);
 }

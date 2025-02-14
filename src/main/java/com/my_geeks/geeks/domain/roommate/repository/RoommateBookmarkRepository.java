@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RoommateBookmarkRepository extends JpaRepository<RoommateBookmark, Long> {
     boolean existsByMyIdAndOpponentId(Long myId, Long opponentId);
@@ -24,4 +25,6 @@ public interface RoommateBookmarkRepository extends JpaRepository<RoommateBookma
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("delete from RoommateBookmark rm where rm.id in :ids")
     void deleteAllByBookmarkId(@Param("ids") List<Long> ids);
+
+    Optional<RoommateBookmark> findByMyIdAndOpponentId(Long myId, Long opponentId);
 }

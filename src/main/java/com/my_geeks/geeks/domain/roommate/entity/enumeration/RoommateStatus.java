@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum RoommateStatus {
+    NONE("없음"),
     PENDING("대기"),
     ACCEPT("수락");
 

@@ -6,6 +6,11 @@ import com.my_geeks.geeks.domain.matching.responseDto.GetMatchingDetailRes;
 import com.my_geeks.geeks.domain.matching.responseDto.GetPointRes;
 import com.my_geeks.geeks.domain.matching.responseDto.GetOpponentRes;
 import com.my_geeks.geeks.domain.matching.responseDto.UserDetailAndPoint;
+import com.my_geeks.geeks.domain.roommate.entity.Roommate;
+import com.my_geeks.geeks.domain.roommate.entity.RoommateBookmark;
+import com.my_geeks.geeks.domain.roommate.entity.enumeration.RoommateStatus;
+import com.my_geeks.geeks.domain.roommate.repository.RoommateBookmarkRepository;
+import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Outing;
@@ -19,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.my_geeks.geeks.exception.ErrorCode.*;
 
@@ -32,6 +38,10 @@ public class MatchingService {
     private final UserDetailRepository userDetailRepository;
 
     private final MatchingPointRepository matchingPointRepository;
+
+    private final RoommateRepository roommateRepository;
+
+    private final RoommateBookmarkRepository roommateBookmarkRepository;
 
     @Transactional
     public GetPointRes getPoints(Long userId) {
@@ -131,7 +141,12 @@ public class MatchingService {
 
         GetOpponentRes opponentRes = matchingPointRepository.findMatchingDetail(myId, opponentId, matchingId);
 
+        Optional<Roommate> roommate = roommateRepository.findBySenderIdAndReceiverId(myId, opponentId);
+        Optional<RoommateBookmark> bookmark = roommateBookmarkRepository.findByMyIdAndOpponentId(myId, opponentId);
+
         return GetMatchingDetailRes.builder()
+                .roommateStatus(roommate.isPresent() ? roommate.get().getStatus() : RoommateStatus.NONE)
+                .bookmarkStatus(bookmark.isPresent())
                 .opponent(opponentRes)
                 .myDetail(myDetail)
                 .opponentDetail(opponentDetail)
