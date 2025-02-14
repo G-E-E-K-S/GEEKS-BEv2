@@ -28,6 +28,8 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
     ALREADY_ACCEPT_ROOMMATE_ERROR(50020, HttpStatus.INTERNAL_SERVER_ERROR, "이미 매칭이 성사된 사용자가 있습니다."),
     ALREADY_BOOKMARK_ROOMMATE_ERROR(50021, HttpStatus.INTERNAL_SERVER_ERROR, "이미 저장된 사용자입니다."),
+    ALREADY_APPLY_ROOMMATE_ERROR(50022, HttpStatus.INTERNAL_SERVER_ERROR, "이미 룸메이트를 신청한 사용자입니다."),
+    ALREADY_RECEIVE_APPLY_ROOMMATE_ERROR(50023, HttpStatus.INTERNAL_SERVER_ERROR, "상대방이 이미 룸메이트를 신청했습니다."),
     // JSON 파싱 오류
     JSON_PARSING_ERROR(50010, HttpStatus.INTERNAL_SERVER_ERROR, "JSON 파싱 오류입니다."),
     // firebase 초기화 오류

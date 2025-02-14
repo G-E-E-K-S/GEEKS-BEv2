@@ -31,6 +31,14 @@ public class RoommateService {
     @Transactional
     public String send(Long senderId, Long receiverId, Long matchingPointId) {
         // TODO: 만약에 받는 사람이 보내는 사람에게 이미 신청을 했다면?
+        if(roommateRepository.existsBySenderIdAndReceiverId(senderId, receiverId)) {
+            throw new CustomException(ALREADY_APPLY_ROOMMATE_ERROR);
+        }
+
+        if(roommateRepository.existsBySenderIdAndReceiverId(receiverId, senderId)) {
+            throw new CustomException(ALREADY_RECEIVE_APPLY_ROOMMATE_ERROR);
+        }
+
         Roommate roommate = new Roommate(senderId, receiverId, matchingPointId);
         roommateRepository.save(roommate);
         return "success";

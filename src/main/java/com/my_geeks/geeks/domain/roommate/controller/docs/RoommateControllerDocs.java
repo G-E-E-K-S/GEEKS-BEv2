@@ -38,6 +38,7 @@ public interface RoommateControllerDocs {
                                     @ExampleObject(name = "신청 성공", value = "success")
                             }))
     })
+    @ApiErrorResponses({ALREADY_APPLY_ROOMMATE_ERROR, ALREADY_RECEIVE_APPLY_ROOMMATE_ERROR})
     public BaseResponse<String> send(Long matchingPointId, Long opponentId);
 
     @Operation(summary = "[마이페이지] 보낸 신청 - 내가 보낸 룸메이트 신청 목록",
