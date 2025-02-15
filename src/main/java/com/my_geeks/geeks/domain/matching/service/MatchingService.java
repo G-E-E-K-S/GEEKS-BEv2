@@ -136,16 +136,23 @@ public class MatchingService {
     }
 
     public GetMatchingDetailRes getMatchingDetail(Long myId, Long opponentId, Long matchingId) {
+        User user = getUser(myId);
         GetUserDetailRes myDetail = getUserDetail(myId);
         GetUserDetailRes opponentDetail = getUserDetail(opponentId);
 
         GetOpponentRes opponentRes = matchingPointRepository.findMatchingDetail(myId, opponentId, matchingId);
 
+        RoommateStatus roommateStatus = RoommateStatus.NONE;
         Optional<Roommate> roommate = roommateRepository.findBySenderIdAndReceiverId(myId, opponentId);
         Optional<RoommateBookmark> bookmark = roommateBookmarkRepository.findByMyIdAndOpponentId(myId, opponentId);
 
+        if(roommate.isPresent()) {
+            roommateStatus = roommate.get().getStatus();
+        } else if(user.getMyRoommateId() == opponentId) {
+            roommateStatus = RoommateStatus.ACCEPT;
+        }
         return GetMatchingDetailRes.builder()
-                .roommateStatus(roommate.isPresent() ? roommate.get().getStatus() : RoommateStatus.NONE)
+                .roommateStatus(roommateStatus)
                 .bookmarkStatus(bookmark.isPresent())
                 .opponent(opponentRes)
                 .myDetail(myDetail)
@@ -157,6 +164,11 @@ public class MatchingService {
         UserDetail userDetail = userDetailRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
         return GetUserDetailRes.from(userDetail);
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
     }
 
     private int point(int count) {
