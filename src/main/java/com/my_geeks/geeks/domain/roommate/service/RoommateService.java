@@ -8,6 +8,7 @@ import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
 import com.my_geeks.geeks.domain.roommate.requestDto.DeleteBookmarkReq;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
+import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
@@ -71,6 +72,7 @@ public class RoommateService {
     @Transactional
     public String acceptReceiveApply(Long roommateId) {
         Roommate roommate = getRoommate(roommateId);
+
         Long senderId = roommate.getSenderId();
         Long receiverId = roommate.getReceiverId();
 
@@ -82,11 +84,14 @@ public class RoommateService {
         // 룸메이트 상태 변경 -> ACCEPT
         roommate.setStatusToAccept();
 
-        // 두 사람의 프로필 오픈 비활성화
-        userRepository.updateIsOpen(senderId, receiverId);
-
         // 나머지 요청 삭제
         roommateRepository.deleteOtherApply(roommateId, senderId, receiverId);
+
+        // 서로 상대방 PK 저장, 프로필 비활성화
+        User sender = getUser(roommate.getSenderId());
+        User receiver = getUser(roommate.getReceiverId());
+        sender.changeRoommate(receiverId);
+        receiver.changeRoommate(senderId);
         return "success";
     }
 
@@ -121,5 +126,10 @@ public class RoommateService {
     private Roommate getRoommate(Long roommateId) {
         return roommateRepository.findById(roommateId)
                 .orElseThrow(() -> new CustomException(ROOMMATE_NOT_FOUND));
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
     }
 }

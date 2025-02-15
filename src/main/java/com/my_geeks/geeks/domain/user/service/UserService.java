@@ -3,6 +3,7 @@ package com.my_geeks.geeks.domain.user.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.my_geeks.geeks.domain.matching.service.MatchingService;
+import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
 import com.my_geeks.geeks.domain.user.repository.UserDetailRepository;
@@ -10,6 +11,7 @@ import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
+import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
 import com.my_geeks.geeks.exception.CustomException;
@@ -37,6 +39,8 @@ public class UserService {
     private final UserDetailRepository userDetailRepository;
 
     private final MatchingService matchingService;
+
+    private final RoommateRepository roommateRepository;
 
     private final MailUtil mailUtil;
 
@@ -183,12 +187,20 @@ public class UserService {
         User user = getUser(userId);
 
         // 이미지 변경
-        if(!files.isEmpty()) {
+        if(files != null) {
             changeImage(userId, files);
         }
 
         user.updateProfile(req);
         return "success";
+    }
+
+    public GetMyPageRes getMyPage(Long userId) {
+        User user = getUser(userId);
+        User userRoommate = user.getMyRoommateId() != null ? getUser(user.getMyRoommateId()) : null;
+        GetMyPageRes myPageRes = GetMyPageRes.from(user, userRoommate);
+
+        return myPageRes;
     }
 
     private User getUser(Long userId) {

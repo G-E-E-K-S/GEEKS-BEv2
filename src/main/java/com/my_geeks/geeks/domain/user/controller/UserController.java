@@ -5,6 +5,7 @@ import com.my_geeks.geeks.domain.user.controller.docs.UserControllerDocs;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
+import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
 import com.my_geeks.geeks.domain.user.service.UserService;
@@ -84,6 +85,12 @@ public class UserController implements UserControllerDocs {
             @RequestPart(value = "dto") UpdateProfileReq req
     ) {
         return BaseResponse.ok(userService.updateProfile(1L, req, files));
+    }
+
+    // TODO: 마이페이지
+    @GetMapping("/mypage")
+    public BaseResponse<GetMyPageRes> mypage() {
+        return BaseResponse.ok(userService.getMyPage(1L));
     }
 
     // TODO: 생활 습관 등록 TEST

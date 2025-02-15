@@ -4,6 +4,7 @@ import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
+import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
 import com.my_geeks.geeks.exception.ErrorCode;
@@ -162,4 +163,15 @@ public interface UserControllerDocs {
                             })),
     })
     public BaseResponse<String> profileUpdate(List<MultipartFile> files, UpdateProfileReq req);
+
+    @Operation(summary = "[마이페이지] 내 정보 + 프로필 노출 여부 + 내 룸메이트 정보",
+            description = "내 정보 + 프로필 노출 여부 + 내 룸메이트 정보(없으면 null)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "마이페이지 정보 | 응답: GetMyPageRes",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = GetMyPageRes.class)))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<GetMyPageRes> mypage();
 }

@@ -54,6 +54,8 @@ public class User extends CreatedTime {
     @Enumerated(STRING)
     private Gender gender;
 
+    private Long myRoommateId;
+
     @Builder
     public User(String email, String password, String nickname, String major, int studentNum, boolean isOpen, RoleType roleType, Dormitory dormitory, Gender gender) {
         this.email = email;
@@ -69,6 +71,11 @@ public class User extends CreatedTime {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void changeRoommate(Long myRoommateId) {
+        this.myRoommateId = myRoommateId;
+        this.isOpen = false;
     }
 
     public void updateProfile(UpdateProfileReq req) {

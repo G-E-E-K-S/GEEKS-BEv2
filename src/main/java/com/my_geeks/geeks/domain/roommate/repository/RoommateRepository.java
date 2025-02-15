@@ -49,4 +49,6 @@ public interface RoommateRepository extends JpaRepository<Roommate, Long> {
     Optional<Roommate> findBySenderIdAndReceiverId(Long senderId, Long receiverId);
 
     boolean existsBySenderIdAndReceiverId(Long senderId, Long receiverId);
+
+
 }
