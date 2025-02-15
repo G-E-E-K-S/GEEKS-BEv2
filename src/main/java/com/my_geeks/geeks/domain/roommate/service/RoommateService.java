@@ -96,6 +96,18 @@ public class RoommateService {
     }
 
     @Transactional
+    public String roommateSever(Long userId) {
+        User user = getUser(userId);
+        User myRoommate = getUser(user.getMyRoommateId());
+
+        user.severRoommate();
+        myRoommate.severRoommate();
+
+        roommateRepository.severRoommate(userId, myRoommate.getId());
+        return "success";
+    }
+
+    @Transactional
     public String bookmarkRoommate(Long myId, Long opponentId, Long matchingPointId) {
         if(roommateBookmarkRepository.existsByMyIdAndOpponentId(myId, opponentId)) {
             throw new CustomException(ALREADY_BOOKMARK_ROOMMATE_ERROR);

@@ -50,5 +50,9 @@ public interface RoommateRepository extends JpaRepository<Roommate, Long> {
 
     boolean existsBySenderIdAndReceiverId(Long senderId, Long receiverId);
 
-
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("delete from Roommate rm " +
+            "where (rm.senderId = :senderId and rm.receiverId = :receiverId) " +
+            "or (rm.senderId = :receiverId and rm.receiverId = :senderId)")
+    void severRoommate(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 }

@@ -55,6 +55,12 @@ public class RoommateController implements RoommateControllerDocs {
         return BaseResponse.ok(roommateService.acceptReceiveApply(roommateId));
     }
 
+    // TODO: 룸메 끊기
+    @DeleteMapping("/sever")
+    public BaseResponse<String> sever() {
+        return BaseResponse.ok(roommateService.roommateSever(1L));
+    }
+
     // TODO: 룸메 저장하기
     @PostMapping("/bookmark/{matchingPointId}/{opponentId}")
     public BaseResponse<String> bookmark(@PathVariable("matchingPointId") Long matchingPointId,

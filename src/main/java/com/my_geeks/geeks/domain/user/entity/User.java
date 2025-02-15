@@ -82,6 +82,11 @@ public class User extends CreatedTime {
         this.isOpen = false;
     }
 
+    public void severRoommate() {
+        this.myRoommateId = null;
+        this.isOpen = true;
+    }
+
     public void updateProfile(UpdateProfileReq req) {
         this.nickname = req.getNickname();
         this.major = req.getMajor();

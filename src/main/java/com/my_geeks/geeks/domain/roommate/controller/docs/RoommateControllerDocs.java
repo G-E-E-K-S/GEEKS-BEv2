@@ -106,6 +106,20 @@ public interface RoommateControllerDocs {
     @ApiErrorResponses({ALREADY_ACCEPT_ROOMMATE_ERROR, ROOMMATE_NOT_FOUND})
     public BaseResponse<String> receiveAccept(Long roommateId);
 
+    @Operation(summary = "[룸메 찾기] 룸메이트 끊기",
+            description = "룸메이트가 성공적으로 끊어지면 서로의 프로필이 오픈됨")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "룸메이트 끊기 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "룸메이트 끊기 성공", value = "success")
+                            }))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<String> sever();
+
     @Operation(summary = "[룸메 찾기] 룸메 저장 - 룸메이트 저장하기",
             description = "matchingPointId와 opponentId는 룸메 찾기 상세 조회 api에서 넘겨줌")
     @Parameter(name = "opponentId", description = "저장할 사용자 PK", in = ParameterIn.PATH)
