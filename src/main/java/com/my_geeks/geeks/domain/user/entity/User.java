@@ -73,6 +73,10 @@ public class User extends CreatedTime {
         this.image = image;
     }
 
+    public void setOpen(boolean open) {
+        this.isOpen = open;
+    }
+
     public void changeRoommate(Long myRoommateId) {
         this.myRoommateId = myRoommateId;
         this.isOpen = false;

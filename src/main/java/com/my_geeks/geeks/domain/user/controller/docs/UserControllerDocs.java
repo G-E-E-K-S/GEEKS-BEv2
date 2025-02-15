@@ -174,4 +174,15 @@ public interface UserControllerDocs {
     })
     @ApiErrorResponses({USER_NOT_FOUND})
     public BaseResponse<GetMyPageRes> mypage();
+
+    @Operation(summary = "[마이페이지] 프로필 노출 여부 변경",
+            description = "사용자의 프로필 노출을 변경 true -> false / false -> true")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "true였으면 -> false 반환 / false였으면 -> true 반환",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Boolean.class)))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<Boolean> changeOpen();
 }

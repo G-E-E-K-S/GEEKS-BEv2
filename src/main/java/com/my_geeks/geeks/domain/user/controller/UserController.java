@@ -93,6 +93,12 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.getMyPage(1L));
     }
 
+    // TODO: 프로필 노출 변경
+    @PatchMapping("/profile/change/open")
+    public BaseResponse<Boolean> changeOpen() {
+        return BaseResponse.ok(userService.changeOpen(1L));
+    }
+
     // TODO: 생활 습관 등록 TEST
     @Deprecated
     @PostMapping("/test/create/{userId}")

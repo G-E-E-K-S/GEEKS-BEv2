@@ -203,6 +203,19 @@ public class UserService {
         return myPageRes;
     }
 
+    @Transactional
+    public Boolean changeOpen(Long userId) {
+        User user = getUser(userId);
+
+        if(user.isOpen()) {
+            user.setOpen(false);
+        } else {
+            user.setOpen(true);
+        }
+
+        return user.isOpen();
+    }
+
     private User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
