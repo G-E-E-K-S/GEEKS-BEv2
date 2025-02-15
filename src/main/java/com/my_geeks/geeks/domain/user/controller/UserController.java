@@ -3,12 +3,14 @@ package com.my_geeks.geeks.domain.user.controller;
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.user.controller.docs.UserControllerDocs;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
+import com.my_geeks.geeks.domain.user.requestDto.LoginReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
 import com.my_geeks.geeks.domain.user.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +48,12 @@ public class UserController implements UserControllerDocs {
     @PostMapping("/signup")
     public BaseResponse<String> signup(@RequestBody SignUpReq req) {
         return BaseResponse.ok(userService.signup(req));
+    }
+
+    // TODO: 로그인
+    @PostMapping("/login")
+    public BaseResponse<String> login(@RequestBody LoginReq req, HttpServletResponse response) {
+        return BaseResponse.ok(userService.login(req, response));
     }
 
     // TODO: 생활 습관 등록

@@ -43,7 +43,7 @@ public class JwtUtil {
                 .sameSite("Strict")
                 .httpOnly(true)
                 .secure(true)
-                .domain("univ-on.com")
+                .domain("my-geeks.com")
                 .maxAge(60 * 60 * 24 * 30)
                 .build();
 //        Cookie cookie = new Cookie("accessToken", accessToken);
@@ -62,7 +62,6 @@ public class JwtUtil {
     private String createToken(CustomUserInfoDto user, long expireTime) {
         Claims claims = Jwts.claims();
         claims.put("userId", user.getUserId());
-        claims.put("univId", user.getUnivId());
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(expireTime);

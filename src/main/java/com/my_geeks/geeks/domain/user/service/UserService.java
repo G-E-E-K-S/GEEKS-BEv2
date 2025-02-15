@@ -9,6 +9,7 @@ import com.my_geeks.geeks.domain.user.entity.UserDetail;
 import com.my_geeks.geeks.domain.user.repository.UserDetailRepository;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
+import com.my_geeks.geeks.domain.user.requestDto.LoginReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
@@ -18,8 +19,12 @@ import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.mail.MailUtil;
 import com.my_geeks.geeks.mail.RedisUtil;
+import com.my_geeks.geeks.security.custom.CustomUserInfoDto;
+import com.my_geeks.geeks.security.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +51,8 @@ public class UserService {
 
     private final RedisUtil redisUtil;
 
+    private final JwtUtil jwtUtil;
+
     private final AmazonS3 amazonS3;
     @Value("${aws.s3.bucket}")
     private String bucket;
@@ -57,6 +64,23 @@ public class UserService {
         User user = req.toEntity(encoder);
 
         userRepository.save(user);
+        return "success";
+    }
+
+    public String login(LoginReq req, HttpServletResponse response) {
+        User user = userRepository.findByEmail(req.getEmail())
+                .orElseThrow(() -> new CustomException(EMAIL_NOT_FOUND));
+
+        if(!encoder.matches(req.getPassword(), user.getPassword())) {
+            throw new CustomException(PASSWORD_NOT_ALLOWED);
+        }
+
+        // 사용자 jwt 토큰 생성하기
+        CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getRoleType());
+        String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
+        ResponseCookie cookie = jwtUtil.createCookie(accessToken);
+
+        response.addHeader("Set-Cookie", cookie.toString());
         return "success";
     }
 

@@ -2,6 +2,7 @@ package com.my_geeks.geeks.domain.user.controller.docs;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
+import com.my_geeks.geeks.domain.user.requestDto.LoginReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
@@ -21,6 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -89,6 +91,20 @@ public interface UserControllerDocs {
                             })),
     })
     public BaseResponse<String> signup(SignUpReq req);
+
+    @Operation(summary = "[온보딩] 로그인",
+            description = "login | 요청: LoginReq")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그인 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "로그인 성공", value = "success")
+                            })),
+    })
+    @ApiErrorResponses({EMAIL_NOT_FOUND, PASSWORD_NOT_ALLOWED})
+    public BaseResponse<String> login(LoginReq req, HttpServletResponse response);
 
     @Operation(summary = "[생활 습관] 생활 습관 등록",
             description = "사용자의 생활 습관 등록하는 기능 | 요청: CreateUserDetailReq")

@@ -10,6 +10,7 @@ import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class DataInit {
 
     private final UserDetailRepository userDetailRepository;
 
+    private final BCryptPasswordEncoder encoder;
+
     @PostConstruct
     public void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
@@ -35,7 +38,7 @@ public class DataInit {
 
         users.add(User.builder()
                 .email("bak3839@naver.com")
-                .password("1234")
+                .password(encoder.encode("1234"))
                 .nickname("TEST_1")
                 .major("소프트웨어학과")
                 .studentNum(19)
@@ -47,7 +50,7 @@ public class DataInit {
 
         users.add(User.builder()
                 .email("bak38392@naver.com")
-                .password("1234")
+                .password(encoder.encode("1234"))
                 .nickname("TEST_2")
                 .major("소프트웨어학과")
                 .studentNum(25)
@@ -59,7 +62,7 @@ public class DataInit {
 
         users.add(User.builder()
                 .email("bak38393@naver.com")
-                .password("1234")
+                .password(encoder.encode("1234"))
                 .nickname("TEST_3")
                 .major("소프트웨어학과")
                 .studentNum(21)
@@ -71,7 +74,7 @@ public class DataInit {
 
         users.add(User.builder()
                 .email("bak38394@naver.com")
-                .password("1234")
+                .password(encoder.encode("1234"))
                 .nickname("TEST_4")
                 .major("소프트웨어학과")
                 .studentNum(23)
@@ -83,7 +86,7 @@ public class DataInit {
 
         users.add(User.builder()
                 .email("bak38395@naver.com")
-                .password("1234")
+                .password(encoder.encode("1234"))
                 .nickname("TEST_5")
                 .major("소프트웨어학과")
                 .studentNum(20)
