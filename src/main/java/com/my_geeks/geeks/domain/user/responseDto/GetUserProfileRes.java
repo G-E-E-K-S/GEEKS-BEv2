@@ -3,6 +3,7 @@ package com.my_geeks.geeks.domain.user.responseDto;
 
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Dormitory;
+import com.my_geeks.geeks.domain.user.entity.enumeration.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,9 @@ public class GetUserProfileRes {
     @Schema(description = "사용자 프로필 이미지 이름")
     private String image;
 
+    @Schema(description = "사용자 성별")
+    private Gender gender;
+
     public static GetUserProfileRes from(User user) {
         GetUserProfileRes res = new GetUserProfileRes();
 
@@ -38,6 +42,7 @@ public class GetUserProfileRes {
         res.dormitory = user.getDormitory();
         res.introduction = user.getIntroduction();
         res.image = user.getImage();
+        res.gender = user.getGender();
 
         return res;
     }
