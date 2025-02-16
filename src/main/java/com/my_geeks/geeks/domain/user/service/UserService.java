@@ -64,11 +64,11 @@ public class UserService {
     private final BCryptPasswordEncoder encoder;
 
     @Transactional
-    public String signup(SignUpReq req) {
+    public String signup(SignUpReq req, HttpServletResponse response) {
         User user = req.toEntity(encoder);
-
         userRepository.save(user);
-        return "success";
+
+        return login(new LoginReq(user.getEmail(), req.getPassword()), response);
     }
 
     public String login(LoginReq req, HttpServletResponse response) {

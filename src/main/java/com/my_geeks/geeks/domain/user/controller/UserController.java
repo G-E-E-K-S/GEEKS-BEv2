@@ -50,8 +50,8 @@ public class UserController implements UserControllerDocs {
 
     // TODO: 회원가입
     @PostMapping("/signup")
-    public BaseResponse<String> signup(@RequestBody SignUpReq req) {
-        return BaseResponse.ok(userService.signup(req));
+    public BaseResponse<String> signup(@RequestBody SignUpReq req, HttpServletResponse response) {
+        return BaseResponse.ok(userService.signup(req, response));
     }
 
     // TODO: 로그인

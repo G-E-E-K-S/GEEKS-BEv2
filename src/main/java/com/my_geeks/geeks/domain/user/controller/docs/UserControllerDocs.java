@@ -92,7 +92,7 @@ public interface UserControllerDocs {
                                     @ExampleObject(name = "회원가입 성공", value = "success")
                             })),
     })
-    public BaseResponse<String> signup(SignUpReq req);
+    public BaseResponse<String> signup(SignUpReq req, HttpServletResponse response);
 
     @Operation(summary = "[온보딩] 로그인",
             description = "login | 요청: LoginReq")
