@@ -41,10 +41,10 @@ public class JwtUtil {
     public ResponseCookie createCookie(String accessToken) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
                 .path("/")
-                .sameSite("None")
+                .sameSite("Strict")
                 .httpOnly(true)
                 .secure(true)
-                .domain("localhost")
+                .domain("my-geeks.com")
                 .maxAge(60 * 60 * 24 * 30)
                 .build();
         return cookie;
@@ -53,10 +53,10 @@ public class JwtUtil {
     public ResponseCookie deleteCookie() {
         ResponseCookie cookie = ResponseCookie.from("accessToken", "")
                 .path("/")
-                .sameSite("None")
+                .sameSite("Strict")
                 .httpOnly(true)
                 .secure(true)
-                .domain("localhost")
+                .domain("my-geeks.com")
                 .maxAge(0)
                 .build();
         return cookie;
