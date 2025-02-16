@@ -8,6 +8,7 @@ import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
+import com.my_geeks.geeks.domain.user.responseDto.GetUserInfoRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
 import com.my_geeks.geeks.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -105,6 +106,12 @@ public class UserController implements UserControllerDocs {
     @PatchMapping("/profile/change/open")
     public BaseResponse<Boolean> changeOpen() {
         return BaseResponse.ok(userService.changeOpen(1L));
+    }
+
+   // TODO: 회원 정보 페이지
+    @GetMapping("/info")
+    public BaseResponse<GetUserInfoRes> userInfo() {
+        return BaseResponse.ok(userService.getUserInfo(1L));
     }
 
     // TODO: 생활 습관 등록 TEST

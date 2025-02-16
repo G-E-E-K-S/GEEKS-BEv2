@@ -7,6 +7,7 @@ import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
+import com.my_geeks.geeks.domain.user.responseDto.GetUserInfoRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.security.custom.CustomUserDetails;
@@ -201,4 +202,15 @@ public interface UserControllerDocs {
     })
     @ApiErrorResponses({USER_NOT_FOUND})
     public BaseResponse<Boolean> changeOpen();
+
+    @Operation(summary = "[마이페이지] 회원 정보 설정 - 회원 정보 조회",
+            description = "사용자 이메일 + 가입 날짜 반환")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "마이페이지 정보 | 응답: GetUserInfoRes",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = GetUserInfoRes.class)))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<GetUserInfoRes> userInfo();
 }

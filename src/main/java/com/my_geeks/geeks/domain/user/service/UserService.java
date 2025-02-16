@@ -15,6 +15,7 @@ import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
+import com.my_geeks.geeks.domain.user.responseDto.GetUserInfoRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
@@ -237,6 +238,15 @@ public class UserService {
         GetMyPageRes myPageRes = GetMyPageRes.from(user, userRoommate, matchingPointId);
 
         return myPageRes;
+    }
+
+    public GetUserInfoRes getUserInfo(Long userId) {
+        User user = getUser(userId);
+
+        return GetUserInfoRes.builder()
+                .email(user.getEmail())
+                .createdDate(user.getCreatedDate())
+                .build();
     }
 
     @Transactional
