@@ -121,6 +121,12 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.getUserInfo(userId));
     }
 
+    // TODO: 쿠키 유효성 검증 & 로그인 유지
+    @GetMapping("/validate")
+    public BaseResponse<String> validation(@CookieValue(required = false, value = "accessToken") String accessToken) {
+        return BaseResponse.ok(userService.validateCookie(accessToken));
+    }
+
     // TODO: 생활 습관 등록 TEST
     @Deprecated
     @PostMapping("/test/create/{userId}")

@@ -46,10 +46,6 @@ public class JwtUtil {
                 .domain("my-geeks.com")
                 .maxAge(60 * 60 * 24 * 30)
                 .build();
-//        Cookie cookie = new Cookie("accessToken", accessToken);
-//        cookie.setHttpOnly(true);
-//        cookie.setSecure(true);
-//        cookie.setMaxAge(60 * 60 * 24 * 30);
         return cookie;
     }
 

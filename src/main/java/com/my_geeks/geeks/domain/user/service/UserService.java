@@ -249,6 +249,14 @@ public class UserService {
                 .build();
     }
 
+    public String validateCookie(String accessToken) {
+        if(accessToken == null || !jwtUtil.validateToken(accessToken)) {
+            throw new CustomException(JWT_EXPIRED_TOKEN_ERROR);
+        }
+
+        return accessToken;
+    }
+
     @Transactional
     public Boolean changeOpen(Long userId) {
         User user = getUser(userId);

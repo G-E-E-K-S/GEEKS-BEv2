@@ -222,4 +222,16 @@ public interface UserControllerDocs {
     })
     @ApiErrorResponses({USER_NOT_FOUND})
     public BaseResponse<GetUserInfoRes> userInfo(Long userId);
+
+    @Operation(summary = "[로그인] 로그인 유지를 위한 쿠키 유효성 검증",
+            description = "사용자가 가진 쿠키를 검사하여 올바른 JWT를 가졌는지 + 만료 시간이 지났는지 확인<br/>" +
+                    "성공시 토큰 값 반환 / 실패시 오류 반환")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "accessToken 반환",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class)))
+    })
+    @ApiErrorResponses({JWT_EXPIRED_TOKEN_ERROR})
+    public BaseResponse<String> validation(String accessToken);
 }

@@ -29,20 +29,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         String accessToken = request.getHeader("Authorization");
-        //String authorizationHeader = request.getCookies().;
-//        String accessToken = null;
-//        Cookie[] cookies = request.getCookies();
-//
-//        if(cookies != null) {
-//            for (Cookie cookie : cookies) {
-//                System.out.println("cookie = " + cookie.getName());
-//                if("accessToken".equals(cookie.getName())) {
-//                    accessToken = cookie.getValue();
-//                    System.out.println("accessToken = " + accessToken);
-//                    break;
-//                }
-//            }
-//        }
 
         try {
             if (accessToken != null && accessToken.startsWith("Bearer ")) {
