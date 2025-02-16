@@ -12,23 +12,47 @@ public class MailUtil {
     private final AwsSesConfig awsSesConfig;
 
     public void send(String email, String code) {
-        String html =
-                "<div style=\"width: 100vw;max-width: 100%;box-sizing: border-box; height:180px; right:0; left:0; top:0; background-color: #FFD540; margin: 0; padding: 0;display: flex;justify-content: center;align-items: center;\">\n" +
-                        "    <img style=\"margin: 69px 0;\" src=\"https://bucket-geeks.s3.ap-northeast-2.amazonaws.com/logo.svg\"/>\n" +
-                        "  </div>\n" +
-                        "  <div style=\"width: 95vw;margin: 0 auto;padding: 0;background-color: #fff;box-sizing: border-box;\">\n" +
-                        "    <div style=\"padding: 0px 1rem\">\n" +
-                        "      <div style=\"color: #525252;font-size: 1.2rem;font-weight: 500;margin-top: 9.19vh;\">\n" +
-                        "        안녕하세요, 긱스에서 요청하신 인증번호를 보내드려요.\n" +
-                        "      </div>\n" +
-                        "      <div style=\"color: #333;font-size: 3.3rem;font-weight: 500;line-height: normal;margin-top: 4rem;margin-bottom: 2rem;\">"+code+"</div>\n" +
-                        "      <div style=\"color: #525252;font-size: 1.25rem;font-style: normal;font-weight: 500;\">위 인증번호 4자리를 인증번호 입력창에 정확히 입력해주세요.</div>\n" +
-                        "      <div style=\"color: #525252;font-size: 1rem;font-style: normal;font-weight: 500;margin-top: 1rem;margin-bottom:3rem;\">인증번호를 요청하지 않았을 경우 본 이메일을 무시해 주세요.</div>\n" +
-                        "    </div>\n" +
-                        "  </div>\n" +
-                        "  <div style=\"background-color: #FFD540;height: 15vh;padding: 10px 1rem 0px 1rem;width: 100vw;box-sizing: border-box;position: absolute;bottom: 0;max-width: 100%;\">\n" +
-                        "    <div style=\"color: #525252;font-size: 1rem;font-style: normal;font-weight: 500;margin-top: 2.46vh;\">인증번호를 요청하지 않았을 경우 본 이메일을 무시해 주세요.</div>\n" +
-                        "  </div>\n";
+        String html = "<!DOCTYPE html>\n" +
+                "    <table align=\"center\" style=\"width: 100%; padding: 0 30px 40px 30px;\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n" +
+                "        <tbody>\n" +
+                "            <tr>\n" +
+                "                <td align=\"center\" valign=\"top\">\n" +
+                "                    <table align=\"center\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; max-width: 620px;min-width: 300px;\" border=\"0\">\n" +
+                "                        <tbody>\n" +
+                "                            <tr>\n" +
+                "                                <td align=\"center\" style=\"background-color: #FFD540; height: 180px; padding: 0;\">\n" +
+                "                                    <img style=\"margin: 69px 0;\" src=\"https://bucket-geeks.s3.ap-northeast-2.amazonaws.com/logo.svg\" alt=\"긱스 로고\"/>\n" +
+                "                                </td>\n" +
+                "                            </tr>\n" +
+                "                            <tr>\n" +
+                "                                <td align=\"center\" style=\"padding: 0;\">\n" +
+                "                                    <table cellpadding=\"0\" cellspacing=\"0\" style=\"width: 95%; margin: 0 auto; background-color: #ffffff;\">\n" +
+                "                                        <tr>\n" +
+                "                                            <td style=\"padding: 0 1rem;\">\n" +
+                "                                                <div style=\"color: #525252; font-size: 1.2rem; font-weight: 500; margin-top: 9.19vh;\">\n" +
+                "                                                    안녕하세요, 긱스에서 요청하신 인증번호를 보내드려요.\n" +
+                "                                                </div>\n" +
+                "                                                <div style=\"color: #333; font-size: 3.3rem; font-weight: 500; line-height: normal; margin-top: 4rem; margin-bottom: 2rem;\">\n" +
+                "                                                    " + code + "\n" +
+                "                                                </div>\n" +
+                "                                                <div style=\"color: #525252; font-size: 1.25rem; font-style: normal; font-weight: 500;\">\n" +
+                "                                                    위 인증번호 4자리를 인증번호 입력창에 정확히 입력해주세요.\n" +
+                "                                                </div>\n" +
+                "                                                <div style=\"color: #525252; font-size: 1rem; font-style: normal; font-weight: 500; margin-top: 1rem; margin-bottom: 3rem;\">\n" +
+                "                                                    인증번호를 요청하지 않았을 경우 본 이메일을 무시해 주세요.\n" +
+                "                                                </div>\n" +
+                "                                            </td>\n" +
+                "                                        </tr>\n" +
+                "                                    </table>\n" +
+                "                                </td>\n" +
+                "                            </tr>\n" +
+                "                        </tbody>\n" +
+                "                    </table>\n" +
+                "                </td>\n" +
+                "            </tr>\n" +
+                "        </tbody>\n" +
+                "    </table>\n" +
+                "</html>";
         try {
             AmazonSimpleEmailService emailService = awsSesConfig.amazonSimpleEmailService();
 

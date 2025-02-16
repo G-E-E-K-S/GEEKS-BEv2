@@ -79,4 +79,6 @@ public interface MatchingPointRepository extends JpaRepository<MatchingPoint, Lo
             "where mp.id = :matchingId")
     GetOpponentRes findMatchingDetail(@Param("myId") Long myId, @Param("opponentId") Long opponentId,
                                       @Param("matchingId") Long matchingId);
+
+    MatchingPoint findBySmallUserIdAndLargeUserId(Long smallUserId, Long largeUserId);
 }

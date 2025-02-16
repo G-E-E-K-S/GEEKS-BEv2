@@ -2,6 +2,7 @@ package com.my_geeks.geeks.domain.user.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.my_geeks.geeks.domain.matching.repository.MatchingPointRepository;
 import com.my_geeks.geeks.domain.matching.service.MatchingService;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
 import com.my_geeks.geeks.domain.user.entity.User;
@@ -44,6 +45,8 @@ public class UserService {
     private final UserDetailRepository userDetailRepository;
 
     private final MatchingService matchingService;
+
+    private final MatchingPointRepository matchingPointRepository;
 
     private final RoommateRepository roommateRepository;
 
@@ -222,7 +225,16 @@ public class UserService {
     public GetMyPageRes getMyPage(Long userId) {
         User user = getUser(userId);
         User userRoommate = user.getMyRoommateId() != null ? getUser(user.getMyRoommateId()) : null;
-        GetMyPageRes myPageRes = GetMyPageRes.from(user, userRoommate);
+
+        Long matchingPointId = null;
+        if(userRoommate != null) {
+            matchingPointId = matchingPointRepository.findBySmallUserIdAndLargeUserId(
+                    userId < userRoommate.getId() ? userId : userRoommate.getId(),
+                    userId < userRoommate.getId() ? userRoommate.getId() : userId
+            ).getId();
+        }
+
+        GetMyPageRes myPageRes = GetMyPageRes.from(user, userRoommate, matchingPointId);
 
         return myPageRes;
     }

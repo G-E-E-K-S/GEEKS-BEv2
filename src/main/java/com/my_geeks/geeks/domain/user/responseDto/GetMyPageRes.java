@@ -36,6 +36,8 @@ public class GetMyPageRes {
     @AllArgsConstructor
     @Schema(description = "룸메이트 정보")
     public static class MyRoommate {
+        @Schema(description = "매칭 PK")
+        private Long matchingPointId;
         @Schema(description = "상대방 PK")
         private Long opponentId;
 
@@ -52,7 +54,7 @@ public class GetMyPageRes {
         private String image;
     }
 
-    public static GetMyPageRes from(User user, User userRoommate) {
+    public static GetMyPageRes from(User user, User userRoommate, Long matchingPointId) {
         GetMyPageRes res = new GetMyPageRes();
 
         res.nickname = user.getNickname();
@@ -64,6 +66,7 @@ public class GetMyPageRes {
 
         if(userRoommate != null) {
             res.myRoommate = MyRoommate.builder()
+                    .matchingPointId(matchingPointId)
                     .image(userRoommate.getImage())
                     .major(userRoommate.getMajor())
                     .nickname(userRoommate.getNickname())
