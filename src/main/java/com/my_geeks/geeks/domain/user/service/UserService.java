@@ -68,7 +68,13 @@ public class UserService {
         User user = req.toEntity(encoder);
         userRepository.save(user);
 
-        return login(new LoginReq(user.getEmail(), req.getPassword()), response);
+        // 사용자 jwt 토큰 생성하기
+        CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getRoleType());
+        String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
+        ResponseCookie cookie = jwtUtil.createCookie(accessToken);
+
+        response.addHeader("Set-Cookie", cookie.toString());
+        return accessToken;
     }
 
     public String login(LoginReq req, HttpServletResponse response) {
