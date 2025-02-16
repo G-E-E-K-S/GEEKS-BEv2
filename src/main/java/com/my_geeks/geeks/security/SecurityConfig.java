@@ -75,7 +75,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000", "https://localhost:3000", "http://localhost:8080",
-                "https://my-geeks.com", "https://server.my-geeks.com"));
+                "https://www.my-geeks.com", "https://server.my-geeks.com"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Set-Cookie"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
