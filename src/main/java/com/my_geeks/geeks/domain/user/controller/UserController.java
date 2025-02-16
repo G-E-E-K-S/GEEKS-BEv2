@@ -60,6 +60,12 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.login(req, response));
     }
 
+    // TODO: 로그아웃
+    @PostMapping("/logout")
+    public BaseResponse<String> logout(HttpServletResponse response) {
+        return BaseResponse.ok(userService.logout(response));
+    }
+
     // TODO: 생활 습관 등록
     @PostMapping("/detail/create")
     public BaseResponse<String> detailCreate(@RequestBody CreateUserDetailReq req,

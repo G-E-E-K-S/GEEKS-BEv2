@@ -37,14 +37,27 @@ public class JwtUtil {
         return createToken(member, accessTokenExpTime);
     }
 
+    // TODO: 쿠키 설정 변경 필요
     public ResponseCookie createCookie(String accessToken) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
                 .path("/")
-                .sameSite("Strict")
+                .sameSite("None")
                 .httpOnly(true)
                 .secure(true)
-                .domain("my-geeks.com")
+                .domain("localhost")
                 .maxAge(60 * 60 * 24 * 30)
+                .build();
+        return cookie;
+    }
+
+    public ResponseCookie deleteCookie() {
+        ResponseCookie cookie = ResponseCookie.from("accessToken", "")
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .domain("localhost")
+                .maxAge(0)
                 .build();
         return cookie;
     }

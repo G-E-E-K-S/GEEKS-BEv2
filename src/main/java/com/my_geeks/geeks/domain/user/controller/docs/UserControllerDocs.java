@@ -109,6 +109,20 @@ public interface UserControllerDocs {
     public BaseResponse<String> login(LoginReq req, HttpServletResponse response);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[로그아웃] 로그아웃",
+            description = "쿠키에 있는 JWT를 삭제하여 로그아웃")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그아웃 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "로그아웃 성공", value = "success")
+                            })),
+    })
+    public BaseResponse<String> logout(HttpServletResponse response);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[생활 습관] 생활 습관 등록",
             description = "사용자의 생활 습관 등록하는 기능 | 요청: CreateUserDetailReq")
     @ApiResponses(value = {

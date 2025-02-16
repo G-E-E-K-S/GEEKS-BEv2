@@ -88,6 +88,12 @@ public class UserService {
         return accessToken;
     }
 
+    public String logout(HttpServletResponse response) {
+        ResponseCookie cookie = jwtUtil.deleteCookie();
+        response.addHeader("Set-Cookie", cookie.toString());
+        return "success";
+    }
+
     @Transactional
     public String createDetail(Long userId, CreateUserDetailReq req) {
         UserDetail userDetail = req.toEntity(userId);
