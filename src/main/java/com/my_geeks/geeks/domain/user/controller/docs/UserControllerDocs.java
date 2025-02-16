@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -107,6 +108,7 @@ public interface UserControllerDocs {
     @ApiErrorResponses({EMAIL_NOT_FOUND, PASSWORD_NOT_ALLOWED})
     public BaseResponse<String> login(LoginReq req, HttpServletResponse response);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[생활 습관] 생활 습관 등록",
             description = "사용자의 생활 습관 등록하는 기능 | 요청: CreateUserDetailReq")
     @ApiResponses(value = {
@@ -118,8 +120,9 @@ public interface UserControllerDocs {
                                     @ExampleObject(name = "생활 습관 등록 성공", value = "success")
                             })),
     })
-    public BaseResponse<String> detailCreate(CreateUserDetailReq req);
+    public BaseResponse<String> detailCreate(CreateUserDetailReq req, Long userId);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[생활 습관] 생활 습관 조회",
             description = "사용자의 생활 습관 조회하는 기능")
     @ApiResponses(value = {
@@ -129,8 +132,9 @@ public interface UserControllerDocs {
                             schema = @Schema(implementation = GetUserDetailRes.class)))
     })
     @ApiErrorResponses({USER_NOT_FOUND})
-    public BaseResponse<GetUserDetailRes> detailGet();
+    public BaseResponse<GetUserDetailRes> detailGet(Long userId);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[생활 습관] 생활 습관 수정",
             description = "사용자의 생활 습관 등록하는 기능 | 요청: CreateUserDetailReq")
     @ApiResponses(value = {
@@ -139,7 +143,7 @@ public interface UserControllerDocs {
                             mediaType = "application/json",
                             schema = @Schema(implementation = GetUserDetailRes.class)))
     })
-    public BaseResponse<GetUserDetailRes> detailUpdate(CreateUserDetailReq req);
+    public BaseResponse<GetUserDetailRes> detailUpdate(CreateUserDetailReq req, Long userId);
 
     @Operation(summary = "[마이페이지] 사용자 프로필 이미지를 변경",
             description = "formData에 formData.append(업로드 한 이미지)를 하여 이미지를 담고 Content-Type을 multipart/form-data로 설정 후 전송(스웨거에서 테스트 불가능)")
@@ -153,8 +157,9 @@ public interface UserControllerDocs {
                                     @ExampleObject(name = "이미지 업로드 성공", value = "success")
                             })),
     })
-    public BaseResponse<String> image(List<MultipartFile> files);
+    public BaseResponse<String> image(List<MultipartFile> files, Long userId);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[마이페이지] 내 프로필 - 사용자 프로필 조회하기",
             description = "사용자 프로필 정보 조회하는 기능 - 수정때 해당 데이터 변경후 전송(수정되지 않은 데이터도 그대로 전송하면 됨)")
     @ApiResponses(value = {
@@ -163,8 +168,9 @@ public interface UserControllerDocs {
                             mediaType = "application/json",
                             schema = @Schema(implementation = GetUserProfileRes.class))),
     })
-    public BaseResponse<GetUserProfileRes> profile();
+    public BaseResponse<GetUserProfileRes> profile(Long userId);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[마이페이지] 내 프로필 - 사용자 프로필 수정하기",
             description = "formData에 formData.append(업로드 한 이미지)를 하여 이미지를 담고 Content-Type을 multipart/form-data로 설정 후 전송(스웨거에서 테스트 불가능)<br/>" +
                     "formData.append(\"dto\", new Blob(사용자 프로필 수정 데이터)) -> 조회한 사용자 프로필 정보에서 image 필드만 빼고 보내면 됨<br/>" +
@@ -179,8 +185,9 @@ public interface UserControllerDocs {
                                     @ExampleObject(name = "프로필 수정 성공", value = "success")
                             })),
     })
-    public BaseResponse<String> profileUpdate(List<MultipartFile> files, UpdateProfileReq req);
+    public BaseResponse<String> profileUpdate(Long userId, List<MultipartFile> files, UpdateProfileReq req);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[마이페이지] 내 정보 + 프로필 노출 여부 + 내 룸메이트 정보",
             description = "내 정보 + 프로필 노출 여부 + 내 룸메이트 정보(없으면 null)")
     @ApiResponses(value = {
@@ -190,8 +197,9 @@ public interface UserControllerDocs {
                             schema = @Schema(implementation = GetMyPageRes.class)))
     })
     @ApiErrorResponses({USER_NOT_FOUND})
-    public BaseResponse<GetMyPageRes> mypage();
+    public BaseResponse<GetMyPageRes> mypage(Long userId);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[마이페이지] 프로필 노출 여부 변경",
             description = "사용자의 프로필 노출을 변경 true -> false / false -> true")
     @ApiResponses(value = {
@@ -201,8 +209,9 @@ public interface UserControllerDocs {
                             schema = @Schema(implementation = Boolean.class)))
     })
     @ApiErrorResponses({USER_NOT_FOUND})
-    public BaseResponse<Boolean> changeOpen();
+    public BaseResponse<Boolean> changeOpen(Long userId);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[마이페이지] 회원 정보 설정 - 회원 정보 조회",
             description = "사용자 이메일 + 가입 날짜 반환")
     @ApiResponses(value = {
@@ -212,5 +221,5 @@ public interface UserControllerDocs {
                             schema = @Schema(implementation = GetUserInfoRes.class)))
     })
     @ApiErrorResponses({USER_NOT_FOUND})
-    public BaseResponse<GetUserInfoRes> userInfo();
+    public BaseResponse<GetUserInfoRes> userInfo(Long userId);
 }

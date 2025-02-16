@@ -85,7 +85,7 @@ public class UserService {
         ResponseCookie cookie = jwtUtil.createCookie(accessToken);
 
         response.addHeader("Set-Cookie", cookie.toString());
-        return "success";
+        return accessToken;
     }
 
     @Transactional

@@ -29,12 +29,12 @@ import java.util.stream.Collectors;
 public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
-        String jwt = "Cookie Auth";
+        String jwt = "Bearer Token";
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
         Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
                 .type(SecurityScheme.Type.APIKEY)
-                .in(SecurityScheme.In.COOKIE)
-                .name("accessToken")
+                .in(SecurityScheme.In.HEADER)
+                .name("Authorization")
                 //.scheme("cookie")
                 //.bearerFormat("JWT")
         );

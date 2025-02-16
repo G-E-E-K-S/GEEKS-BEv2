@@ -11,9 +11,12 @@ import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserInfoRes;
 import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
 import com.my_geeks.geeks.domain.user.service.UserService;
+import com.my_geeks.geeks.security.custom.CurrentUserId;
+import com.my_geeks.geeks.security.custom.CustomUserDetails;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,59 +62,63 @@ public class UserController implements UserControllerDocs {
 
     // TODO: 생활 습관 등록
     @PostMapping("/detail/create")
-    public BaseResponse<String> detailCreate(@RequestBody CreateUserDetailReq req) {
-        return BaseResponse.created(userService.createDetail(1L, req));
+    public BaseResponse<String> detailCreate(@RequestBody CreateUserDetailReq req,
+                                             @CurrentUserId Long userId) {
+        return BaseResponse.created(userService.createDetail(userId, req));
     }
 
     // TODO: 생활 습관 조회
     @GetMapping("/detail/get")
-    public BaseResponse<GetUserDetailRes> detailGet() {
-        return BaseResponse.ok(userService.getUserDetail(1L));
+    public BaseResponse<GetUserDetailRes> detailGet(@CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.getUserDetail(userId));
     }
 
     // TODO: 생활 습관 수정
     @PutMapping("/detail/update")
-    public BaseResponse<GetUserDetailRes> detailUpdate(@RequestBody CreateUserDetailReq req) {
-        return BaseResponse.ok(userService.updateUserDetail(1L, req));
+    public BaseResponse<GetUserDetailRes> detailUpdate(@RequestBody CreateUserDetailReq req,
+                                                       @CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.updateUserDetail(userId, req));
     }
 
     // TODO: 사용자 프로필 이미지
     @PatchMapping("/image")
-    public BaseResponse<String> image(@RequestPart(value = "files", required=false) List<MultipartFile> files) {
-        return BaseResponse.ok(userService.changeImage(1L, files));
+    public BaseResponse<String> image(@RequestPart(value = "files", required=false) List<MultipartFile> files,
+                                      @CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.changeImage(userId, files));
     }
 
     // TODO: 사용자 프로필 정보 조회
     @GetMapping("/profile")
-    public BaseResponse<GetUserProfileRes> profile() {
-        return BaseResponse.ok(userService.getProfile(1L));
+    public BaseResponse<GetUserProfileRes> profile(@CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.getProfile(userId));
     }
 
     // TODO: 사용자 프로필 정보 수정
     @PutMapping("/profile/update")
     public BaseResponse<String> profileUpdate(
+            @CurrentUserId Long userId,
             @RequestPart(value = "files", required = false) List<MultipartFile> files,
             @RequestPart(value = "dto") UpdateProfileReq req
     ) {
-        return BaseResponse.ok(userService.updateProfile(1L, req, files));
+        return BaseResponse.ok(userService.updateProfile(userId, req, files));
     }
 
     // TODO: 마이페이지
     @GetMapping("/mypage")
-    public BaseResponse<GetMyPageRes> mypage() {
-        return BaseResponse.ok(userService.getMyPage(1L));
+    public BaseResponse<GetMyPageRes> mypage(@CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.getMyPage(userId));
     }
 
     // TODO: 프로필 노출 변경
     @PatchMapping("/profile/change/open")
-    public BaseResponse<Boolean> changeOpen() {
-        return BaseResponse.ok(userService.changeOpen(1L));
+    public BaseResponse<Boolean> changeOpen(@CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.changeOpen(userId));
     }
 
    // TODO: 회원 정보 페이지
     @GetMapping("/info")
-    public BaseResponse<GetUserInfoRes> userInfo() {
-        return BaseResponse.ok(userService.getUserInfo(1L));
+    public BaseResponse<GetUserInfoRes> userInfo(@CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.getUserInfo(userId));
     }
 
     // TODO: 생활 습관 등록 TEST

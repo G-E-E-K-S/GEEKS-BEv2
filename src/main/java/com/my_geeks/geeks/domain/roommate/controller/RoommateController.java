@@ -6,6 +6,7 @@ import com.my_geeks.geeks.domain.roommate.requestDto.DeleteBookmarkReq;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
 import com.my_geeks.geeks.domain.roommate.service.RoommateService;
+import com.my_geeks.geeks.security.custom.CurrentUserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,20 +22,21 @@ public class RoommateController implements RoommateControllerDocs {
     // TODO: 룸메 신청 보내기
     @PostMapping("/send/{matchingPointId}/{opponentId}")
     public BaseResponse<String> send(@PathVariable("matchingPointId") Long matchingPointId,
-                                     @PathVariable("opponentId") Long opponentId) {
-        return BaseResponse.ok(roommateService.send(1L, opponentId, matchingPointId));
+                                     @PathVariable("opponentId") Long opponentId,
+                                     @CurrentUserId Long userId) {
+        return BaseResponse.ok(roommateService.send(userId, opponentId, matchingPointId));
     }
 
     // TODO: 보낸 룸메 신청 목록
     @GetMapping("/send/list")
-    public BaseResponse<List<GetApplyList>> sendList() {
-        return BaseResponse.ok(roommateService.getSendList(1L));
+    public BaseResponse<List<GetApplyList>> sendList(@CurrentUserId Long userId) {
+        return BaseResponse.ok(roommateService.getSendList(userId));
     }
 
     // TODO: 받은 룸메 신청 목록
     @GetMapping("/receive/list")
-    public BaseResponse<List<GetApplyList>> receiveList() {
-        return BaseResponse.ok(roommateService.getReceiveList(1L));
+    public BaseResponse<List<GetApplyList>> receiveList(@CurrentUserId Long userId) {
+        return BaseResponse.ok(roommateService.getReceiveList(userId));
     }
 
     // TODO: 보낸 룸메 신청 취소
@@ -57,27 +59,29 @@ public class RoommateController implements RoommateControllerDocs {
 
     // TODO: 룸메 끊기
     @DeleteMapping("/sever")
-    public BaseResponse<String> sever() {
-        return BaseResponse.ok(roommateService.roommateSever(1L));
+    public BaseResponse<String> sever(@CurrentUserId Long userId) {
+        return BaseResponse.ok(roommateService.roommateSever(userId));
     }
 
     // TODO: 룸메 저장하기
     @PostMapping("/bookmark/{matchingPointId}/{opponentId}")
     public BaseResponse<String> bookmark(@PathVariable("matchingPointId") Long matchingPointId,
-                                     @PathVariable("opponentId") Long opponentId) {
-        return BaseResponse.ok(roommateService.bookmarkRoommate(1L, opponentId, matchingPointId));
+                                     @PathVariable("opponentId") Long opponentId,
+                                         @CurrentUserId Long userId) {
+        return BaseResponse.ok(roommateService.bookmarkRoommate(userId, opponentId, matchingPointId));
     }
 
     // TODO: 룸메 저장 목록
     @GetMapping("/bookmark/list")
-    public BaseResponse<List<GetBookmarkListRes>> bookmarkList() {
-        return BaseResponse.ok(roommateService.getBookmarkList(1L));
+    public BaseResponse<List<GetBookmarkListRes>> bookmarkList(@CurrentUserId Long userId) {
+        return BaseResponse.ok(roommateService.getBookmarkList(userId));
     }
 
     // TODO: 룸메 저장 단일 삭제
     @DeleteMapping("/bookmark/cancel/{opponentId}")
-    public BaseResponse<String> bookmarkSingleCancel(@PathVariable("opponentId") Long opponentId) {
-        return BaseResponse.ok(roommateService.deleteSingleBookmark(1L, opponentId));
+    public BaseResponse<String> bookmarkSingleCancel(@PathVariable("opponentId") Long opponentId,
+                                                     @CurrentUserId Long userId) {
+        return BaseResponse.ok(roommateService.deleteSingleBookmark(userId, opponentId));
     }
 
     // TODO: 룸메 저장 벌크 삭제

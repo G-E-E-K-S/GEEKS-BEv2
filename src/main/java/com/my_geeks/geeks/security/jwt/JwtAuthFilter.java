@@ -27,7 +27,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      * JWT 검증, 유효하다면 UserDetailService 의 loadByUserName 으로 해당 유저가 데이터베이스에 존재하는지 판단
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         String accessToken = request.getHeader("Authorization");
         //String authorizationHeader = request.getCookies().;
 //        String accessToken = null;
