@@ -173,11 +173,11 @@ public class UserService {
             throw new CustomException(INVALID_CODE_ERROR);
         }
 
-        if(redisCode.equals(code)) {
-            return "success";
+        if(!redisCode.equals(code)) {
+            throw new CustomException(INVALID_CODE_ERROR);
         }
 
-        return "fail";
+        return "success";
     }
 
     private String generateRandomCode() {
