@@ -6,14 +6,12 @@ import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.LoginReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
-import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
-import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
-import com.my_geeks.geeks.domain.user.responseDto.GetUserInfoRes;
-import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
+import com.my_geeks.geeks.domain.user.responseDto.*;
 import com.my_geeks.geeks.domain.user.service.UserService;
 import com.my_geeks.geeks.security.custom.CurrentUserId;
 import com.my_geeks.geeks.security.custom.CustomUserDetails;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -131,6 +129,12 @@ public class UserController implements UserControllerDocs {
     @GetMapping("/validate")
     public BaseResponse<String> validation(@CookieValue(required = false, value = "accessToken") String accessToken) {
         return BaseResponse.ok(userService.validateCookie(accessToken));
+    }
+
+    // TODO: 사용자 검색
+    @GetMapping("/search/{keyword}")
+    public BaseResponse<List<GetUserSearchRes>> search(@CurrentUserId Long userId, @PathVariable("keyword") String keyword) {
+        return BaseResponse.ok(userService.userSearch(userId, keyword));
     }
 
     // TODO: 생활 습관 등록 TEST

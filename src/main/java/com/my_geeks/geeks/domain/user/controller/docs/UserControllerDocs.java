@@ -1,14 +1,12 @@
 package com.my_geeks.geeks.domain.user.controller.docs;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
+import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
 import com.my_geeks.geeks.domain.user.requestDto.LoginReq;
 import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
-import com.my_geeks.geeks.domain.user.responseDto.GetMyPageRes;
-import com.my_geeks.geeks.domain.user.responseDto.GetUserDetailRes;
-import com.my_geeks.geeks.domain.user.responseDto.GetUserInfoRes;
-import com.my_geeks.geeks.domain.user.responseDto.GetUserProfileRes;
+import com.my_geeks.geeks.domain.user.responseDto.*;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.security.custom.CustomUserDetails;
 import com.my_geeks.geeks.swagger.annotation.ApiErrorResponse;
@@ -17,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -248,4 +247,16 @@ public interface UserControllerDocs {
     })
     @ApiErrorResponses({JWT_EXPIRED_TOKEN_ERROR})
     public BaseResponse<String> validation(String accessToken);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[검색] 닉네임으로 사용자 검색",
+            description = "닉네임에 검색 키워드가 포함된 사용자 정보 반환")
+    @Parameter(name = "검색 키워드", description = "사용자 닉네임에 포함된 키워드", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공 | DTO: List<GetUserSearchRes>",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GetUserSearchRes.class))))
+    })
+    public BaseResponse<List<GetUserSearchRes>> search(Long userId, String keyword);
 }
