@@ -77,6 +77,7 @@ public class RoommateService {
         Long receiverId = roommate.getReceiverId();
 
         // 보내거나 받는 사람중 이미 룸메이트가 되어 있다면 오류 발생
+        // TODO: 두 사용자에게 roommateId가 있는지 확인하도록 변경
         if(!roommateRepository.existsAcceptRoommate(RoommateStatus.ACCEPT, senderId, receiverId).isEmpty()) {
             throw new CustomException(ALREADY_ACCEPT_ROOMMATE_ERROR);
         }
@@ -90,14 +91,17 @@ public class RoommateService {
         // 서로 상대방 PK 저장, 프로필 비활성화
         User sender = getUser(roommate.getSenderId());
         User receiver = getUser(roommate.getReceiverId());
-        sender.changeRoommate(receiverId);
-        receiver.changeRoommate(senderId);
+
+        // TODO: 추후에 myRoommateId 삭제 예정
+        sender.changeRoommate(receiverId, roommateId);
+        receiver.changeRoommate(senderId, roommateId);
         return "success";
     }
 
     @Transactional
     public String roommateSever(Long userId) {
         User user = getUser(userId);
+        // TODO: roommateId로 조회하여 룸메 끊기
         User myRoommate = getUser(user.getMyRoommateId());
 
         user.severRoommate();

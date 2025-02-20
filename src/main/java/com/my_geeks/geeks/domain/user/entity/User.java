@@ -56,6 +56,8 @@ public class User extends CreatedTime {
 
     private Long myRoommateId;
 
+    private Long roommateId;
+
     @Builder
     public User(String email, String password, String nickname, String major, int studentNum, boolean isOpen, RoleType roleType, Dormitory dormitory, Gender gender) {
         this.email = email;
@@ -77,8 +79,10 @@ public class User extends CreatedTime {
         this.isOpen = open;
     }
 
-    public void changeRoommate(Long myRoommateId) {
+    // TODO: 추후에 myRoommateId 삭제 예정
+    public void changeRoommate(Long myRoommateId, Long roommateId) {
         this.myRoommateId = myRoommateId;
+        this.roommateId = roommateId;
         this.isOpen = false;
     }
 

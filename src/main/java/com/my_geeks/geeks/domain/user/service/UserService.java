@@ -234,6 +234,7 @@ public class UserService {
 
     public GetMyPageRes getMyPage(Long userId) {
         User user = getUser(userId);
+        // TODO: roommateId를 사용하도록 변경
         User userRoommate = user.getMyRoommateId() != null ? getUser(user.getMyRoommateId()) : null;
 
         Long matchingPointId = null;

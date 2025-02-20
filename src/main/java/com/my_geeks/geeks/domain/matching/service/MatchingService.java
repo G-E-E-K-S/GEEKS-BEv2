@@ -142,6 +142,7 @@ public class MatchingService {
 
         GetOpponentRes opponentRes = matchingPointRepository.findMatchingDetail(myId, opponentId, matchingId);
 
+        // TODO: roommateId로 조회하여 룸메이트 신청 상태 조회하도록 변경
         RoommateStatus roommateStatus = RoommateStatus.NONE;
         Optional<Roommate> roommate = roommateRepository.findBySenderIdAndReceiverId(myId, opponentId);
         Optional<RoommateBookmark> bookmark = roommateBookmarkRepository.findByMyIdAndOpponentId(myId, opponentId);
