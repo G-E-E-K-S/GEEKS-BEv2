@@ -35,6 +35,28 @@ public interface MatchingPointRepository extends JpaRepository<MatchingPoint, Lo
 
     @Query(nativeQuery = true,
             value = """
+                    SELECT mp.matching_point_id, u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, u.image, mp.point
+                    FROM matching_point as mp
+                    LEFT JOIN user as u ON (
+                        CASE
+                            WHEN mp.small_user_id = :userId THEN u.user_id = mp.large_user_id
+                            WHEN mp.large_user_id = :userId THEN u.user_id = mp.small_user_id
+                        END
+                    )
+                    LEFT JOIN user_detail as ud ON (
+                        CASE
+                            WHEN mp.small_user_id = :userId THEN ud.user_detail_id = mp.large_user_id
+                            WHEN mp.large_user_id = :userId THEN ud.user_detail_id = mp.small_user_id
+                        END
+                    )
+                    WHERE mp.small_user_id = :userId OR mp.large_user_id = :userId
+                    ORDER BY mp.point DESC
+                    """
+    )
+    List<GetPointRes.OpponentInfo> test(@Param("userId") Long userId);
+
+    @Query(nativeQuery = true,
+            value = """
                     select a.matching_point_id, a.user_id, a.nickname, a.major, a.student_num, a.introduction, a.smoke, a.image, a.point
                     from (
                         select mp.matching_point_id, u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, u.image, mp.point 

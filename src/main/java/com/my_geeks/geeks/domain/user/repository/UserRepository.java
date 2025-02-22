@@ -25,8 +25,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     @Query("select new com.my_geeks.geeks.domain.user.responseDto.GetUserSearchRes(" +
-            "u.id, u.nickname, u.major, u.studentNum, ud.smoke, u.image) from User u " +
+            "u.id, mp.id, u.nickname, u.major, u.studentNum, ud.smoke, u.image) from User u " +
             "join UserDetail ud on ud.id = u.id " +
+            "join MatchingPoint mp on " +
+            "(mp.smallUserId = :userId and mp.largeUserId = u.id) " +
+            "or (mp.largeUserId = :userId and mp.smallUserId = u.id) " +
             "where u.id != :userId " +
             "and u.nickname like concat('%', :keyword, '%') " +
             "and u.gender = :gender and u.dormitory = :dormitory")

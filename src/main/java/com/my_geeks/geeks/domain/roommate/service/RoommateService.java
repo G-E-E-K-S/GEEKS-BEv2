@@ -101,13 +101,16 @@ public class RoommateService {
     @Transactional
     public String roommateSever(Long userId) {
         User user = getUser(userId);
-        // TODO: roommateId로 조회하여 룸메 끊기
         User myRoommate = getUser(user.getMyRoommateId());
+
+        // TODO: roommateId로 조회하여 룸메 끊기
+        Roommate roommate = getRoommate(user.getRoommateId());
 
         user.severRoommate();
         myRoommate.severRoommate();
 
-        roommateRepository.severRoommate(userId, myRoommate.getId());
+        roommateRepository.delete(roommate);
+        //roommateRepository.severRoommate(userId, myRoommate.getId());
         return "success";
     }
 

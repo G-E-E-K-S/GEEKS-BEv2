@@ -143,15 +143,16 @@ public class MatchingService {
         GetOpponentRes opponentRes = matchingPointRepository.findMatchingDetail(myId, opponentId, matchingId);
 
         // TODO: roommateId로 조회하여 룸메이트 신청 상태 조회하도록 변경
-        RoommateStatus roommateStatus = RoommateStatus.NONE;
-        Optional<Roommate> roommate = roommateRepository.findBySenderIdAndReceiverId(myId, opponentId);
+        String roommateStatus = "NONE";
         Optional<RoommateBookmark> bookmark = roommateBookmarkRepository.findByMyIdAndOpponentId(myId, opponentId);
 
-        if(roommate.isPresent()) {
-            roommateStatus = roommate.get().getStatus();
-        } else if(user.getMyRoommateId() == opponentId) {
-            roommateStatus = RoommateStatus.ACCEPT;
+        if(user.getRoommateId() != null) {
+            roommateStatus = "ACCEPT";
+        } else {
+            if(roommateRepository.existsBySenderIdAndReceiverId(myId, opponentId)) roommateStatus = "PENDING";
+            else if(roommateRepository.existsBySenderIdAndReceiverId(opponentId, myId)) roommateStatus = "RECEIVED";
         }
+
         return GetMatchingDetailRes.builder()
                 .roommateStatus(roommateStatus)
                 .bookmarkStatus(bookmark.isPresent())

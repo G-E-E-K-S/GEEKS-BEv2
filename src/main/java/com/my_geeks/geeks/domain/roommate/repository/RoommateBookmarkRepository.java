@@ -14,7 +14,7 @@ public interface RoommateBookmarkRepository extends JpaRepository<RoommateBookma
     boolean existsByMyIdAndOpponentId(Long myId, Long opponentId);
 
     @Query("select new com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes(" +
-            "rb.id, u.id, u.nickname, u.major, u.studentNum, u.image, ud.smoke, mp.point, rb.createdDate) " +
+            "rb.id, u.id, mp.id, u.nickname, u.major, u.studentNum, u.image, ud.smoke, mp.point, rb.createdDate) " +
             "from RoommateBookmark rb " +
             "join User u on u.id = rb.opponentId " +
             "join UserDetail ud on ud.id = rb.opponentId " +

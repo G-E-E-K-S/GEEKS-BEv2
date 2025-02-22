@@ -88,6 +88,7 @@ public class User extends CreatedTime {
 
     public void severRoommate() {
         this.myRoommateId = null;
+        this.roommateId = null;
         this.isOpen = true;
     }
 

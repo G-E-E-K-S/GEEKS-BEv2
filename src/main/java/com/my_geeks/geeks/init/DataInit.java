@@ -96,6 +96,20 @@ public class DataInit {
                 .dormitory(Dormitory.NEW)
                 .build());
 
+//        for(int i = 6; i <= 1000; i++) {
+//            users.add(User.builder()
+//                    .email("bak38395@naver.com")
+//                    .password(encoder.encode("1234"))
+//                    .nickname("TEST_" + i)
+//                    .major("소프트웨어학과")
+//                    .studentNum(20)
+//                    .isOpen(true)
+//                    .gender(Gender.MALE)
+//                    .roleType(RoleType.ROLE_USER)
+//                    .dormitory(Dormitory.NEW)
+//                    .build());
+//        }
+
         users = userRepository.saveAll(users);
 
         CreateUserDetailReq req1 = CreateUserDetailReq.builder()
@@ -147,12 +161,22 @@ public class DataInit {
                 .tendency(Tendency.ALONE)
                 .cleaning(Cleaning.DIRTY)
                 .build();
-
+//        List<CreateUserDetailReq> reqs = new ArrayList<>();
+//        reqs.add(req1);
+//        reqs.add(req2);
+//        reqs.add(req3);
+//        reqs.add(req4);
+//        reqs.add(req5);
         userService.createDetail(1L, req1);
         userService.createDetail(2L, req2);
         userService.createDetail(3L, req3);
         userService.createDetail(4L, req4);
         userService.createDetail(5L, req5);
+
+//        for(Long i = 6L; i <= 1000L; i++) {
+//            int index = (int) (i % 5);
+//            userService.createDetail(i, reqs.get(index));
+//        }
 
         roommateService.send(4L, 1L, 4L);
         roommateService.send(5L, 1L, 7L);

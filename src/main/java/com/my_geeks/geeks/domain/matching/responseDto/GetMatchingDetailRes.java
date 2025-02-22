@@ -10,7 +10,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class GetMatchingDetailRes {
-    private RoommateStatus roommateStatus;
+    private String roommateStatus;
 
     private boolean bookmarkStatus;
 

@@ -12,6 +12,9 @@ public class GetUserSearchRes {
     @Schema(description = "상대방 PK")
     private Long opponentId;
 
+    @Schema(description = "매칭 PK")
+    private Long matchingPointId;
+
     @Schema(description = "상대방 닉네임")
     private String nickname;
 
