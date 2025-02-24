@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(indexes = {
+        @Index(name = "idx_mp_small_user_id", columnList = "smallUserId"),
+        @Index(name = "idx_mp_large_user_id", columnList = "largeUserId"),
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MatchingPoint {
     @Id

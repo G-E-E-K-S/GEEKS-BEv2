@@ -54,7 +54,7 @@ public class User extends CreatedTime {
     @Enumerated(STRING)
     private Gender gender;
 
-    private Long myRoommateId;
+    //private Long myRoommateId;
 
     private Long roommateId;
 
@@ -79,15 +79,14 @@ public class User extends CreatedTime {
         this.isOpen = open;
     }
 
-    // TODO: 추후에 myRoommateId 삭제 예정
-    public void changeRoommate(Long myRoommateId, Long roommateId) {
-        this.myRoommateId = myRoommateId;
+    // TODO: 룸메이트가 맺어지면 프로필 비활성화
+    public void changeRoommate(Long roommateId) {
         this.roommateId = roommateId;
         this.isOpen = false;
     }
 
+    // TODO: 룸메이트가 끊어지면 프로필 활성화
     public void severRoommate() {
-        this.myRoommateId = null;
         this.roommateId = null;
         this.isOpen = true;
     }

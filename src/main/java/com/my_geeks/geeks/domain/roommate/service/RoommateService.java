@@ -76,32 +76,35 @@ public class RoommateService {
         Long senderId = roommate.getSenderId();
         Long receiverId = roommate.getReceiverId();
 
-        // 보내거나 받는 사람중 이미 룸메이트가 되어 있다면 오류 발생
+        // 서로 상대방 PK 저장, 프로필 비활성화
+        User sender = getUser(senderId);
+        User receiver = getUser(receiverId);
+
+
         // TODO: 두 사용자에게 roommateId가 있는지 확인하도록 변경
-        if(!roommateRepository.existsAcceptRoommate(RoommateStatus.ACCEPT, senderId, receiverId).isEmpty()) {
+//        if(!roommateRepository.existsAcceptRoommate(RoommateStatus.ACCEPT, senderId, receiverId).isEmpty()) {
+//            throw new CustomException(ALREADY_ACCEPT_ROOMMATE_ERROR);
+//        }
+        // 보내거나 받는 사람중 이미 룸메이트가 되어 있다면 오류 발생
+        if(sender.getRoommateId() != null || receiver.getRoommateId() != null) {
             throw new CustomException(ALREADY_ACCEPT_ROOMMATE_ERROR);
         }
 
         // 룸메이트 상태 변경 -> ACCEPT
         roommate.setStatusToAccept();
 
+        sender.changeRoommate(roommateId);
+        receiver.changeRoommate(roommateId);
+
         // 나머지 요청 삭제
         roommateRepository.deleteOtherApply(roommateId, senderId, receiverId);
-
-        // 서로 상대방 PK 저장, 프로필 비활성화
-        User sender = getUser(roommate.getSenderId());
-        User receiver = getUser(roommate.getReceiverId());
-
-        // TODO: 추후에 myRoommateId 삭제 예정
-        sender.changeRoommate(receiverId, roommateId);
-        receiver.changeRoommate(senderId, roommateId);
         return "success";
     }
 
     @Transactional
     public String roommateSever(Long userId) {
         User user = getUser(userId);
-        User myRoommate = getUser(user.getMyRoommateId());
+        User myRoommate = roommateRepository.getRoommateUser(user.getRoommateId(), userId);
 
         // TODO: roommateId로 조회하여 룸메 끊기
         Roommate roommate = getRoommate(user.getRoommateId());
@@ -110,7 +113,6 @@ public class RoommateService {
         myRoommate.severRoommate();
 
         roommateRepository.delete(roommate);
-        //roommateRepository.severRoommate(userId, myRoommate.getId());
         return "success";
     }
 

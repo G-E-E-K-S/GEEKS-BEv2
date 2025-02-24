@@ -14,21 +14,20 @@ public interface MatchingPointRepository extends JpaRepository<MatchingPoint, Lo
 
     @Query(nativeQuery = true,
             value = """
-                    select a.matching_point_id, a.user_id, a.nickname, a.major, a.student_num, a.introduction, a.smoke, a.image, a.point
-                    from (
-                        select mp.matching_point_id, u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, u.image, mp.point 
-                        from matching_point as mp
-                        join user as u on u.user_id = mp.large_user_id
-                        join user_detail as ud on ud.user_detail_id = mp.large_user_id
-                        where mp.small_user_id = :userId and u.is_open = true
-                        union
-                        select mp.matching_point_id, u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, u.image, mp.point
-                        from matching_point as mp
-                        join user as u on u.user_id = mp.small_user_id 
-                        join user_detail as ud on ud.user_detail_id = mp.small_user_id 
-                        where mp.large_user_id = :userId and u.is_open = true                                   
-                    ) as a
-                    order by a.point desc
+                    select mp.matching_point_id, u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, u.image, mp.point 
+                    from matching_point as mp
+                    join user as u on u.user_id = mp.large_user_id
+                    join user_detail as ud on ud.user_detail_id = mp.large_user_id
+                    where mp.small_user_id = :userId and u.is_open = true
+                    
+                    union all
+                    
+                    select mp.matching_point_id, u.user_id, u.nickname, u.major, u.student_num, u.introduction, ud.smoke, u.image, mp.point
+                    from matching_point as mp
+                    join user as u on u.user_id = mp.small_user_id 
+                    join user_detail as ud on ud.user_detail_id = mp.small_user_id 
+                    where mp.large_user_id = :userId and u.is_open = true
+                    order by point desc
                     """
     )
     List<GetPointRes.OpponentInfo> getPointList(@Param("userId") Long userId);
@@ -49,7 +48,7 @@ public interface MatchingPointRepository extends JpaRepository<MatchingPoint, Lo
                             WHEN mp.large_user_id = :userId THEN ud.user_detail_id = mp.small_user_id
                         END
                     )
-                    WHERE mp.small_user_id = :userId OR mp.large_user_id = :userId
+                    WHERE (mp.small_user_id = :userId OR mp.large_user_id = :userId) and u.is_open = true
                     ORDER BY mp.point DESC
                     """
     )

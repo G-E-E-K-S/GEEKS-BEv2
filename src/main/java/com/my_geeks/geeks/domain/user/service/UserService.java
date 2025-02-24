@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.my_geeks.geeks.domain.matching.repository.MatchingPointRepository;
 import com.my_geeks.geeks.domain.matching.service.MatchingService;
+import com.my_geeks.geeks.domain.roommate.entity.Roommate;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
@@ -234,10 +235,11 @@ public class UserService {
 
     public GetMyPageRes getMyPage(Long userId) {
         User user = getUser(userId);
-        // TODO: roommateId를 사용하도록 변경
-        User userRoommate = user.getMyRoommateId() != null ? getUser(user.getMyRoommateId()) : null;
+        User userRoommate = user.getRoommateId() != null ?
+                roommateRepository.getRoommateUser(user.getRoommateId(), userId) : null;
 
         Long matchingPointId = null;
+
         if(userRoommate != null) {
             matchingPointId = matchingPointRepository.findBySmallUserIdAndLargeUserId(
                     userId < userRoommate.getId() ? userId : userRoommate.getId(),

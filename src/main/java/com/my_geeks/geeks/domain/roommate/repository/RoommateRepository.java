@@ -3,6 +3,7 @@ package com.my_geeks.geeks.domain.roommate.repository;
 import com.my_geeks.geeks.domain.roommate.entity.Roommate;
 import com.my_geeks.geeks.domain.roommate.entity.enumeration.RoommateStatus;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
+import com.my_geeks.geeks.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -55,4 +56,11 @@ public interface RoommateRepository extends JpaRepository<Roommate, Long> {
             "where (rm.senderId = :senderId and rm.receiverId = :receiverId) " +
             "or (rm.senderId = :receiverId and rm.receiverId = :senderId)")
     void severRoommate(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
+
+    @Query("select u from User u " +
+            "join Roommate rm on " +
+            "rm.id = :roommateId and u.roommateId = :roommateId " +
+            "where u.id != :myId")
+    User getRoommateUser(@Param("roommateId") Long roommateId,
+                         @Param("myId") Long myId);
 }
