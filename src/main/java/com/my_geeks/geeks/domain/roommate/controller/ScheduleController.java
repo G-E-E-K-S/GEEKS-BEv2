@@ -3,13 +3,14 @@ package com.my_geeks.geeks.domain.roommate.controller;
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.controller.docs.ScheduleControllerDocs;
 import com.my_geeks.geeks.domain.roommate.requestDto.CreateScheduleReq;
+import com.my_geeks.geeks.domain.roommate.responseDto.GetScheduleInfo;
+import com.my_geeks.geeks.domain.roommate.responseDto.SchedulesOfDay;
 import com.my_geeks.geeks.domain.roommate.service.ScheduleService;
 import com.my_geeks.geeks.security.custom.CurrentUserId;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,4 +24,14 @@ public class ScheduleController implements ScheduleControllerDocs {
                                @RequestBody CreateScheduleReq req) {
         return BaseResponse.ok(scheduleService.create(userId, req));
     }
+
+    @GetMapping("/schedules/{year}/{month}")
+    public BaseResponse<List<SchedulesOfDay>> getMonthSchedule(
+            @CurrentUserId Long userId,
+            @PathVariable("year") int year,
+            @PathVariable("month") int month
+    ) {
+        return BaseResponse.ok(scheduleService.getMonthSchedule(userId, year, month));
+    }
+
 }

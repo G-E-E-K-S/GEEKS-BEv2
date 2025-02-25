@@ -14,21 +14,21 @@ import java.time.LocalDateTime;
 @Schema(description = "일정 추가 DTO")
 public class CreateScheduleReq {
 
-    @Schema(description = "일정 제목")
+    @Schema(description = "일정 제목", defaultValue = "외출합니다")
     private String title;
 
     @Schema(description = "일정 시작 날짜", defaultValue = "2025.2.20 12:00")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d HH:mm", timezone = "Asia/Seoul")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime startDate;
 
     @Schema(description = "일정 종료 날짜", defaultValue = "2025.2.21 19:30")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d HH:mm", timezone = "Asia/Seoul")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.M.d HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime endDate;
 
-    @Schema(description = "일정 종류")
+    @Schema(description = "일정 종류", defaultValue = "OUTING")
     private ScheduleType type;
 
-    @Schema(description = "일정 설명", nullable = true)
+    @Schema(description = "일정 설명", defaultValue = "외출", nullable = true)
     private String description;
 
     public RoommateSchedule toEntity(Long roommateId, Long writerId) {
