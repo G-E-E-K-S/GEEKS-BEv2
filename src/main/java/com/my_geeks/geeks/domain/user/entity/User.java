@@ -41,6 +41,9 @@ public class User extends CreatedTime {
     @Column(length = 100)
     private String image;
 
+    @Column(length = 100)
+    private String fcmToken;
+
     private int studentNum;
 
     private boolean isOpen;
@@ -77,6 +80,10 @@ public class User extends CreatedTime {
 
     public void setOpen(boolean open) {
         this.isOpen = open;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     // TODO: 룸메이트가 맺어지면 프로필 비활성화

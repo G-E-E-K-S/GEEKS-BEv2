@@ -282,6 +282,13 @@ public class UserService {
         return user.isOpen();
     }
 
+    @Transactional
+    public String saveFcmToken(Long userId, String fcmToken) {
+        User user = getUser(userId);
+        user.setFcmToken(fcmToken);
+        return "success";
+    }
+
     public List<GetUserSearchRes> userSearch(Long userId, String keyword) {
         User user = getUser(userId);
         return userRepository.searchByKeyword(userId, user.getGender(), user.getDormitory(), keyword);

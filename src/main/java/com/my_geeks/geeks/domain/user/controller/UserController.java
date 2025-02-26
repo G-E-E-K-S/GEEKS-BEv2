@@ -137,6 +137,13 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.userSearch(userId, keyword));
     }
 
+    // TODO: 사용자 fcm 토큰 받기
+    @PatchMapping("/fcm/token/{token}")
+    public BaseResponse<String> saveFcmToken(@CurrentUserId Long userId,
+                                             @PathVariable("token") String fcmToken) {
+        return BaseResponse.ok(userService.saveFcmToken(userId, fcmToken));
+    }
+
     // TODO: 생활 습관 등록 TEST
     @Deprecated
     @PostMapping("/test/create/{userId}")
