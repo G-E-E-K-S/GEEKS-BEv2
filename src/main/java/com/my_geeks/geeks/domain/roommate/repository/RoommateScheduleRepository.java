@@ -15,6 +15,6 @@ public interface RoommateScheduleRepository extends JpaRepository<RoommateSchedu
             "from RoommateSchedule rms " +
             "join User u on rms.writerId = u.id " +
             "where rms.roommateId = :roommateId " +
-            "and rms.startDate between :startDate and :endDate")
+            "and (rms.startDate between :startDate and :endDate or rms.endDate between :startDate and :endDate)")
     List<GetScheduleInfo> findMonthSchedules(Long roommateId, LocalDateTime startDate, LocalDateTime endDate);
 }

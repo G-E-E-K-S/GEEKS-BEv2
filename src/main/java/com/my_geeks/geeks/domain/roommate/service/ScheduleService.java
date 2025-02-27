@@ -50,13 +50,25 @@ public class ScheduleService {
         List<SchedulesOfDay> calendar = new ArrayList<>(Collections.nCopies(endDate.getDayOfMonth() + 1, null));
 
         monthSchedules.forEach(schedule -> {
-            int day = schedule.getStartDate().getDayOfMonth();
+            LocalDateTime scheduleStart = schedule.getStartDate();
+            LocalDateTime scheduleEnd = schedule.getEndDate();
 
-            if(calendar.get(day) == null) {
-                calendar.set(day, new SchedulesOfDay());
+            // 일정의 시작 달이 month 보다 이전이면
+            LocalDateTime currentDate = scheduleStart.isBefore(startDate) ? startDate : scheduleStart;
+
+            while (!currentDate.isAfter(scheduleEnd) && !currentDate.isAfter(endDate)) {
+                int day = currentDate.getDayOfMonth();
+
+                if (calendar.get(day) == null) {
+                    calendar.set(day, new SchedulesOfDay());
+                }
+
+                // 해당 날짜에 일정 추가
+                calendar.get(day).getSchedules().add(schedule);
+
+                // 다음 날로 이동
+                currentDate = currentDate.plusDays(1);
             }
-
-            calendar.get(day).getSchedules().add(schedule);
         });
 
         return calendar;
