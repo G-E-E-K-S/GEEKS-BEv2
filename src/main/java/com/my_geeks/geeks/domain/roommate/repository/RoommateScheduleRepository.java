@@ -11,7 +11,8 @@ import java.util.List;
 public interface RoommateScheduleRepository extends JpaRepository<RoommateSchedule, Long> {
 
     @Query("select new com.my_geeks.geeks.domain.roommate.responseDto.GetScheduleInfo(" +
-            "rms.id, rms.title, rms.startDate, rms.endDate, rms.type, rms.description, u.nickname) " +
+            "rms.id, rms.title, rms.startDate, rms.endDate, rms.type, rms.description, u.nickname, " +
+            "CASE WHEN rms.writerId = u.id THEN true ELSE false END) " +
             "from RoommateSchedule rms " +
             "join User u on rms.writerId = u.id " +
             "where rms.roommateId = :roommateId " +

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class GetScheduleInfo {
     @Schema(description = "일정 PK")
     private Long roommateScheduleId;
+
     @Schema(description = "일정 제목")
     private String title;
 
@@ -31,4 +32,7 @@ public class GetScheduleInfo {
 
     @Schema(description = "일정 추가한 사용자 닉네임")
     private String nickname;
+
+    @Schema(description = "일정 사용자가 작성자인지 확인하는 변수(true이면 작성자)")
+    private boolean writerStatus;
 }
