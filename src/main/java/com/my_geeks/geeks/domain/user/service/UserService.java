@@ -8,6 +8,7 @@ import com.my_geeks.geeks.domain.roommate.entity.Roommate;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.entity.UserDetail;
+import com.my_geeks.geeks.domain.user.entity.embedded.NotifyAllow;
 import com.my_geeks.geeks.domain.user.repository.UserDetailRepository;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
@@ -286,6 +287,22 @@ public class UserService {
     public String saveFcmToken(Long userId, String fcmToken) {
         User user = getUser(userId);
         user.setFcmToken(fcmToken);
+        return "success";
+    }
+
+    @Transactional
+    public String changeRoommateNotify(Long userId) {
+        User user = getUser(userId);
+        NotifyAllow notifyAllow = user.getNotifyAllow();
+        notifyAllow.setRoommateNotify(!notifyAllow.isRoommateNotify());
+        return "success";
+    }
+
+    @Transactional
+    public String changeServiceNotify(Long userId) {
+        User user = getUser(userId);
+        NotifyAllow notifyAllow = user.getNotifyAllow();
+        notifyAllow.setServiceNotify(!notifyAllow.isServiceNotify());
         return "success";
     }
 

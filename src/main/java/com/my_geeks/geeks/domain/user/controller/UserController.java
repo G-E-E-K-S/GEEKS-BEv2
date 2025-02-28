@@ -144,6 +144,18 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.saveFcmToken(userId, fcmToken));
     }
 
+    // TODO: 사용자 룸메이트 관련 알림 허용 여부 변경
+    @PatchMapping("/change/roommate/notify")
+    public BaseResponse<String> changeRoommateNotify(@CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.changeRoommateNotify(userId));
+    }
+
+    // TODO: 사용자 서비스 관련 알림 허용 여부 변경
+    @PatchMapping("/change/service/notify")
+    public BaseResponse<String> changeServiceNotify(@CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.changeServiceNotify(userId));
+    }
+
     // TODO: 생활 습관 등록 TEST
     @Deprecated
     @PostMapping("/test/create/{userId}")

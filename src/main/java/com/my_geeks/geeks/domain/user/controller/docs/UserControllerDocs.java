@@ -259,4 +259,47 @@ public interface UserControllerDocs {
                             array = @ArraySchema(schema = @Schema(implementation = GetUserSearchRes.class))))
     })
     public BaseResponse<List<GetUserSearchRes>> search(Long userId, String keyword);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[알림] 사용자 fcm 토큰 저장",
+            description = "알림을 처음 키게 되면 받는 fcm 토큰을 저장하는 기능")
+    @Parameter(name = "fcm 토큰", description = "사용자의 fcm 토큰값", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "저장 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = @ExampleObject(name = "저장 성공", value = "success")
+                    ))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<String> saveFcmToken(Long userId, String fcmToken);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[알림] 사용자 룸메이트 관련 알림 변경",
+            description = "사용자 룸메이트 관련 알림 변경")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "변경 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = @ExampleObject(name = "변경 성공", value = "success")
+                    ))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<String> changeRoommateNotify(Long userId);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[알림] 사용자 서비스 관련 알림 변경",
+            description = "사용자 서비스 관련 알림 변경")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "변경 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = @ExampleObject(name = "변경 성공", value = "success")
+                    ))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<String> changeServiceNotify(Long userId);
 }

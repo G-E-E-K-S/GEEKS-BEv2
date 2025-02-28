@@ -74,8 +74,10 @@ public class User extends CreatedTime {
         this.roleType = roleType;
         this.dormitory = dormitory;
         this.gender = gender;
-        this.notifyAllow.setRoommateNotify(false);
-        this.notifyAllow.setServiceNotify(false);
+
+        setNotifyAllow(new NotifyAllow());
+        notifyAllow.setRoommateNotify(false);
+        notifyAllow.setServiceNotify(false);
     }
 
     public void setImage(String image) {
@@ -88,6 +90,10 @@ public class User extends CreatedTime {
 
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
+    }
+
+    public void setNotifyAllow(NotifyAllow notifyAllow) {
+        this.notifyAllow = notifyAllow;
     }
 
     // TODO: 룸메이트가 맺어지면 프로필 비활성화
