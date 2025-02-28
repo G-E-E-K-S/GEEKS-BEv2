@@ -1,5 +1,10 @@
 package com.my_geeks.geeks.domain.roommate.service;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
+import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.entity.Roommate;
 import com.my_geeks.geeks.domain.roommate.entity.RoommateBookmark;
 import com.my_geeks.geeks.domain.roommate.entity.enumeration.RoommateStatus;
@@ -144,6 +149,21 @@ public class RoommateService {
         return "success";
     }
 
+    @Transactional
+    public String homecomingAlarm(Long userId) {
+        User user = getUser(userId);
+        Roommate roommate = getRoommate(user.getRoommateId());
+
+        User myRoommate = getUser(roommate.getSenderId() == userId ? roommate.getReceiverId() : roommate.getSenderId());
+
+        if(!myRoommate.getNotifyAllow().isService()) {
+            throw new CustomException(ROOMMATE_SERVICE_NOTIFY_NOT_ALLOW);
+        }
+
+        sendPushMessage("homecoming", myRoommate.getFcmToken());
+        return "success";
+    }
+
     private Roommate getRoommate(Long roommateId) {
         return roommateRepository.findById(roommateId)
                 .orElseThrow(() -> new CustomException(ROOMMATE_NOT_FOUND));
@@ -152,5 +172,38 @@ public class RoommateService {
     private User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+    }
+
+    private void sendPushMessage(String pushType, String token) {
+        Message message = null;
+
+        // TODO: 각 푸시 알림 로그 만들기
+        if(pushType.equals("homecoming")) {
+            message = Message.builder()
+                    .setNotification(
+                            Notification.builder()
+                                    .setTitle("룸메이트 귀가 알림")
+                                    .setBody("룸메이트가 곧 귀가해요!")
+                                    .build()
+                    )
+                    .setToken(token)
+                    .build();
+        } else if(pushType.equals("supply")) {
+            message = Message.builder()
+                    .setNotification(
+                            Notification.builder()
+                                    .setTitle("새로운 룸메이트 신청")
+                                    .setBody("'~'님이 나에게 룸메이트를 신청했어요!")
+                                    .build()
+                    )
+                    .setToken(token)
+                    .build();
+        }
+
+        try {
+            FirebaseMessaging.getInstance().send(message);
+        } catch (FirebaseMessagingException e) {
+            throw new CustomException(FIREBASE_MESSAGE_ERROR);
+        }
     }
 }

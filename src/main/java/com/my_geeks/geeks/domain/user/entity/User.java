@@ -1,6 +1,7 @@
 package com.my_geeks.geeks.domain.user.entity;
 
 import com.my_geeks.geeks.customResponse.CreatedTime;
+import com.my_geeks.geeks.domain.user.entity.embedded.NotifyAllow;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Dormitory;
 import com.my_geeks.geeks.domain.user.entity.enumeration.Gender;
 import com.my_geeks.geeks.domain.user.entity.enumeration.RoleType;
@@ -48,6 +49,9 @@ public class User extends CreatedTime {
 
     private boolean isOpen;
 
+    @Embedded
+    private NotifyAllow notifyAllow;
+
     @Enumerated(STRING)
     private RoleType roleType;
 
@@ -56,8 +60,6 @@ public class User extends CreatedTime {
 
     @Enumerated(STRING)
     private Gender gender;
-
-    //private Long myRoommateId;
 
     private Long roommateId;
 
@@ -72,6 +74,8 @@ public class User extends CreatedTime {
         this.roleType = roleType;
         this.dormitory = dormitory;
         this.gender = gender;
+        this.notifyAllow.setRoommateSupply(false);
+        this.notifyAllow.setService(false);
     }
 
     public void setImage(String image) {

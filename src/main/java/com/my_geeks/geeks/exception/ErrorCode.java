@@ -32,6 +32,7 @@ public enum ErrorCode {
     ALREADY_BOOKMARK_ROOMMATE_ERROR(50021, HttpStatus.INTERNAL_SERVER_ERROR, "이미 저장된 사용자입니다."),
     ALREADY_APPLY_ROOMMATE_ERROR(50022, HttpStatus.INTERNAL_SERVER_ERROR, "이미 룸메이트를 신청한 사용자입니다."),
     ALREADY_RECEIVE_APPLY_ROOMMATE_ERROR(50023, HttpStatus.INTERNAL_SERVER_ERROR, "상대방이 이미 룸메이트를 신청했습니다."),
+    ROOMMATE_SERVICE_NOTIFY_NOT_ALLOW(50024, HttpStatus.INTERNAL_SERVER_ERROR, "룸메이트가 서비스 알림을 허용하지 않았습니다."),
     // JSON 파싱 오류
     JSON_PARSING_ERROR(50010, HttpStatus.INTERNAL_SERVER_ERROR, "JSON 파싱 오류입니다."),
     // firebase 초기화 오류
@@ -42,6 +43,7 @@ public enum ErrorCode {
     DISCORD_CONVERT_JSON_ERROR(50092, HttpStatus.INTERNAL_SERVER_ERROR, "Discord Convert JSON 오류입니다."),
     // Discord Webhook 전송 오류
     DISCORD_WEBHOOK_ERROR(50093, HttpStatus.INTERNAL_SERVER_ERROR, "Discord Webhook 전송 오류입니다."),
+
     //S3 이미지 업로드 오류
     AWS_S3_UPLOAD_ERROR(50030, HttpStatus.INTERNAL_SERVER_ERROR, "AWS S3 이미지 업로드 실패 오류입니다.");
     private final Integer code;

@@ -90,6 +90,12 @@ public class RoommateController implements RoommateControllerDocs {
         return BaseResponse.ok(roommateService.deleteBulkBookmark(req));
     }
 
+    // TODO: 룸메 귀가 알림 보내기
+    @PostMapping("/homecoming")
+    public BaseResponse<String> homecomingAlarm(@CurrentUserId Long userId) {
+        return BaseResponse.ok(roommateService.homecomingAlarm(userId));
+    }
+
     // TODO: TEST 룸메 신청 보내기
     @PostMapping("/send/{matchingPointId}/{senderId}/{receiverId}")
     public BaseResponse<String> send2(@PathVariable("matchingPointId") Long matchingPointId,
