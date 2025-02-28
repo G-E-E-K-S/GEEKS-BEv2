@@ -74,8 +74,8 @@ public class User extends CreatedTime {
         this.roleType = roleType;
         this.dormitory = dormitory;
         this.gender = gender;
-        this.notifyAllow.setRoommateSupply(false);
-        this.notifyAllow.setService(false);
+        this.notifyAllow.setRoommateNotify(false);
+        this.notifyAllow.setServiceNotify(false);
     }
 
     public void setImage(String image) {

@@ -13,7 +13,10 @@ import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
 import com.my_geeks.geeks.domain.roommate.requestDto.DeleteBookmarkReq;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
+import com.my_geeks.geeks.domain.user.entity.PushDetail;
 import com.my_geeks.geeks.domain.user.entity.User;
+import com.my_geeks.geeks.domain.user.entity.enumeration.NotifyType;
+import com.my_geeks.geeks.domain.user.repository.PushDetailRepository;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.my_geeks.geeks.domain.user.entity.enumeration.NotifyType.*;
 import static com.my_geeks.geeks.exception.ErrorCode.*;
 
 @Service
@@ -31,6 +35,8 @@ import static com.my_geeks.geeks.exception.ErrorCode.*;
 public class RoommateService {
     private final UserRepository userRepository;
     private final RoommateRepository roommateRepository;
+
+    private final PushDetailRepository pushDetailRepository;
 
     private final RoommateBookmarkRepository roommateBookmarkRepository;
 
@@ -156,11 +162,11 @@ public class RoommateService {
 
         User myRoommate = getUser(roommate.getSenderId() == userId ? roommate.getReceiverId() : roommate.getSenderId());
 
-        if(!myRoommate.getNotifyAllow().isService()) {
+        if(!myRoommate.getNotifyAllow().isServiceNotify()) {
             throw new CustomException(ROOMMATE_SERVICE_NOTIFY_NOT_ALLOW);
         }
 
-        sendPushMessage("homecoming", myRoommate.getFcmToken());
+        sendPushMessage(myRoommate.getId(), HOMECOMING, myRoommate.getFcmToken());
         return "success";
     }
 
@@ -174,34 +180,39 @@ public class RoommateService {
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
     }
 
-    private void sendPushMessage(String pushType, String token) {
+    private void sendPushMessage(Long userId, NotifyType type, String token) {
         Message message = null;
+        String title = "";
+        String body = "";
 
         // TODO: 각 푸시 알림 로그 만들기
-        if(pushType.equals("homecoming")) {
-            message = Message.builder()
-                    .setNotification(
-                            Notification.builder()
-                                    .setTitle("룸메이트 귀가 알림")
-                                    .setBody("룸메이트가 곧 귀가해요!")
-                                    .build()
-                    )
-                    .setToken(token)
-                    .build();
-        } else if(pushType.equals("supply")) {
-            message = Message.builder()
-                    .setNotification(
-                            Notification.builder()
-                                    .setTitle("새로운 룸메이트 신청")
-                                    .setBody("'~'님이 나에게 룸메이트를 신청했어요!")
-                                    .build()
-                    )
-                    .setToken(token)
-                    .build();
+        if(type.equals(HOMECOMING)) {
+            title = "룸메이트 귀가 알림";
+            body = "룸메이트가 곧 귀가해요!";
+        } else if(type.equals(ROOMMATE_NEW_APPLY)) {
+            title = "새로운 룸메이트 신청";
+            body = "'~'님이 나에게 룸메이트를 신청했어요!";
         }
+
+        message = Message.builder()
+                .setNotification(
+                        Notification.builder()
+                                .setTitle(title)
+                                .setBody(body)
+                                .build()
+                )
+                .setToken(token)
+                .build();
 
         try {
             FirebaseMessaging.getInstance().send(message);
+
+            PushDetail pushDetail = PushDetail.builder()
+                    .title(title)
+                    .body(body)
+                    .userId(userId)
+                    .build();
+            pushDetailRepository.save(pushDetail);
         } catch (FirebaseMessagingException e) {
             throw new CustomException(FIREBASE_MESSAGE_ERROR);
         }

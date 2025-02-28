@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @Embeddable
 public class NotifyAllow {
-    private boolean service;
-    private boolean roommateSupply;
+    private boolean serviceNotify;
+    private boolean roommateNotify;
 }
