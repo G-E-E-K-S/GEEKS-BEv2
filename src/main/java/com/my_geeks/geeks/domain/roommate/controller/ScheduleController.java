@@ -3,6 +3,7 @@ package com.my_geeks.geeks.domain.roommate.controller;
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.controller.docs.ScheduleControllerDocs;
 import com.my_geeks.geeks.domain.roommate.requestDto.CreateScheduleReq;
+import com.my_geeks.geeks.domain.roommate.requestDto.UpdateScheduleReq;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetScheduleInfo;
 import com.my_geeks.geeks.domain.roommate.responseDto.SchedulesOfDay;
 import com.my_geeks.geeks.domain.roommate.service.ScheduleService;
@@ -32,6 +33,14 @@ public class ScheduleController implements ScheduleControllerDocs {
             @PathVariable("month") int month
     ) {
         return BaseResponse.ok(scheduleService.getMonthSchedule(userId, year, month));
+    }
+
+    @PutMapping("/schedules/modify")
+    public BaseResponse<String> modify(
+            @CurrentUserId Long userId,
+            @RequestBody UpdateScheduleReq req
+            ) {
+        return BaseResponse.ok(scheduleService.modify(userId, req));
     }
 
 }

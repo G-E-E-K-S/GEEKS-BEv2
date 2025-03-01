@@ -1,6 +1,7 @@
 package com.my_geeks.geeks.domain.roommate.entity;
 
 import com.my_geeks.geeks.domain.roommate.entity.enumeration.ScheduleType;
+import com.my_geeks.geeks.domain.roommate.requestDto.UpdateScheduleReq;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,5 +47,13 @@ public class RoommateSchedule {
         this.endDate = endDate;
         this.type = type;
         this.description = description;
+    }
+
+    public void updateSchedule(UpdateScheduleReq req) {
+        this.title = req.getTitle();
+        this.startDate = req.getStartDate();
+        this.endDate = req.getEndDate();
+        this.type = req.getType();
+        this.description = req.getDescription();
     }
 }

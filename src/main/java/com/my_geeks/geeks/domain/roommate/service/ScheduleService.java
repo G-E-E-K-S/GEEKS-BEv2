@@ -3,6 +3,7 @@ package com.my_geeks.geeks.domain.roommate.service;
 import com.my_geeks.geeks.domain.roommate.entity.RoommateSchedule;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateScheduleRepository;
 import com.my_geeks.geeks.domain.roommate.requestDto.CreateScheduleReq;
+import com.my_geeks.geeks.domain.roommate.requestDto.UpdateScheduleReq;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetScheduleInfo;
 import com.my_geeks.geeks.domain.roommate.responseDto.SchedulesOfDay;
 import com.my_geeks.geeks.domain.user.entity.User;
@@ -19,7 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static com.my_geeks.geeks.exception.ErrorCode.USER_NOT_FOUND;
+import static com.my_geeks.geeks.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -44,8 +45,6 @@ public class ScheduleService {
         LocalDateTime startDate = yearMonth.atDay(1).atTime(0, 0, 0);
         LocalDateTime endDate = yearMonth.atEndOfMonth().atTime(23, 59, 59);
 
-        System.out.println("startDate = " + startDate + "endDate = " + endDate);
-
         List<GetScheduleInfo> monthSchedules = roommateScheduleRepository.findMonthSchedules(user.getRoommateId(), startDate, endDate);
         List<SchedulesOfDay> calendar = new ArrayList<>(Collections.nCopies(endDate.getDayOfMonth() + 1, null));
 
@@ -53,7 +52,7 @@ public class ScheduleService {
             LocalDateTime scheduleStart = schedule.getStartDate();
             LocalDateTime scheduleEnd = schedule.getEndDate();
 
-            // 일정의 시작 달이 month 보다 이전이면
+            // 일정의 시작 달이 month 보다 이전이면 startDate
             LocalDateTime currentDate = scheduleStart.isBefore(startDate) ? startDate : scheduleStart;
 
             while (!currentDate.isAfter(scheduleEnd) && !currentDate.isAfter(endDate)) {
@@ -72,6 +71,19 @@ public class ScheduleService {
         });
 
         return calendar;
+    }
+
+    @Transactional
+    public String modify(Long userId, UpdateScheduleReq req) {
+        RoommateSchedule schedule = roommateScheduleRepository.findById(req.getRoommateScheduleId())
+                .orElseThrow(() -> new CustomException(SCHEDULE_NOT_FOUND));
+
+        if(!schedule.getWriterId().equals(userId)) {
+            throw new CustomException(WRITER_NOT_MATCHED);
+        }
+
+        schedule.updateSchedule(req);
+        return "success";
     }
 
     private User getUser(Long userId) {
