@@ -37,7 +37,7 @@ public class DataInit {
         List<User> users = new ArrayList<>();
 
         users.add(User.builder()
-                .email("bak3839@naver.com")
+                .email("1@sangmyung.kr")
                 .password(encoder.encode("1234"))
                 .nickname("TEST_1")
                 .major("소프트웨어학과")

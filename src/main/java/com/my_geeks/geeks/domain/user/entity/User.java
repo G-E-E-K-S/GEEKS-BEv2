@@ -42,7 +42,6 @@ public class User extends CreatedTime {
     @Column(length = 100)
     private String image;
 
-    @Column(length = 100)
     private String fcmToken;
 
     private int studentNum;
