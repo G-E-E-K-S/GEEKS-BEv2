@@ -34,7 +34,7 @@ public enum ErrorCode {
     ALREADY_RECEIVE_APPLY_ROOMMATE_ERROR(50023, HttpStatus.INTERNAL_SERVER_ERROR, "상대방이 이미 룸메이트를 신청했습니다."),
     ROOMMATE_SERVICE_NOTIFY_NOT_ALLOW(50024, HttpStatus.INTERNAL_SERVER_ERROR, "룸메이트가 서비스 알림을 허용하지 않았습니다."),
     SCHEDULE_NOT_FOUND(50025, HttpStatus.INTERNAL_SERVER_ERROR, "존재하지 않는 일정입니다."),
-    WRITER_NOT_MATCHED(50025, HttpStatus.INTERNAL_SERVER_ERROR, "일정의 작성가자 일치하지 않습니다."),
+    WRITER_NOT_MATCHED(50026, HttpStatus.INTERNAL_SERVER_ERROR, "일정의 작성가자 일치하지 않습니다."),
     // JSON 파싱 오류
     JSON_PARSING_ERROR(50010, HttpStatus.INTERNAL_SERVER_ERROR, "JSON 파싱 오류입니다."),
     // firebase 초기화 오류

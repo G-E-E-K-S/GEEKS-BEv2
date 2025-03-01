@@ -186,6 +186,21 @@ public interface RoommateControllerDocs {
     public BaseResponse<String> bookmarkBulkCancel(DeleteBookmarkReq req);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[홈] 룸메이트 귀가 알림",
+            description = "내 룸메이트에게 귀가 알림 전송")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "전송 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "전송 성공", value = "success")
+                            }))
+    })
+    @ApiErrorResponses({ROOMMATE_SERVICE_NOTIFY_NOT_ALLOW, USER_NOT_FOUND})
+    public BaseResponse<String> homecomingAlarm(Long userId);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[룸메 찾기] 룸메 신청 - 룸메이트 신청 보내기(테스트 데이터 만들기 용도)",
             description = "matchingPointId: 1 <br/>" +
                     "senderId:2<br/>" +
