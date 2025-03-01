@@ -13,8 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -64,6 +67,44 @@ public class ScheduleService {
 
                 // 해당 날짜에 일정 추가
                 calendar.get(day).getSchedules().add(schedule);
+
+                // 다음 날로 이동
+                currentDate = currentDate.plusDays(1);
+            }
+        });
+
+        return calendar;
+    }
+
+    public List<SchedulesOfDay> getWeekSchedule(Long userId) {
+        User user = getUser(userId);
+
+        LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        LocalDate endOfWeek = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+
+        LocalDateTime startDate = startOfWeek.atTime(0, 0, 0);
+        LocalDateTime endDate = endOfWeek.atTime(23, 59, 59);
+
+        List<GetScheduleInfo> monthSchedules = roommateScheduleRepository.findMonthSchedules(user.getRoommateId(), startDate, endDate);
+        List<SchedulesOfDay> calendar = new ArrayList<>(Collections.nCopies(7, null));
+
+        monthSchedules.forEach(schedule -> {
+            LocalDateTime scheduleStart = schedule.getStartDate();
+            LocalDateTime scheduleEnd = schedule.getEndDate();
+
+            // 일정의 시작 달이 month 보다 이전이면 startDate
+            LocalDateTime currentDate = scheduleStart.isBefore(startDate) ? startDate : scheduleStart;
+
+            while (!currentDate.isAfter(scheduleEnd) && !currentDate.isAfter(endDate)) {
+                int dayIndex = currentDate.getDayOfWeek().getValue() % 7;
+
+                if (calendar.get(dayIndex) == null) {
+                    calendar.set(dayIndex, new SchedulesOfDay());
+                }
+
+                // 해당 날짜에 일정 추가
+                calendar.get(dayIndex).getSchedules().add(schedule);
 
                 // 다음 날로 이동
                 currentDate = currentDate.plusDays(1);

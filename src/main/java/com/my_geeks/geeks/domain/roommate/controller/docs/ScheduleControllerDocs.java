@@ -54,6 +54,17 @@ public interface ScheduleControllerDocs {
     public BaseResponse<List<SchedulesOfDay>> getMonthSchedule(Long userId, int year, int month);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[홈] 일 ~ 토 일주일치 일정 조회",
+            description = "일(0) ~ 토(6)까지 일정 조회(배열 0 ~ 6번 인덱스에 일정들이 배열로 담겨있음)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = SchedulesOfDay.class))))
+    })
+    public BaseResponse<List<SchedulesOfDay>> getWeekSchedule(Long userId);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[캘린더] 일정 수정",
             description = "일정 수정하는 기능 || 요청 DTO: UpdateScheduleReq")
     @ApiResponses(value = {
