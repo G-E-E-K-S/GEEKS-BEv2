@@ -287,7 +287,7 @@ public interface UserControllerDocs {
                     ))
     })
     @ApiErrorResponses({USER_NOT_FOUND})
-    public BaseResponse<String> changeRoommateNotify(Long userId);
+    public BaseResponse<Boolean> changeRoommateNotify(Long userId);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[알림] 사용자 서비스 관련 알림 변경",
@@ -301,5 +301,18 @@ public interface UserControllerDocs {
                     ))
     })
     @ApiErrorResponses({USER_NOT_FOUND})
-    public BaseResponse<String> changeServiceNotify(Long userId);
+    public BaseResponse<Boolean> changeServiceNotify(Long userId);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[알림] 사용자 전체 알림 상태 조회",
+            description = "사용자의 모든 알림 상태 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "변경 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = GetNotifyStateRes.class)
+                    ))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<GetNotifyStateRes> getNotifyState(Long userId);
 }

@@ -77,7 +77,9 @@ public class User extends CreatedTime {
 
         setNotifyAllow(new NotifyAllow());
         notifyAllow.setRoommateNotify(false);
+        notifyAllow.setChatNotify(false);
         notifyAllow.setServiceNotify(false);
+        notifyAllow.setMarketingNotify(false);
     }
 
     public void setImage(String image) {

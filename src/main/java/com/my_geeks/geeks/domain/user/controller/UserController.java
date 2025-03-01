@@ -146,15 +146,22 @@ public class UserController implements UserControllerDocs {
 
     // TODO: 사용자 룸메이트 관련 알림 허용 여부 변경
     @PatchMapping("/change/roommate/notify")
-    public BaseResponse<String> changeRoommateNotify(@CurrentUserId Long userId) {
+    public BaseResponse<Boolean> changeRoommateNotify(@CurrentUserId Long userId) {
         return BaseResponse.ok(userService.changeRoommateNotify(userId));
     }
 
     // TODO: 사용자 서비스 관련 알림 허용 여부 변경
     @PatchMapping("/change/service/notify")
-    public BaseResponse<String> changeServiceNotify(@CurrentUserId Long userId) {
+    public BaseResponse<Boolean> changeServiceNotify(@CurrentUserId Long userId) {
         return BaseResponse.ok(userService.changeServiceNotify(userId));
     }
+
+    // TODO: 사용자 알림 허용 상태 조회
+    @GetMapping ("/notify/state")
+    public BaseResponse<GetNotifyStateRes> getNotifyState(@CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.getNotifyState(userId));
+    }
+
 
     // TODO: 생활 습관 등록 TEST
     @Deprecated

@@ -291,19 +291,34 @@ public class UserService {
     }
 
     @Transactional
-    public String changeRoommateNotify(Long userId) {
+    public Boolean changeRoommateNotify(Long userId) {
         User user = getUser(userId);
         NotifyAllow notifyAllow = user.getNotifyAllow();
-        notifyAllow.setRoommateNotify(!notifyAllow.isRoommateNotify());
-        return "success";
+        boolean notifyStatus = notifyAllow.isRoommateNotify();
+        notifyAllow.setRoommateNotify(!notifyStatus);
+        return !notifyStatus;
     }
 
     @Transactional
-    public String changeServiceNotify(Long userId) {
+    public Boolean changeServiceNotify(Long userId) {
         User user = getUser(userId);
         NotifyAllow notifyAllow = user.getNotifyAllow();
-        notifyAllow.setServiceNotify(!notifyAllow.isServiceNotify());
-        return "success";
+
+        boolean notifyStatus = notifyAllow.isServiceNotify();
+        notifyAllow.setServiceNotify(!notifyStatus);
+        return !notifyStatus;
+    }
+
+    public GetNotifyStateRes getNotifyState(Long userId) {
+        User user = getUser(userId);
+        NotifyAllow notify = user.getNotifyAllow();
+
+        return GetNotifyStateRes.builder()
+                .roommate(notify.isRoommateNotify())
+                .chat(notify.isChatNotify())
+                .service(notify.isServiceNotify())
+                .marketing(notify.isMarketingNotify())
+                .build();
     }
 
     public List<GetUserSearchRes> userSearch(Long userId, String keyword) {

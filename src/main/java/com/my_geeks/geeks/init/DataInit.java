@@ -30,7 +30,7 @@ public class DataInit {
 
     private final BCryptPasswordEncoder encoder;
 
-    //@PostConstruct
+    @PostConstruct
     public void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 

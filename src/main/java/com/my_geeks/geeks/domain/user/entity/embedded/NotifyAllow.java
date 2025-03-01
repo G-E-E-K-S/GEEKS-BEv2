@@ -9,5 +9,7 @@ import lombok.Setter;
 @Embeddable
 public class NotifyAllow {
     private boolean serviceNotify;
+    private boolean chatNotify;
     private boolean roommateNotify;
+    private boolean marketingNotify;
 }
