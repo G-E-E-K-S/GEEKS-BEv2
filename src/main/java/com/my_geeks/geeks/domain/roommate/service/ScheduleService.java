@@ -80,6 +80,8 @@ public class ScheduleService {
     public List<SchedulesOfDay> getWeekSchedule(Long userId) {
         User user = getUser(userId);
 
+        if(user.getRoommateId() == null) return null;
+
         LocalDate today = LocalDate.now();
         LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
         LocalDate endOfWeek = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
