@@ -46,6 +46,8 @@ public class ScheduleService {
         YearMonth yearMonth = YearMonth.of(year, month);
         System.out.println("userId = " + userId);
 
+        if(user.getRoommateId() == null) return null;
+
         LocalDateTime startDate = yearMonth.atDay(1).atTime(0, 0, 0);
         LocalDateTime endDate = yearMonth.atEndOfMonth().atTime(23, 59, 59);
 
