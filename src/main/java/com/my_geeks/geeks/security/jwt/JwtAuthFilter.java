@@ -29,7 +29,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         String accessToken = request.getHeader("Authorization");
-
+        System.out.println("security jwt auth filter");
         try {
             if (accessToken != null && accessToken.startsWith("Bearer ")) {
                 // String token = accessToken;

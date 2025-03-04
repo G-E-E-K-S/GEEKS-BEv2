@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -52,14 +53,6 @@ public class SecurityConfig {
         http.formLogin((form) -> form.disable());
         http.httpBasic(AbstractHttpConfigurer::disable);
 
-        //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
-        http
-                .addFilterBefore(
-                new JwtAuthFilter(customUserDetailsService, jwtUtil),
-                UsernamePasswordAuthenticationFilter.class
-                )
-                .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
-
         // 권한 규칙 작성
         http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(AUTH_WHITELIST).permitAll()
@@ -68,7 +61,28 @@ public class SecurityConfig {
 //                        .anyRequest().authenticated()
         );
 
+        //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
+        http
+                .addFilterBefore(
+                new JwtAuthFilter(customUserDetailsService, jwtUtil),
+                UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
+
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers(
+                        "/api/v1/user/check/email/**",
+                        "/api/v1/user/auth/code/**",
+                        "/api/v1/user/check/nickname/**",
+                        "/api/v1/user/signup",
+                        "/api/v1/user/login",
+                        "/swagger-ui/**"
+                );
     }
 
     UrlBasedCorsConfigurationSource corsConfigurationSource() {
