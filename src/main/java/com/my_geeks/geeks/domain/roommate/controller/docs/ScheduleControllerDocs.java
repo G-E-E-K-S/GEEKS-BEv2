@@ -78,4 +78,20 @@ public interface ScheduleControllerDocs {
     })
     @ApiErrorResponses({SCHEDULE_NOT_FOUND, WRITER_NOT_MATCHED})
     public BaseResponse<String> modify(Long userId, UpdateScheduleReq req);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Parameter(name = "roommateScheduleId", description = "삭제할 일정의 PK", in = ParameterIn.PATH)
+    @Operation(summary = "[캘린더] 일정 삭제",
+            description = "일정 삭제하는 기능")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "삭제 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(name = "삭제 성공", value = "success")
+                            }))
+    })
+    @ApiErrorResponses({SCHEDULE_NOT_FOUND, WRITER_NOT_MATCHED})
+    public BaseResponse<String> delete(Long userId, Long roommateScheduleId);
 }

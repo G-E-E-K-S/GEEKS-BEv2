@@ -54,4 +54,12 @@ public class ScheduleController implements ScheduleControllerDocs {
         return BaseResponse.ok(scheduleService.modify(userId, req));
     }
 
+    // 일정 삭제
+    @DeleteMapping("/schedule/delete/{roommateScheduleId}")
+    public BaseResponse<String> delete(
+            @CurrentUserId Long userId,
+            @PathVariable("roommateScheduleId") Long roommateScheduleId
+    ) {
+        return BaseResponse.ok(scheduleService.delete(userId, roommateScheduleId));
+    }
 }

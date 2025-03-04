@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     // 존재하지 않는 요청에 대한 예외
     @ExceptionHandler(value = {NoHandlerFoundException.class, HttpRequestMethodNotSupportedException.class})
     public BaseResponse<?> handleNoPageFoundException(Exception e, WebRequest request) {
-        discordSender.sendWebhookMessage(e.toString(), e.getMessage(), request);
+        //discordSender.sendWebhookMessage(e.toString(), e.getMessage(), request);
         log.error("GlobalExceptionHandler catch NoHandlerFoundException : {}", e.getMessage());
         return BaseResponse.fail(new CustomException(ErrorCode.NOT_FOUND_END_POINT));
     }
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     // 커스텀 예외
     @ExceptionHandler(value = {CustomException.class})
     public BaseResponse<?> handleCustomException(CustomException e, WebRequest request) {
-        discordSender.sendWebhookMessage(e.getErrorCode().name(), e.getMessage(), request);
+        //discordSender.sendWebhookMessage(e.getErrorCode().name(), e.getMessage(), request);
         log.error("handleCustomException() in GlobalExceptionHandler throw CustomException : {}", e.getMessage());
         return BaseResponse.fail(e);
     }
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     // 기본 예외
     @ExceptionHandler(value = {Exception.class})
     public BaseResponse<?> handleException(Exception e, WebRequest request) {
-        discordSender.sendWebhookMessage(e.toString(), e.getMessage(), request);
+        //discordSender.sendWebhookMessage(e.toString(), e.getMessage(), request);
         log.error("handleException() in GlobalExceptionHandler throw Exception : {}", e.getMessage());
         e.printStackTrace();
         return BaseResponse.fail(new CustomException(ErrorCode.INTERNAL_SERVER_ERROR));

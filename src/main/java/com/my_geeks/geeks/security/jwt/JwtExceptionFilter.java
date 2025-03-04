@@ -30,7 +30,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding("UTF-8");
             objectMapper.writeValue(response.getWriter(), BaseResponse.fail(e));
-            discordSender.sendWebhookMessage2(e.getErrorCode().name(), e.getMessage(), request.getMethod() + " " + request.getRequestURL().toString());
+            //discordSender.sendWebhookMessage2(e.getErrorCode().name(), e.getMessage(), request.getMethod() + " " + request.getRequestURL().toString());
         }
     }
 }
