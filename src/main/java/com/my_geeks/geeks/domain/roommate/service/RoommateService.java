@@ -1,9 +1,6 @@
 package com.my_geeks.geeks.domain.roommate.service;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.entity.Roommate;
 import com.my_geeks.geeks.domain.roommate.entity.RoommateBookmark;
@@ -195,12 +192,11 @@ public class RoommateService {
         }
 
         message = Message.builder()
-                .setNotification(
-                        Notification.builder()
-                                .setTitle(title)
-                                .setBody(body)
-                                .build()
-                )
+                .setWebpushConfig(WebpushConfig.builder()
+                        .putHeader("Urgency", "high")
+                        .build())
+                .putData("title", title)
+                .putData("body", body)
                 .setToken(token)
                 .build();
 
