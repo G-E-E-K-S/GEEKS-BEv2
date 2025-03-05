@@ -93,6 +93,10 @@ public class User extends CreatedTime {
         this.fcmToken = fcmToken;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setNotifyAllow(NotifyAllow notifyAllow) {
         this.notifyAllow = notifyAllow;
     }

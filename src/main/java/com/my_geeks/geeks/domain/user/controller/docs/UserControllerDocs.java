@@ -2,10 +2,7 @@ package com.my_geeks.geeks.domain.user.controller.docs;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
-import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
-import com.my_geeks.geeks.domain.user.requestDto.LoginReq;
-import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
-import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
+import com.my_geeks.geeks.domain.user.requestDto.*;
 import com.my_geeks.geeks.domain.user.responseDto.*;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.security.custom.CustomUserDetails;
@@ -315,4 +312,41 @@ public interface UserControllerDocs {
     })
     @ApiErrorResponses({USER_NOT_FOUND})
     public BaseResponse<GetNotifyStateRes> getNotifyState(Long userId);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Parameter(name = "password", description = "현재 비밀번호", in = ParameterIn.PATH)
+    @Operation(summary = "[비밀번호 변경] 현재 비밀번호 확인",
+            description =
+                    """
+                    **현재 비밀번호 확인**
+                    - true : 비밀번호 일치
+                    - false : 비밀번호 불일치
+                    """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "확인",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Boolean.class)
+                    ))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<Boolean> checkPassword(Long userId, String password);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Parameter(name = "password", description = "현재 비밀번호", in = ParameterIn.PATH)
+    @Operation(summary = "[비밀번호 변경] 비밀번호 변경",
+            description =
+                    """
+                    **비밀번호 변경**
+                    """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "변경 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = @ExampleObject(name = "변경 성공", value = "success")
+                    ))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<String> changePassword(Long userId, UpdatePasswordReq req);
 }

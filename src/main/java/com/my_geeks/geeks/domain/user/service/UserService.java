@@ -326,6 +326,23 @@ public class UserService {
         return userRepository.searchByKeyword(userId, user.getGender(), user.getDormitory(), keyword);
     }
 
+    public Boolean checkPassword(Long userId, String password) {
+        User user = getUser(userId);
+
+        if(!encoder.matches(password, user.getPassword())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Transactional
+    public String changePassword(Long userId, String password) {
+        User user = getUser(userId);
+        user.setPassword(encoder.encode(password));
+        return "success";
+    }
+
     private User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));

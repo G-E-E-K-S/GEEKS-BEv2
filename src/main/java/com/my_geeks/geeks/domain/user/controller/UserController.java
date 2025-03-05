@@ -2,10 +2,7 @@ package com.my_geeks.geeks.domain.user.controller;
 
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.user.controller.docs.UserControllerDocs;
-import com.my_geeks.geeks.domain.user.requestDto.CreateUserDetailReq;
-import com.my_geeks.geeks.domain.user.requestDto.LoginReq;
-import com.my_geeks.geeks.domain.user.requestDto.SignUpReq;
-import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
+import com.my_geeks.geeks.domain.user.requestDto.*;
 import com.my_geeks.geeks.domain.user.responseDto.*;
 import com.my_geeks.geeks.domain.user.service.UserService;
 import com.my_geeks.geeks.security.custom.CurrentUserId;
@@ -160,6 +157,24 @@ public class UserController implements UserControllerDocs {
     @GetMapping ("/notify/state")
     public BaseResponse<GetNotifyStateRes> getNotifyState(@CurrentUserId Long userId) {
         return BaseResponse.ok(userService.getNotifyState(userId));
+    }
+
+    // TODO: 비밀번호 확인
+    @GetMapping("/check/password/{password}")
+    public BaseResponse<Boolean> checkPassword(
+            @CurrentUserId Long userId,
+            @PathVariable("password") String password
+    ) {
+        return BaseResponse.ok(userService.checkPassword(userId, password));
+    }
+
+    // TODO: 비밀번호 변경
+    @PatchMapping("/change/password")
+    public BaseResponse<String> changePassword(
+            @CurrentUserId Long userId,
+            @RequestBody UpdatePasswordReq req
+            ) {
+        return BaseResponse.ok(userService.changePassword(userId, req.getPassword()));
     }
 
 
