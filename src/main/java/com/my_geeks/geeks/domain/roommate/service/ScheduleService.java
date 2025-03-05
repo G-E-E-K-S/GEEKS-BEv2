@@ -51,7 +51,7 @@ public class ScheduleService {
         LocalDateTime startDate = yearMonth.atDay(1).atTime(0, 0, 0);
         LocalDateTime endDate = yearMonth.atEndOfMonth().atTime(23, 59, 59);
 
-        List<GetScheduleInfo> monthSchedules = roommateScheduleRepository.findMonthSchedules(user.getRoommateId(), startDate, endDate);
+        List<GetScheduleInfo> monthSchedules = roommateScheduleRepository.findMonthSchedules(userId, user.getRoommateId(), startDate, endDate);
         List<SchedulesOfDay> calendar = new ArrayList<>(Collections.nCopies(endDate.getDayOfMonth() + 1, null));
 
         monthSchedules.forEach(schedule -> {
@@ -91,7 +91,7 @@ public class ScheduleService {
         LocalDateTime startDate = startOfWeek.atTime(0, 0, 0);
         LocalDateTime endDate = endOfWeek.atTime(23, 59, 59);
 
-        List<GetScheduleInfo> monthSchedules = roommateScheduleRepository.findMonthSchedules(user.getRoommateId(), startDate, endDate);
+        List<GetScheduleInfo> monthSchedules = roommateScheduleRepository.findMonthSchedules(userId, user.getRoommateId(), startDate, endDate);
         List<SchedulesOfDay> calendar = new ArrayList<>(Collections.nCopies(7, null));
 
         monthSchedules.forEach(schedule -> {

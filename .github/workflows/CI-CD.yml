@@ -107,7 +107,7 @@ jobs:
           script_stop: true
           script: |
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-            sudo docker-compose -f $COMPOSE down
+#            sudo docker-compose -f $COMPOSE down
             sudo docker pull ${{ secrets.DOCKERHUB_REPO }}
             sudo docker-compose -f $COMPOSE up -d
             

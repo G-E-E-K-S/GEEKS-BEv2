@@ -12,10 +12,10 @@ public interface RoommateScheduleRepository extends JpaRepository<RoommateSchedu
 
     @Query("select new com.my_geeks.geeks.domain.roommate.responseDto.GetScheduleInfo(" +
             "rms.id, rms.title, rms.startDate, rms.endDate, rms.type, rms.description, u.nickname, u.image, " +
-            "CASE WHEN rms.writerId = u.id THEN true ELSE false END) " +
+            "CASE WHEN rms.writerId = :userId THEN true ELSE false END) " +
             "from RoommateSchedule rms " +
             "join User u on rms.writerId = u.id " +
             "where rms.roommateId = :roommateId " +
             "and (rms.startDate between :startDate and :endDate or rms.endDate between :startDate and :endDate)")
-    List<GetScheduleInfo> findMonthSchedules(Long roommateId, LocalDateTime startDate, LocalDateTime endDate);
+    List<GetScheduleInfo> findMonthSchedules(Long userId, Long roommateId, LocalDateTime startDate, LocalDateTime endDate);
 }
