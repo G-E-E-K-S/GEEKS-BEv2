@@ -28,6 +28,9 @@ public class GetMyPageRes {
     @Schema(description = "사용자 프로필 노출 여부")
     private boolean isOpen;
 
+    @Schema(description = "사용자 fcm 토큰 보유 여부")
+    private boolean tokenState;
+
     @Schema(description = "사용자 룸메이트 정보")
     private MyRoommate myRoommate;
 
@@ -63,6 +66,7 @@ public class GetMyPageRes {
         res.introduction = user.getIntroduction();
         res.image = user.getImage();
         res.isOpen = user.isOpen();
+        res.tokenState = user.getFcmToken() != null;
 
         if(userRoommate != null) {
             res.myRoommate = MyRoommate.builder()
