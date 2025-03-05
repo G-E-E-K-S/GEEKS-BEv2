@@ -72,19 +72,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-                .requestMatchers(
-                        "/api/v1/user/check/email/**",
-                        "/api/v1/user/auth/code/**",
-                        "/api/v1/user/check/nickname/**",
-                        "/api/v1/user/signup",
-                        "/api/v1/user/login",
-                        "/swagger-ui/**"
-                );
-    }
-
     UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(

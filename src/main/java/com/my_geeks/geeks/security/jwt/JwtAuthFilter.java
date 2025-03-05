@@ -14,14 +14,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtUtil jwtUtil;
+
+    private static final String[] EXCLUDE_PATHS = {
+            "/api/v1/user/check/email/**",
+            "/api/v1/user/auth/code/**",
+            "/api/v1/user/check/nickname/**",
+            "/api/v1/user/signup",
+            "/api/v1/user/login",
+            "/swagger-ui/**",
+            "/prometheus/**"
+    };
 
     /**
      * JWT 검증, 유효하다면 UserDetailService 의 loadByUserName 으로 해당 유저가 데이터베이스에 존재하는지 판단
@@ -69,5 +81,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             e.printStackTrace();
             throw new CustomException(ErrorCode.JWT_FILTER_ERROR);
         }
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String requestURI = request.getRequestURI();
+        AntPathMatcher antPathMatcher = new AntPathMatcher();
+
+        return Arrays.stream(EXCLUDE_PATHS)
+                .anyMatch(path -> antPathMatcher.match(path, requestURI));
     }
 }
