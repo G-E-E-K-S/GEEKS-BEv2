@@ -17,6 +17,9 @@ import com.my_geeks.geeks.domain.user.repository.PushDetailRepository;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +39,17 @@ public class RoommateService {
     private final PushDetailRepository pushDetailRepository;
 
     private final RoommateBookmarkRepository roommateBookmarkRepository;
+
+    private final MeterRegistry meterRegistry;
+
+    private Counter homecomingSendCounter;
+    private Counter roomateAcceptCounter;
+
+    @PostConstruct
+    public void initMetrics() {
+        this.homecomingSendCounter = meterRegistry.counter("homecoming.send.counter");
+        this.roomateAcceptCounter = meterRegistry.counter("roommate.accept.counter");
+    }
 
     @Transactional
     public String send(Long senderId, Long receiverId, Long matchingPointId) {
@@ -106,6 +120,9 @@ public class RoommateService {
 
         // 나머지 요청 삭제
         roommateRepository.deleteOtherApply(roommateId, senderId, receiverId);
+
+        // 룸메이트 매칭 지표 수집
+        roomateAcceptCounter.increment();
         return "success";
     }
 
@@ -164,6 +181,9 @@ public class RoommateService {
         }
 
         sendPushMessage(myRoommate.getId(), HOMECOMING, myRoommate.getFcmToken());
+
+        // 귀가 알림 지표 수집
+        homecomingSendCounter.increment();
         return "success";
     }
 

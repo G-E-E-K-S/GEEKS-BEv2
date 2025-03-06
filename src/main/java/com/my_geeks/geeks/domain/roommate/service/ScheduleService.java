@@ -9,6 +9,9 @@ import com.my_geeks.geeks.domain.roommate.responseDto.SchedulesOfDay;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.exception.CustomException;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +35,22 @@ public class ScheduleService {
     private final UserRepository userRepository;
     private final RoommateScheduleRepository roommateScheduleRepository;
 
+    private final MeterRegistry meterRegistry;
+
+    private Counter scheduleCreateCounter;
+
+    @PostConstruct
+    public void initMetrics() {
+        this.scheduleCreateCounter = meterRegistry.counter("schedule.create.counter");
+    }
+
     @Transactional
     public String create(Long userId, CreateScheduleReq req) {
         User user = getUser(userId);
 
         RoommateSchedule roommateSchedule = req.toEntity(user.getRoommateId(), userId);
         roommateScheduleRepository.save(roommateSchedule);
+        scheduleCreateCounter.increment();
         return "success";
     }
 
