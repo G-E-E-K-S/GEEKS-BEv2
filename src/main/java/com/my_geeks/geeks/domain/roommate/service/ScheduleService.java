@@ -1,5 +1,6 @@
 package com.my_geeks.geeks.domain.roommate.service;
 
+import com.my_geeks.geeks.actuator.ActuatorCounter;
 import com.my_geeks.geeks.domain.roommate.entity.RoommateSchedule;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateScheduleRepository;
 import com.my_geeks.geeks.domain.roommate.requestDto.CreateScheduleReq;
@@ -35,14 +36,7 @@ public class ScheduleService {
     private final UserRepository userRepository;
     private final RoommateScheduleRepository roommateScheduleRepository;
 
-    private final MeterRegistry meterRegistry;
-
-    private Counter scheduleCreateCounter;
-
-    @PostConstruct
-    public void initMetrics() {
-        this.scheduleCreateCounter = meterRegistry.counter("schedule.create.counter");
-    }
+    private final ActuatorCounter actuatorCounter;
 
     @Transactional
     public String create(Long userId, CreateScheduleReq req) {
@@ -50,7 +44,7 @@ public class ScheduleService {
 
         RoommateSchedule roommateSchedule = req.toEntity(user.getRoommateId(), userId);
         roommateScheduleRepository.save(roommateSchedule);
-        scheduleCreateCounter.increment();
+        actuatorCounter.scheduleCreateIncrement();
         return "success";
     }
 

@@ -1,6 +1,7 @@
 package com.my_geeks.geeks.domain.roommate.service;
 
 import com.google.firebase.messaging.*;
+import com.my_geeks.geeks.actuator.ActuatorCounter;
 import com.my_geeks.geeks.customResponse.BaseResponse;
 import com.my_geeks.geeks.domain.roommate.entity.Roommate;
 import com.my_geeks.geeks.domain.roommate.entity.RoommateBookmark;
@@ -40,16 +41,7 @@ public class RoommateService {
 
     private final RoommateBookmarkRepository roommateBookmarkRepository;
 
-    private final MeterRegistry meterRegistry;
-
-    private Counter homecomingSendCounter;
-    private Counter roomateAcceptCounter;
-
-    @PostConstruct
-    public void initMetrics() {
-        this.homecomingSendCounter = meterRegistry.counter("homecoming.send.counter");
-        this.roomateAcceptCounter = meterRegistry.counter("roommate.accept.counter");
-    }
+    private final ActuatorCounter actuatorCounter;
 
     @Transactional
     public String send(Long senderId, Long receiverId, Long matchingPointId) {
@@ -122,7 +114,7 @@ public class RoommateService {
         roommateRepository.deleteOtherApply(roommateId, senderId, receiverId);
 
         // 룸메이트 매칭 지표 수집
-        roomateAcceptCounter.increment();
+        actuatorCounter.roommateAcceptIncrement();
         return "success";
     }
 
@@ -183,7 +175,7 @@ public class RoommateService {
         sendPushMessage(myRoommate.getId(), HOMECOMING, myRoommate.getFcmToken());
 
         // 귀가 알림 지표 수집
-        homecomingSendCounter.increment();
+        actuatorCounter.homecomingSendIncrement();
         return "success";
     }
 
