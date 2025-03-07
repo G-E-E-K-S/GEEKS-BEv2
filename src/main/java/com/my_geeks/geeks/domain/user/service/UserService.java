@@ -152,7 +152,7 @@ public class UserService {
         Boolean exists = userRepository.existsByNickname(nickname);
 
         if(exists) {
-            throw new CustomException(DUPLICATE_NICKNAME_ERROR);
+            return "duplicate";
         }
 
         return "available";

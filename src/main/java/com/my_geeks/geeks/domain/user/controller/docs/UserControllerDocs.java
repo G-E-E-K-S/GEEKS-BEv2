@@ -63,16 +63,13 @@ public interface UserControllerDocs {
     public BaseResponse<String> codeCheck(String email, String code);
 
     @Operation(summary = "[온보딩] 닉네임 중복 확인",
-            description = "사용가능한 닉네임이면 available 반환, 중복시 오류 코드 반환")
+            description = "사용가능한 닉네임이면 available 반환, 중복시 duplicate 반환")
     @Parameter(name = "email", description = "사용자가 입력한 이메일", in = ParameterIn.PATH)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "닉네임 사용가능",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = String.class),
-                            examples = {
-                                    @ExampleObject(name = "닉네임 사용 가능", value = "true")
-                            })),
+                            schema = @Schema(implementation = String.class)))
     })
     @ApiErrorResponses({DUPLICATE_NICKNAME_ERROR})
     public BaseResponse<String> nicknameCheck(String email);
