@@ -91,9 +91,9 @@ jobs:
       # 빌드된 JAR 파일을 EC2로 전송
       - name: Send JAR to AWS EC2
         run: |
-          JAR_FILE=$(find build/libs -name "*.jar")
-          echo "JAR file: $JAR_FILE"
-          scp -i ${{ secrets.AWS_EC2_PRIVATE_KEY }} $JAR_FILE ubuntu@${{ secrets.AWS_EC2_HOST_DNS }}:/home/ubuntu/server-project      
+          echo "${{ secrets.AWS_EC2_PRIVATE_KEY }}" > ec2_key.pem
+          chmod 600 ec2_key.pem
+          scp -i ec2_key.pem build/libs/geeks-0.0.1-SNAPSHOT.jar ubuntu@${{ secrets.AWS_EC2_HOST_DNS }}:/home/ubuntu/server-project      
 
 #      - name: Docker build and Push
 #        run: |
