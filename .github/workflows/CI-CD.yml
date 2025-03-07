@@ -88,11 +88,18 @@ jobs:
       - name: Build With Gradle
         run: ./gradlew build -x test
 
-      - name: Docker build and Push
+      # 빌드된 JAR 파일을 EC2로 전송
+      - name: Send JAR to AWS EC2
         run: |
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-          docker build -f ./Dockerfile -t ${{ secrets.DOCKERHUB_REPO }} .
-          docker push ${{ secrets.DOCKERHUB_REPO }}
+          JAR_FILE=$(find build/libs -name "*.jar")
+          echo "JAR file: $JAR_FILE"
+          scp -i ${{ secrets.AWS_EC2_PRIVATE_KEY }} $JAR_FILE ubuntu@${{ secrets.AWS_EC2_HOST_DNS }}:/home/ubuntu/server-project      
+
+#      - name: Docker build and Push
+#        run: |
+#          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+#          docker build -f ./Dockerfile -t ${{ secrets.DOCKERHUB_REPO }} .
+#          docker push ${{ secrets.DOCKERHUB_REPO }}
 
       - name: Enter EC2 & Docker compose build
         uses: appleboy/ssh-action@master
@@ -106,9 +113,11 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-            sudo docker pull ${{ secrets.DOCKERHUB_REPO }}
             sudo docker-compose -f $COMPOSE up -d
+#          script: |
+#            sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+#            sudo docker pull ${{ secrets.DOCKERHUB_REPO }}
+#            sudo docker-compose -f $COMPOSE up -d
             
 
       - name: Discord success notification
