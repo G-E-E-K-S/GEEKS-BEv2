@@ -56,7 +56,7 @@ public class MailUtil {
         try {
             AmazonSimpleEmailService emailService = awsSesConfig.amazonSimpleEmailService();
 
-            String from = "Geeks <no-reply@my-geeks.com>";
+            String from = "geeks <no-reply@my-geeks.com>";
             Destination destination = new Destination().withToAddresses(email);
             Content subject = new Content().withCharset("UTF-8").withData("회원가입 이메일 인증코드 발송");
             Content body = new Content().withCharset("UTF-8").withData(html);

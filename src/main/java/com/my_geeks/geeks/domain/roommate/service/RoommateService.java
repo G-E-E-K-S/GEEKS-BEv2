@@ -213,7 +213,7 @@ public class RoommateService {
                 .build();
 
         try {
-            FirebaseMessaging.getInstance().send(message);
+            FirebaseMessaging.getInstance().send(message, true);
 
             PushDetail pushDetail = PushDetail.builder()
                     .title(title)

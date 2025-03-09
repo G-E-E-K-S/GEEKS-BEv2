@@ -117,7 +117,7 @@ jobs:
           envs: APP, COMPOSE
           script_stop: true
           script: |
-            sudo docker-compose -f $COMPOSE up -d
+            sudo docker-compose -f $COMPOSE up --build -d
 #          script: |
 #            sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 #            sudo docker pull ${{ secrets.DOCKERHUB_REPO }}
