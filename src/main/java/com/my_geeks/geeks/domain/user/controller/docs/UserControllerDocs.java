@@ -346,4 +346,22 @@ public interface UserControllerDocs {
     })
     @ApiErrorResponses({USER_NOT_FOUND})
     public BaseResponse<String> changePassword(Long userId, UpdatePasswordReq req);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[알림] 사용자 fcm token 보유 여부 확인",
+            description =
+                    """
+                    **FCM Token 보유 여부 확인**
+                    - true : 보유⭕
+                    - false : 보유❌
+                    """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Boolean.class)
+                    ))
+    })
+    @ApiErrorResponses({USER_NOT_FOUND})
+    public BaseResponse<Boolean> checkFcmToken(Long userId);
 }

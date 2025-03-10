@@ -343,6 +343,12 @@ public class UserService {
         return "success";
     }
 
+    public Boolean checkFcmToken(Long userId) {
+        User user = getUser(userId);
+        if(user.getFcmToken() != null) return true;
+        return false;
+    }
+
     private User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));

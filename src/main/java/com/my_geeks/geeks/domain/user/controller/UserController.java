@@ -177,6 +177,12 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.changePassword(userId, req.getPassword()));
     }
 
+    // TODO: 토큰 보유 여부 확인
+    @GetMapping("/check/fcm/token")
+    public BaseResponse<Boolean> checkFcmToken(@CurrentUserId Long userId) {
+        return BaseResponse.ok(userService.checkFcmToken(userId));
+    }
+
     // TODO: 생활 습관 등록 TEST
     @Deprecated
     @PostMapping("/test/create/{userId}")

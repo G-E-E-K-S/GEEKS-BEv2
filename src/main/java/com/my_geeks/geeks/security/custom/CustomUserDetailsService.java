@@ -33,6 +33,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getRoleType());
 
+//        CustomUserInfoDto user = userRepository.findById(Long.parseLong(id))
+//                .map(CustomUserInfoDto.class::cast)
+//                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+//
+//        CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getRoleType());
+
         return new CustomUserDetails(customUserInfoDto);
     }
 }
