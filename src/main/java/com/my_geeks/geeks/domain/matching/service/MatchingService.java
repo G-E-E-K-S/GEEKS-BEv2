@@ -137,6 +137,7 @@ public class MatchingService {
 
     public GetMatchingDetailRes getMatchingDetail(Long myId, Long opponentId, Long matchingId) {
         User user = getUser(myId);
+        User opponent = getUser(opponentId);
         GetUserDetailRes myDetail = getUserDetail(myId);
         GetUserDetailRes opponentDetail = getUserDetail(opponentId);
 
@@ -147,8 +148,12 @@ public class MatchingService {
         Optional<RoommateBookmark> bookmark = roommateBookmarkRepository.findByMyIdAndOpponentId(myId, opponentId);
 
         if(user.getRoommateId() != null) {
-            roommateStatus = "ACCEPT";
-        } else {
+            // 내 룸메이트이거나 룸메이트가 맺어진 상태 나누기
+            if(opponent.getRoommateId() != null && opponent.getRoommateId().equals(user.getRoommateId())) roommateStatus = "ACCEPT";
+            else roommateStatus = "ALREADY";
+        } else if(opponent.getRoommateId() != null) {
+            roommateStatus = "ALREADY";
+        }else {
             if(roommateRepository.existsBySenderIdAndReceiverId(myId, opponentId)) roommateStatus = "PENDING";
             else if(roommateRepository.existsBySenderIdAndReceiverId(opponentId, myId)) roommateStatus = "RECEIVED";
         }

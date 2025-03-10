@@ -1,5 +1,6 @@
 package com.my_geeks.geeks.domain.roommate.service;
 
+import com.google.api.core.ApiFuture;
 import com.google.firebase.messaging.*;
 import com.my_geeks.geeks.actuator.ActuatorCounter;
 import com.my_geeks.geeks.customResponse.BaseResponse;
@@ -56,6 +57,11 @@ public class RoommateService {
 
         Roommate roommate = new Roommate(senderId, receiverId, matchingPointId);
         roommateRepository.save(roommate);
+
+        User receiver = getUser(receiverId);
+
+        // 룸메 신청 알림 보내기
+        sendPushMessage(receiver, ROOMMATE_NEW_APPLY);
         return "success";
     }
 
@@ -78,7 +84,10 @@ public class RoommateService {
     public String deleteReceiveApply(Long roommateId) {
         Roommate roommate = getRoommate(roommateId);
         roommateRepository.delete(roommate);
+
         // TODO: 거절 알림
+        User sender = getUser(roommate.getSenderId());
+        sendPushMessage(sender, ROOMMATE_MATCHING_FAIL);
         return "success";
     }
 
@@ -94,11 +103,6 @@ public class RoommateService {
         User sender = getUser(senderId);
         User receiver = getUser(receiverId);
 
-
-        // TODO: 두 사용자에게 roommateId가 있는지 확인하도록 변경
-//        if(!roommateRepository.existsAcceptRoommate(RoommateStatus.ACCEPT, senderId, receiverId).isEmpty()) {
-//            throw new CustomException(ALREADY_ACCEPT_ROOMMATE_ERROR);
-//        }
         // 보내거나 받는 사람중 이미 룸메이트가 되어 있다면 오류 발생
         if(sender.getRoommateId() != null || receiver.getRoommateId() != null) {
             throw new CustomException(ALREADY_ACCEPT_ROOMMATE_ERROR);
@@ -113,8 +117,9 @@ public class RoommateService {
         // 나머지 요청 삭제
         roommateRepository.deleteOtherApply(roommateId, senderId, receiverId);
 
-        // 룸메이트 매칭 지표 수집
-        actuatorCounter.roommateAcceptIncrement();
+        // TODO: 매칭 알림
+        sendPushMessage(sender, ROOMMATE_MATCHING_SUCCESS);
+        sendPushMessage(receiver, ROOMMATE_MATCHING_SUCCESS);
         return "success";
     }
 
@@ -123,11 +128,15 @@ public class RoommateService {
         User user = getUser(userId);
         User myRoommate = roommateRepository.getRoommateUser(user.getRoommateId(), userId);
 
-        // TODO: roommateId로 조회하여 룸메 끊기
+        // roommateId로 조회하여 룸메 끊기
         Roommate roommate = getRoommate(user.getRoommateId());
 
         user.severRoommate();
         myRoommate.severRoommate();
+
+        // TODO: 룸메이트 끊기 알림
+        sendPushMessage(user, ROOMMATE_SEVER);
+        sendPushMessage(myRoommate, ROOMMATE_SEVER);
 
         roommateRepository.delete(roommate);
         return "success";
@@ -172,10 +181,7 @@ public class RoommateService {
             throw new CustomException(ROOMMATE_SERVICE_NOTIFY_NOT_ALLOW);
         }
 
-        sendPushMessage(myRoommate.getId(), HOMECOMING, myRoommate.getFcmToken());
-
-        // 귀가 알림 지표 수집
-        actuatorCounter.homecomingSendIncrement();
+        sendPushMessage(myRoommate, HOMECOMING);
         return "success";
     }
 
@@ -189,7 +195,7 @@ public class RoommateService {
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
     }
 
-    private void sendPushMessage(Long userId, NotifyType type, String token) {
+    private void sendPushMessage(User user, NotifyType type) {
         Message message = null;
         String title = "";
         String body = "";
@@ -197,10 +203,16 @@ public class RoommateService {
         // TODO: 각 푸시 알림 로그 만들기
         if(type.equals(HOMECOMING)) {
             title = "룸메이트 귀가 알림";
-            body = "룸메이트가 곧 귀가해요!";
+            body = user.getNickname() + "님이 곧 귀가해요!";
         } else if(type.equals(ROOMMATE_NEW_APPLY)) {
             title = "새로운 룸메이트 신청";
-            body = "'~'님이 나에게 룸메이트를 신청했어요!";
+            body = user.getNickname() + "님이 나에게 룸메이트를 신청했어요!";
+        } else if(type.equals(ROOMMATE_MATCHING_SUCCESS)) {
+            title = "룸메이트 매칭 성공!";
+            body = user.getNickname() + "님과 룸메이트가 맺어졌어요!";
+        } else if(type.equals(ROOMMATE_SEVER)) {
+            title = "룸메이트가 끊겼어요";
+            body = user.getNickname() + "님과의 룸메이트가 끊어졌어요.";
         }
 
         message = Message.builder()
@@ -209,20 +221,29 @@ public class RoommateService {
                         .build())
                 .putData("title", title)
                 .putData("body", body)
-                .setToken(token)
+                .setToken(user.getFcmToken())
                 .build();
 
-        try {
-            FirebaseMessaging.getInstance().send(message, true);
+        FirebaseMessaging.getInstance().sendAsync(message, true);
 
-            PushDetail pushDetail = PushDetail.builder()
-                    .title(title)
-                    .body(body)
-                    .userId(userId)
-                    .build();
-            pushDetailRepository.save(pushDetail);
-        } catch (FirebaseMessagingException e) {
-            throw new CustomException(FIREBASE_MESSAGE_ERROR);
-        }
+        PushDetail pushDetail = PushDetail.builder()
+                .title(title)
+                .body(body)
+                .userId(user.getId())
+                .build();
+
+        pushDetailRepository.save(pushDetail);
+//        try {
+//            FirebaseMessaging.getInstance().send(message, true);
+//
+//            PushDetail pushDetail = PushDetail.builder()
+//                    .title(title)
+//                    .body(body)
+//                    .userId(userId)
+//                    .build();
+//            pushDetailRepository.save(pushDetail);
+//        } catch (FirebaseMessagingException e) {
+//            throw new CustomException(FIREBASE_MESSAGE_ERROR);
+//        }
     }
 }

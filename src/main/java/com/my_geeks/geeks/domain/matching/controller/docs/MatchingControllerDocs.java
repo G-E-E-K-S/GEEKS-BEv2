@@ -46,7 +46,7 @@ public interface MatchingControllerDocs {
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[룸메 찾기] 상대방 정보와 점수 + 상세 생활 습관 조회 기능",
-            description = "roommateStatus -> NONE(보낸 신청 없음), PENDING(내가 신청 보내고 대기중), ACCEPT(현재 룸메이트)<br/>" +
+            description = "roommateStatus -> NONE(보낸 신청 없음), PENDING(내가 신청 보내고 대기중), RECEIVED(내가 상대에게 신청을 받음), ACCEPT(현재 나의 룸메이트), ALREADY(나또는 상대방이 룸메이트인 상태)<br/>" +
                     "bookmarkStatus -> true(저장함), false(저장 안함)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 성공 | DTO: GetMatchingDetailRes",
