@@ -21,7 +21,7 @@ public class MailUtil {
                 "                        <tbody>\n" +
                 "                            <tr>\n" +
                 "                                <td align=\"center\" style=\"background-color: #FFD540; height: 180px; padding: 0;\">\n" +
-                "                                    <img style=\"margin: 69px 0;\" src=\"https://bucket-geeks.s3.ap-northeast-2.amazonaws.com/logo.svg\" alt=\"긱스 로고\"/>\n" +
+                "                                    <img style=\"margin: 69px 0;\" src=\"https://bucket-geeks.s3.ap-northeast-2.amazonaws.com/geeks-title-logo.svg\" alt=\"긱스 로고\"/>\n" +
                 "                                </td>\n" +
                 "                            </tr>\n" +
                 "                            <tr>\n" +

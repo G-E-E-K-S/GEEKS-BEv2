@@ -10,6 +10,7 @@ import com.my_geeks.geeks.domain.roommate.responseDto.SchedulesOfDay;
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.exception.CustomException;
+import com.my_geeks.geeks.redis.CacheRepository;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
@@ -36,6 +37,8 @@ public class ScheduleService {
     private final UserRepository userRepository;
     private final RoommateScheduleRepository roommateScheduleRepository;
 
+    private final CacheRepository cacheRepository;
+
     private final ActuatorCounter actuatorCounter;
 
     @Transactional
@@ -49,7 +52,7 @@ public class ScheduleService {
     }
 
     public List<SchedulesOfDay> getMonthSchedule(Long userId, int year, int month) {
-        User user = getUser(userId);
+        User user = cacheRepository.getUser(userId);
         YearMonth yearMonth = YearMonth.of(year, month);
         System.out.println("userId = " + userId);
 
@@ -87,7 +90,7 @@ public class ScheduleService {
     }
 
     public List<SchedulesOfDay> getWeekSchedule(Long userId) {
-        User user = getUser(userId);
+        User user = cacheRepository.getUser(userId);
 
         if(user.getRoommateId() == null) return null;
 

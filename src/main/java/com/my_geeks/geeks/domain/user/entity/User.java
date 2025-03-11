@@ -7,10 +7,7 @@ import com.my_geeks.geeks.domain.user.entity.enumeration.Gender;
 import com.my_geeks.geeks.domain.user.entity.enumeration.RoleType;
 import com.my_geeks.geeks.domain.user.requestDto.UpdateProfileReq;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -18,6 +15,7 @@ import static lombok.AccessLevel.*;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class User extends CreatedTime {
     @Id

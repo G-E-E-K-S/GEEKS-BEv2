@@ -3,9 +3,12 @@ package com.my_geeks.geeks.security.custom;
 
 import com.my_geeks.geeks.domain.user.entity.User;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
+import com.my_geeks.geeks.domain.user.service.UserService;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
+import com.my_geeks.geeks.redis.CacheRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -15,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
+
+    private final CacheRepository cacheRepository;
 
     /**
      * JwtAuthFilter에서 JWT의 유효성을 검증한 이후,
@@ -28,17 +32,8 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String id) throws CustomException {
-        User user = userRepository.findById(Long.parseLong(id))
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
+        User user = cacheRepository.getUser(Long.parseLong(id));
         CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getRoleType());
-
-//        CustomUserInfoDto user = userRepository.findById(Long.parseLong(id))
-//                .map(CustomUserInfoDto.class::cast)
-//                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-//
-//        CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getRoleType());
-
         return new CustomUserDetails(customUserInfoDto);
     }
 }

@@ -19,6 +19,7 @@ import com.my_geeks.geeks.domain.user.repository.PushDetailRepository;
 import com.my_geeks.geeks.domain.user.repository.UserRepository;
 import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
+import com.my_geeks.geeks.redis.CacheRepository;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
@@ -41,6 +42,8 @@ public class RoommateService {
     private final PushDetailRepository pushDetailRepository;
 
     private final RoommateBookmarkRepository roommateBookmarkRepository;
+
+    private final CacheRepository cacheRepository;
 
     private final ActuatorCounter actuatorCounter;
 
@@ -172,10 +175,10 @@ public class RoommateService {
 
     @Transactional
     public String homecomingAlarm(Long userId) {
-        User user = getUser(userId);
+        User user = cacheRepository.getUser(userId);
         Roommate roommate = getRoommate(user.getRoommateId());
 
-        User myRoommate = getUser(roommate.getSenderId() == userId ? roommate.getReceiverId() : roommate.getSenderId());
+        User myRoommate = cacheRepository.getUser(roommate.getSenderId() == userId ? roommate.getReceiverId() : roommate.getSenderId());
 
         if(!myRoommate.getNotifyAllow().isServiceNotify()) {
             throw new CustomException(ROOMMATE_SERVICE_NOTIFY_NOT_ALLOW);

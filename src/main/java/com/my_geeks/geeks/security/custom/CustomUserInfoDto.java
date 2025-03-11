@@ -17,33 +17,6 @@ import static jakarta.persistence.EnumType.STRING;
 public class CustomUserInfoDto {
     private Long userId;
 
-//    private String email;
-//
-//    private String password;
-//
-//    private String nickname;
-//
-//    private String major;
-//
-//    private String introduction;
-//
-//    private String image;
-//
-//    private String fcmToken;
-//
-//    private int studentNum;
-//
-//    private boolean isOpen;
-//
-//    @Embedded
-//    private NotifyAllow notifyAllow;
-//
-//    private Dormitory dormitory;
-//
-//    private Gender gender;
-//
-//    private Long roommateId;
-
     private RoleType roleType;
 
     public CustomUserInfoDto(Long userId) {

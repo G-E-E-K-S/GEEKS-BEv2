@@ -20,11 +20,13 @@ import com.my_geeks.geeks.exception.CustomException;
 import com.my_geeks.geeks.exception.ErrorCode;
 import com.my_geeks.geeks.mail.MailUtil;
 import com.my_geeks.geeks.mail.RedisUtil;
+import com.my_geeks.geeks.redis.CacheRepository;
 import com.my_geeks.geeks.security.custom.CustomUserInfoDto;
 import com.my_geeks.geeks.security.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -49,6 +51,8 @@ public class UserService {
     private final MatchingPointRepository matchingPointRepository;
 
     private final RoommateRepository roommateRepository;
+
+    private final CacheRepository cacheRepository;
 
     private final MailUtil mailUtil;
 
@@ -344,13 +348,14 @@ public class UserService {
     }
 
     public Boolean checkFcmToken(Long userId) {
-        User user = getUser(userId);
+        User user = cacheRepository.getUser(userId);
         if(user.getFcmToken() != null) return true;
         return false;
     }
 
-    private User getUser(Long userId) {
+    //@Cacheable(value = "UserCache", key = "#userId", cacheManager = "cacheManager")
+    public User getUser(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 }

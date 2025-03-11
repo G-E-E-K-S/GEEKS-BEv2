@@ -1,8 +1,5 @@
 package com.my_geeks.geeks.mail;
 
-import com.my_geeks.geeks.exception.CustomException;
-import com.my_geeks.geeks.exception.ErrorCode;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
