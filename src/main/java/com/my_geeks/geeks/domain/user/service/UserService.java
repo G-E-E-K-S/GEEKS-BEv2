@@ -26,6 +26,7 @@ import com.my_geeks.geeks.security.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -225,6 +226,7 @@ public class UserService {
         return GetUserProfileRes.from(user);
     }
 
+    @CacheEvict(value = "UserCache", key = "#userId", cacheManager = "cacheManager")
     @Transactional
     public String updateProfile(Long userId, UpdateProfileReq req, List<MultipartFile> files) {
         User user = getUser(userId);
@@ -287,6 +289,7 @@ public class UserService {
         return user.isOpen();
     }
 
+    @CacheEvict(value = "UserCache", key = "#userId", cacheManager = "cacheManager")
     @Transactional
     public String saveFcmToken(Long userId, String fcmToken) {
         User user = getUser(userId);
@@ -340,6 +343,7 @@ public class UserService {
         return true;
     }
 
+    @CacheEvict(value = "UserCache", key = "#userId", cacheManager = "cacheManager")
     @Transactional
     public String changePassword(Long userId, String password) {
         User user = getUser(userId);

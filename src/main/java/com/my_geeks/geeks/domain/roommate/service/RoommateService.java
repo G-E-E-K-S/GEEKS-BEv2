@@ -24,6 +24,7 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,8 +64,10 @@ public class RoommateService {
 
         User receiver = getUser(receiverId);
 
-        // 룸메 신청 알림 보내기
-        sendPushMessage(receiver, ROOMMATE_NEW_APPLY);
+        if(receiver.getNotifyAllow().isRoommateNotify()) {
+            // 룸메 신청 알림 보내기
+            sendPushMessage(receiver, ROOMMATE_NEW_APPLY);
+        }
         return "success";
     }
 
@@ -88,9 +91,11 @@ public class RoommateService {
         Roommate roommate = getRoommate(roommateId);
         roommateRepository.delete(roommate);
 
-        // TODO: 거절 알림
         User sender = getUser(roommate.getSenderId());
-        sendPushMessage(sender, ROOMMATE_MATCHING_FAIL);
+        if(sender.getNotifyAllow().isRoommateNotify()) {
+            // 거절 알림
+            sendPushMessage(sender, ROOMMATE_MATCHING_FAIL);
+        }
         return "success";
     }
 
@@ -121,11 +126,16 @@ public class RoommateService {
         roommateRepository.deleteOtherApply(roommateId, senderId, receiverId);
 
         // TODO: 매칭 알림
-        sendPushMessage(sender, ROOMMATE_MATCHING_SUCCESS);
-        sendPushMessage(receiver, ROOMMATE_MATCHING_SUCCESS);
+        if(sender.getNotifyAllow().isRoommateNotify()) {
+            sendPushMessage(sender, ROOMMATE_MATCHING_SUCCESS);
+        }
+        if(receiver.getNotifyAllow().isRoommateNotify()) {
+            sendPushMessage(receiver, ROOMMATE_MATCHING_SUCCESS);
+        }
         return "success";
     }
 
+    @CacheEvict(value = "UserCache", key = "#userId", cacheManager = "cacheManager")
     @Transactional
     public String roommateSever(Long userId) {
         User user = getUser(userId);
@@ -138,8 +148,12 @@ public class RoommateService {
         myRoommate.severRoommate();
 
         // TODO: 룸메이트 끊기 알림
-        sendPushMessage(user, ROOMMATE_SEVER);
-        sendPushMessage(myRoommate, ROOMMATE_SEVER);
+        if(user.getNotifyAllow().isRoommateNotify()) {
+            sendPushMessage(user, ROOMMATE_SEVER);
+        }
+        if(myRoommate.getNotifyAllow().isRoommateNotify()) {
+            sendPushMessage(myRoommate, ROOMMATE_SEVER);
+        }
 
         roommateRepository.delete(roommate);
         return "success";
@@ -227,7 +241,7 @@ public class RoommateService {
                 .setToken(user.getFcmToken())
                 .build();
 
-        FirebaseMessaging.getInstance().sendAsync(message, true);
+        FirebaseMessaging.getInstance().sendAsync(message);
 
         PushDetail pushDetail = PushDetail.builder()
                 .title(title)
