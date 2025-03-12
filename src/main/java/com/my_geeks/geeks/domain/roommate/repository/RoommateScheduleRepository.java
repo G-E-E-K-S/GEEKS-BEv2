@@ -3,6 +3,7 @@ package com.my_geeks.geeks.domain.roommate.repository;
 import com.my_geeks.geeks.domain.roommate.entity.RoommateSchedule;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetScheduleInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
@@ -18,4 +19,7 @@ public interface RoommateScheduleRepository extends JpaRepository<RoommateSchedu
             "where rms.roommateId = :roommateId " +
             "and (rms.startDate between :startDate and :endDate or rms.endDate between :startDate and :endDate)")
     List<GetScheduleInfo> findMonthSchedules(Long userId, Long roommateId, LocalDateTime startDate, LocalDateTime endDate);
+
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    void deleteByRoommateId(Long roommateId);
 }

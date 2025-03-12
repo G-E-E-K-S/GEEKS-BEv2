@@ -9,6 +9,7 @@ import com.my_geeks.geeks.domain.roommate.entity.RoommateBookmark;
 import com.my_geeks.geeks.domain.roommate.entity.enumeration.RoommateStatus;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateBookmarkRepository;
 import com.my_geeks.geeks.domain.roommate.repository.RoommateRepository;
+import com.my_geeks.geeks.domain.roommate.repository.RoommateScheduleRepository;
 import com.my_geeks.geeks.domain.roommate.requestDto.DeleteBookmarkReq;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetApplyList;
 import com.my_geeks.geeks.domain.roommate.responseDto.GetBookmarkListRes;
@@ -43,6 +44,8 @@ public class RoommateService {
     private final PushDetailRepository pushDetailRepository;
 
     private final RoommateBookmarkRepository roommateBookmarkRepository;
+
+    private final RoommateScheduleRepository roommateScheduleRepository;
 
     private final CacheRepository cacheRepository;
 
@@ -124,6 +127,8 @@ public class RoommateService {
 
         sender.changeRoommate(roommateId);
         receiver.changeRoommate(roommateId);
+        cacheRepository.evictUser(senderId);
+        cacheRepository.evictUser(receiverId);
 
         // 나머지 요청 삭제
         roommateRepository.deleteOtherApply(roommateId, senderId, receiverId);
@@ -138,7 +143,6 @@ public class RoommateService {
         return "success";
     }
 
-    @CacheEvict(value = "UserCache", key = "#userId", cacheManager = "cacheManager")
     @Transactional
     public String roommateSever(Long userId) {
         User user = getUser(userId);
@@ -149,6 +153,8 @@ public class RoommateService {
 
         user.severRoommate();
         myRoommate.severRoommate();
+        cacheRepository.evictUser(userId);
+        cacheRepository.evictUser(myRoommate.getId());
 
         // TODO: 룸메이트 끊기 알림
         if(user.getNotifyAllow().isRoommateNotify()) {
@@ -159,6 +165,9 @@ public class RoommateService {
         }
 
         roommateRepository.delete(roommate);
+
+        // 일정 삭제
+        roommateScheduleRepository.deleteByRoommateId(roommate.getId());
         return "success";
     }
 

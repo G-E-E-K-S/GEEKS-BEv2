@@ -352,7 +352,7 @@ public class UserService {
     }
 
     public Boolean checkFcmToken(Long userId) {
-        User user = cacheRepository.getUser(userId);
+        User user = getUser(userId);
         if(user.getFcmToken() != null) return true;
         return false;
     }

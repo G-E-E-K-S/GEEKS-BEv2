@@ -54,7 +54,6 @@ public class ScheduleService {
     public List<SchedulesOfDay> getMonthSchedule(Long userId, int year, int month) {
         User user = cacheRepository.getUser(userId);
         YearMonth yearMonth = YearMonth.of(year, month);
-        System.out.println("userId = " + userId);
 
         if(user.getRoommateId() == null) return null;
 

@@ -101,14 +101,12 @@ public class User extends CreatedTime {
     }
 
     // TODO: 룸메이트가 맺어지면 프로필 비활성화
-    @CacheEvict(value = "UserCache", key = "#this.id", cacheManager = "cacheManager")
     public void changeRoommate(Long roommateId) {
         this.roommateId = roommateId;
         this.isOpen = false;
     }
 
     // TODO: 룸메이트가 끊어지면 프로필 활성화
-    @CacheEvict(value = "UserCache", key = "#this.id", cacheManager = "cacheManager")
     public void severRoommate() {
         this.roommateId = null;
         this.isOpen = true;
