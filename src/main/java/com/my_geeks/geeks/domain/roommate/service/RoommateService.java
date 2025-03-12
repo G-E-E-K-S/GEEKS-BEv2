@@ -62,11 +62,12 @@ public class RoommateService {
         Roommate roommate = new Roommate(senderId, receiverId, matchingPointId);
         roommateRepository.save(roommate);
 
+        User sender = getUser(senderId);
         User receiver = getUser(receiverId);
 
         if(receiver.getNotifyAllow().isRoommateNotify()) {
             // 룸메 신청 알림 보내기
-            sendPushMessage(receiver, ROOMMATE_NEW_APPLY);
+            sendPushMessage(receiver.getId(), sender.getNickname(),receiver.getFcmToken(), ROOMMATE_NEW_APPLY);
         }
         return "success";
     }
@@ -92,9 +93,11 @@ public class RoommateService {
         roommateRepository.delete(roommate);
 
         User sender = getUser(roommate.getSenderId());
+        User receiver = getUser(roommate.getReceiverId());
+
         if(sender.getNotifyAllow().isRoommateNotify()) {
             // 거절 알림
-            sendPushMessage(sender, ROOMMATE_MATCHING_FAIL);
+            sendPushMessage(sender.getId(), receiver.getNickname(), sender.getFcmToken(), ROOMMATE_MATCHING_FAIL);
         }
         return "success";
     }
@@ -127,10 +130,10 @@ public class RoommateService {
 
         // TODO: 매칭 알림
         if(sender.getNotifyAllow().isRoommateNotify()) {
-            sendPushMessage(sender, ROOMMATE_MATCHING_SUCCESS);
+            sendPushMessage(sender.getId(), receiver.getNickname(), sender.getFcmToken(), ROOMMATE_MATCHING_SUCCESS);
         }
         if(receiver.getNotifyAllow().isRoommateNotify()) {
-            sendPushMessage(receiver, ROOMMATE_MATCHING_SUCCESS);
+            sendPushMessage(receiver.getId(), sender.getNickname(), receiver.getFcmToken(), ROOMMATE_MATCHING_SUCCESS);
         }
         return "success";
     }
@@ -149,10 +152,10 @@ public class RoommateService {
 
         // TODO: 룸메이트 끊기 알림
         if(user.getNotifyAllow().isRoommateNotify()) {
-            sendPushMessage(user, ROOMMATE_SEVER);
+            sendPushMessage(user.getId(), myRoommate.getNickname(), user.getFcmToken(), ROOMMATE_SEVER);
         }
         if(myRoommate.getNotifyAllow().isRoommateNotify()) {
-            sendPushMessage(myRoommate, ROOMMATE_SEVER);
+            sendPushMessage(myRoommate.getId(), user.getNickname(), myRoommate.getFcmToken(), ROOMMATE_SEVER);
         }
 
         roommateRepository.delete(roommate);
@@ -198,7 +201,7 @@ public class RoommateService {
             throw new CustomException(ROOMMATE_SERVICE_NOTIFY_NOT_ALLOW);
         }
 
-        sendPushMessage(myRoommate, HOMECOMING);
+        sendPushMessage(myRoommate.getId(), user.getNickname(), myRoommate.getFcmToken(), HOMECOMING);
         return "success";
     }
 
@@ -212,7 +215,7 @@ public class RoommateService {
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
     }
 
-    private void sendPushMessage(User user, NotifyType type) {
+    private void sendPushMessage(Long userId, String nickname, String token, NotifyType type) {
         Message message = null;
         String title = "";
         String body = "";
@@ -220,16 +223,16 @@ public class RoommateService {
         // TODO: 각 푸시 알림 로그 만들기
         if(type.equals(HOMECOMING)) {
             title = "룸메이트 귀가 알림";
-            body = user.getNickname() + "님이 곧 귀가해요!";
+            body = nickname + "님이 곧 귀가해요!";
         } else if(type.equals(ROOMMATE_NEW_APPLY)) {
             title = "새로운 룸메이트 신청";
-            body = user.getNickname() + "님이 나에게 룸메이트를 신청했어요!";
+            body = nickname + "님이 나에게 룸메이트를 신청했어요!";
         } else if(type.equals(ROOMMATE_MATCHING_SUCCESS)) {
             title = "룸메이트 매칭 성공!";
-            body = user.getNickname() + "님과 룸메이트가 맺어졌어요!";
+            body = nickname + "님과 룸메이트가 맺어졌어요!";
         } else if(type.equals(ROOMMATE_SEVER)) {
             title = "룸메이트가 끊겼어요";
-            body = user.getNickname() + "님과의 룸메이트가 끊어졌어요.";
+            body = nickname + "님과의 룸메이트가 끊어졌어요.";
         }
 
         message = Message.builder()
@@ -238,7 +241,7 @@ public class RoommateService {
                         .build())
                 .putData("title", title)
                 .putData("body", body)
-                .setToken(user.getFcmToken())
+                .setToken(token)
                 .build();
 
         FirebaseMessaging.getInstance().sendAsync(message);
@@ -246,7 +249,7 @@ public class RoommateService {
         PushDetail pushDetail = PushDetail.builder()
                 .title(title)
                 .body(body)
-                .userId(user.getId())
+                .userId(userId)
                 .build();
 
         pushDetailRepository.save(pushDetail);
