@@ -250,6 +250,7 @@ public class RoommateService {
                         .build())
                 .putData("title", title)
                 .putData("body", body)
+                .putData("type", type.toString())
                 .setToken(token)
                 .build();
 
