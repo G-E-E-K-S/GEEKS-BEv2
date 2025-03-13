@@ -34,6 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
@@ -200,7 +201,7 @@ public class UserService {
         User user = getUser(userId);
 
         MultipartFile file = files.get(0);
-        String fileName = "profile/GEEKS_" + userId;
+        String fileName = "profile/GEEKS_" + userId + "_" + LocalDate.now();
 
         try {
             if(user.getImage() != null) {
@@ -233,7 +234,24 @@ public class UserService {
 
         // 이미지 변경
         if(files != null) {
-            changeImage(userId, files);
+            MultipartFile file = files.get(0);
+            String fileName = "profile/GEEKS_" + userId + "_" + LocalDate.now();
+
+            try {
+                if(user.getImage() != null) {
+                    amazonS3.deleteObject(bucket, user.getImage());
+                }
+
+                ObjectMetadata metadata = new ObjectMetadata();
+
+                metadata.setContentLength(file.getSize());
+                metadata.setContentType(file.getContentType());
+
+                user.setImage(fileName);
+                amazonS3.putObject(bucket, fileName, file.getInputStream(), metadata);
+            } catch (Exception e) {
+                throw new CustomException(AWS_S3_UPLOAD_ERROR);
+            }
         }
 
         user.updateProfile(req);
