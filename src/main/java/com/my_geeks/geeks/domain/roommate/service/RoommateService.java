@@ -259,6 +259,7 @@ public class RoommateService {
         PushDetail pushDetail = PushDetail.builder()
                 .title(title)
                 .body(body)
+                .type(type)
                 .userId(userId)
                 .build();
 
