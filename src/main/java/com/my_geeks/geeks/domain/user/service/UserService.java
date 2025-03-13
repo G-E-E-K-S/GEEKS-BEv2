@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -235,7 +236,7 @@ public class UserService {
         // 이미지 변경
         if(files != null) {
             MultipartFile file = files.get(0);
-            String fileName = "profile/GEEKS_" + userId + "_" + LocalDate.now();
+            String fileName = "profile/GEEKS_" + userId + "_" + LocalDateTime.now();
 
             try {
                 if(user.getImage() != null) {
